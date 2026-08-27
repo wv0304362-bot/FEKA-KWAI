@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kwai Chat V3</title>
+    <title>Kwai Chat Oficial</title>
     <style>
         * {
             margin: 0;
@@ -78,11 +78,11 @@
             letter-spacing: 1px;
         }
 
-        /* Corpo do chat rolável com espaço garantido embaixo */
+        /* Corpo do chat rolável */
         .chat-body {
             flex: 1;
             overflow-y: auto;
-            padding: 16px 16px 80px 16px; /* Padding extra embaixo para não esconder mensagens */
+            padding: 16px 16px 90px 16px;
             display: flex;
             flex-direction: column;
             gap: 14px;
@@ -204,7 +204,7 @@
             border-top-right-radius: 4px;
         }
 
-        /* Rodapé fixo absoluto na parte inferior da tela */
+        /* Rodapé fixo na parte inferior garantido */
         .chat-footer {
             position: absolute;
             bottom: 0;
@@ -409,7 +409,7 @@
             <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
-        <!-- Rodapé fixo absoluto na parte inferior -->
+        <!-- Rodapé fixo na parte inferior -->
         <div class="chat-footer">
             <input type="text" id="chat-input" placeholder="Diga algo">
             <div class="footer-actions">
