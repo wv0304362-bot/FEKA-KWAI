@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwai Chat Real</title>
+    <title>Kwai Chat Simulator Pro</title>
     <style>
         * {
             margin: 0;
@@ -16,32 +16,35 @@
             background-color: #121212;
             color: #111111;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 10px;
         }
 
-        .main-wrapper {
-            max-width: 420px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         /* Simulador do Celular */
         .phone-frame {
-            width: 100%;
-            height: 700px;
+            width: 380px;
+            height: 740px;
             background-color: #ffffff;
-            border: 8px solid #222222;
+            border: 10px solid #222222;
             border-radius: 36px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             position: relative;
+        }
+
+        /* Aviso de Simulação no Topo */
+        .simulation-banner {
+            background-color: #faf6f2;
+            color: #a86c47;
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 4px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         /* Barra Superior */
@@ -68,7 +71,7 @@
         }
 
         .header-title {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #111;
             max-width: 180px;
@@ -79,9 +82,10 @@
 
         .header-icons {
             display: flex;
-            gap: 14px;
+            gap: 16px;
             color: #333;
             font-size: 1.1rem;
+            cursor: pointer;
         }
 
         /* Corpo do Chat */
@@ -95,7 +99,7 @@
             background: #ffffff;
         }
 
-        /* Seção de Perfil no Topo (Idêntica à Print) */
+        /* Seção de Perfil no Topo */
         .profile-intro {
             text-align: center;
             padding: 10px 0 10px 0;
@@ -103,68 +107,58 @@
             margin-bottom: 5px;
         }
 
-        .profile-avatar-container {
-            position: relative;
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 6px auto;
-            cursor: pointer;
-        }
-
         .profile-avatar-large {
-            width: 100%;
-            height: 100%;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid #ccc;
+            margin: 0 auto 8px auto;
+            display: block;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            line-height: 76px;
+            text-align: center;
         }
 
-        .edit-overlay-icon {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #ff5722;
-            color: white;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
+        .profile-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 4px;
         }
 
         .profile-stats {
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.82rem;
+            font-weight: 600;
             color: #222;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
-        .profile-status-text {
+        .profile-subtext {
             font-size: 0.72rem;
             color: #888;
-            margin-bottom: 8px;
+            margin-bottom: 3px;
         }
 
         .btn-share-profile {
             background-color: transparent;
             border: 1px solid #ddd;
-            padding: 4px 16px;
-            border-radius: 14px;
-            font-size: 0.75rem;
-            color: #333;
+            padding: 6px 24px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #222;
             cursor: pointer;
             font-weight: 500;
+            margin-top: 8px;
         }
 
         .friends-badge {
             text-align: center;
-            font-size: 0.68rem;
-            color: #aaa;
+            font-size: 0.7rem;
+            color: #999;
             margin: 6px 0;
-            text-transform: uppercase;
         }
 
         /* Mensagens */
@@ -189,13 +183,22 @@
             height: 28px;
             border-radius: 50%;
             object-fit: cover;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
+            text-align: center;
+            line-height: 28px;
         }
 
         .message-bubble {
-            padding: 9px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.88rem;
             line-height: 1.35;
             word-break: break-word;
         }
@@ -207,18 +210,18 @@
         }
 
         .message-row.sent .message-bubble {
-            background-color: #fcece9;
+            background-color: #ffeae1;
             color: #111;
             border-top-right-radius: 3px;
         }
 
-        /* Rodapé igualzinho ao Kwai */
+        /* Rodapé com os ícones exatos da sua foto */
         .chat-footer {
             background-color: #ffffff;
-            padding: 8px 10px;
+            padding: 10px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             border-top: 1px solid #eee;
         }
 
@@ -227,17 +230,17 @@
             background-color: #f4f4f4;
             border: none;
             border-radius: 18px;
-            padding: 8px 12px;
+            padding: 9px 14px;
             color: #111;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             outline: none;
         }
 
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #555;
+            gap: 12px;
+            color: #444;
             font-size: 1.15rem;
         }
 
@@ -245,63 +248,130 @@
             cursor: pointer;
         }
 
-        /* Painel de Configuração Compacto Abaixo */
-        .config-panel {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            border-radius: 16px;
-            padding: 14px;
-            color: white;
+        /* MODAL DE EDIÇÃO (Aparece ao clicar nos 3 pontinhos) */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none; /* Oculto por padrão */
+        }
+
+        .modal-card {
+            background-color: #ffffff;
+            width: 88%;
+            border-radius: 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: scaleUp 0.2s ease;
         }
 
-        .config-panel h3 {
-            font-size: 0.95rem;
-            color: #ff5722;
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .form-row {
+        .modal-header-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #b57c5e;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111;
+            margin-top: -6px;
+        }
+
+        .modal-avatar-preview {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
             display: flex;
-            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1px solid #ddd;
         }
 
-        .form-group {
-            flex: 1;
+        .modal-avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-input-group {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
         }
 
-        .form-group label {
-            font-size: 0.7rem;
-            color: #aaa;
+        .modal-input-group label {
+            font-size: 0.75rem;
+            color: #777;
         }
 
-        .form-group input, .form-group select {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            padding: 6px 8px;
-            border-radius: 6px;
-            color: white;
-            font-size: 0.8rem;
+        .modal-input-group input, .modal-input-group select {
+            background-color: #f7f7f7;
+            border: 1px solid #e5e5e5;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #111;
             outline: none;
         }
 
-        .btn-main {
-            background-color: #ff5722;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-align: center;
+        .modal-row {
+            display: flex;
+            gap: 10px;
         }
 
-        /* Inputs ocultos de arquivos da galeria */
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .btn-modal-save {
+            flex: 1;
+            background-color: #ff5722;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
         input[type="file"] {
             display: none;
         }
@@ -309,97 +379,177 @@
 </head>
 <body>
 
-    <div class="main-wrapper">
-        <!-- SIMULADOR DO CELULAR -->
-        <div class="phone-frame">
-            <!-- Header -->
-            <div class="chat-header">
-                <div class="header-left">
-                    <span class="back-arrow">‹</span>
-                    <span class="header-title" id="top-username">🕊️ban(🇧🇷)𝕵e ø ♡</span>
-                </div>
-                <div class="header-icons">
-                    <span>📞</span>
-                    <span>⋮</span>
-                </div>
+    <div class="phone-frame">
+        <!-- Aviso de Simulação -->
+        <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
+
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="header-left">
+                <span class="back-arrow">‹</span>
+                <span class="header-title" id="display-name">Lia Martins</span>
             </div>
-
-            <!-- Corpo -->
-            <div class="chat-body" id="chat-body">
-                <!-- Perfil no Topo -->
-                <div class="profile-intro">
-                    <div class="profile-avatar-container" onclick="document.getElementById('file-profile').click()">
-                        <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="profile-avatar-large" alt="Avatar">
-                        <div class="edit-overlay-icon">📷</div>
-                    </div>
-                    <div class="profile-stats" id="profile-stats-text">1409 Seguidores • 7 Publicações</div>
-                    <div class="profile-status-text">Vocês são amigos agora</div>
-                    <button class="btn-share-profile">Compartilhar</button>
-                </div>
-
-                <div class="friends-badge">Vocês são amigos agora</div>
-                
-                <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
-            </div>
-
-            <!-- Rodapé (Comportamento exato do microfone/enviar) -->
-            <div class="chat-footer">
-                <input type="text" id="chat-input" placeholder="Diga algo" oninput="handleInputChange()">
-                <div class="footer-actions">
-                    <span class="action-icon" id="mic-send-btn" onclick="sendTypedMessage()">🎙️</span>
-                    <span class="action-icon" onclick="document.getElementById('file-gallery').click()">🖼️</span>
-                    <span class="action-icon">👍</span>
-                </div>
+            <div class="header-icons">
+                <span onclick="openModal()">⋮</span>
             </div>
         </div>
 
-        <!-- PAINEL DE CONTROLE ABAIXO -->
-        <div class="config-panel">
-            <h3>⚙️ Configurar Chat</h3>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Nome do Perfil</label>
-                    <input type="text" id="input-name" value="🕊️ban(🇧🇷)𝕵e ø ♡" oninput="updateProfileInfo()">
+        <!-- Corpo -->
+        <div class="chat-body" id="chat-body">
+            <!-- Perfil no Topo -->
+            <div class="profile-intro">
+                <div id="display-avatar-container">
+                    <!-- Será preenchido via JS (Letra ou Imagem) -->
                 </div>
-                <div class="form-group">
-                    <label>Seguidores & Pubs</label>
-                    <input type="text" id="input-stats" value="1409 Seguidores • 7 Publicações" oninput="updateProfileInfo()">
-                </div>
+                <div class="profile-name" id="display-name-sub">Lia Martins</div>
+                <div class="profile-stats" id="display-stats">1091 seguidores · 1 publicação</div>
+                <div class="profile-subtext">Você está seguindo @liamartins e mais 10 pessoas</div>
+                <div class="profile-subtext">Você são amigos agora</div>
+                <div class="profile-subtext">Compartilhe este personagem fictício</div>
+                <button class="btn-share-profile">Compartilhar</button>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
+            <div class="friends-badge">Vocês são amigos agora</div>
+            
+            <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <!-- Rodapé fiel ao seu print -->
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Diga algo" oninput="handleInputChange()">
+            <div class="footer-actions">
+                <span class="action-icon">☺</span>
+                <span class="action-icon" id="mic-send-btn" onclick="sendTypedMessage()">🎙️</span>
+                <span class="action-icon" onclick="document.getElementById('file-chat-img').click()">🖼️</span>
+                <span class="action-icon">👍</span>
+            </div>
+        </div>
+
+        <!-- MODAL DE CONFIGURAÇÃO (Aparece ao clicar nos 3 pontinhos) -->
+        <div class="modal-overlay" id="config-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag">Personagem Fictício</div>
+                <div class="modal-title">Editar personagem</div>
+
+                <!-- Foto de Perfil clicável -->
+                <div class="modal-avatar-preview" id="modal-avatar-box" onclick="document.getElementById('file-avatar').click()" title="Escolher foto de perfil">
+                    <span id="modal-avatar-text">L</span>
+                </div>
+                <div style="font-size: 0.72rem; color: #666; margin-top: -8px;">Escolher foto de perfil</div>
+
+                <div class="modal-input-group">
+                    <label>Nome do Personagem</label>
+                    <input type="text" id="input-name" value="Lia Martins">
+                </div>
+
+                <div class="modal-input-group">
+                    <label>Tipo de Conta</label>
+                    <input type="text" id="input-subtext" value="Personagem fictício">
+                </div>
+
+                <div class="modal-row">
+                    <div class="modal-input-group">
+                        <label>Seguidores</label>
+                        <input type="number" id="input-followers" value="1091">
+                    </div>
+                    <div class="modal-input-group">
+                        <label>Publicações</label>
+                        <input type="number" id="input-posts" value="1">
+                    </div>
+                </div>
+
+                <div class="modal-input-group">
                     <label>Enviar próxima mensagem como:</label>
                     <select id="input-sender-type">
-                        <option value="received">Outro lado (Com foto)</option>
-                        <option value="sent">Meu lado (Enviada)</option>
+                        <option value="received">Outro lado (Personagem)</option>
+                        <option value="sent">Meu lado (Eu)</option>
                     </select>
                 </div>
-            </div>
 
-            <button class="btn-main" onclick="clearChat()">Limpar Conversa</button>
+                <div class="modal-buttons">
+                    <button class="btn-modal-cancel" onclick="closeModal()">Cancelar</button>
+                    <button class="btn-modal-save" onclick="saveModal()">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Inputs ocultos para carregar direto da galeria -->
-    <input type="file" id="file-profile" accept="image/*" onchange="loadProfileImage(event)">
-    <input type="file" id="file-gallery" accept="image/*" onchange="sendImageMessage(event)">
+    <!-- Inputs Ocultos para Galeria -->
+    <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
+    <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
+        let profileData = {
+            name: "Lia Martins",
+            subtext: "Personagem fictício",
+            followers: 1091,
+            posts: 1,
+            image: null // Se for null, mostra a primeira letra do nome
+        };
+
+        let messages = [
+            { text: "Olá, sou Lia. vamos começar o bate-papo.", type: "received", isImg: false }
+        ];
+
         const chatInput = document.getElementById('chat-input');
         const micSendBtn = document.getElementById('mic-send-btn');
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        let messages = [
-            { text: "Olá, sou 🕊️ban(🇧🇷)𝕵e ø ♡, vamos começar o bate-papo.", type: "received", isImg: false },
-            { text: "O vídeo não está disponível porque foi ocultada", type: "received", isImg: false }
-        ];
+        function openModal() {
+            document.getElementById('config-modal').style.display = 'flex';
+            document.getElementById('input-name').value = profileData.name;
+            document.getElementById('input-subtext').value = profileData.subtext;
+            document.getElementById('input-followers').value = profileData.followers;
+            document.getElementById('input-posts').value = profileData.posts;
+        }
 
-        let currentProfileImage = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150";
+        function closeModal() {
+            document.getElementById('config-modal').style.display = 'none';
+        }
 
-        // Troca o microfone para seta quando digita
+        function saveModal() {
+            profileData.name = document.getElementById('input-name').value;
+            profileData.subtext = document.getElementById('input-subtext').value;
+            profileData.followers = document.getElementById('input-followers').value;
+            profileData.posts = document.getElementById('input-posts').value;
+
+            updateProfileUI();
+            closeModal();
+        }
+
+        function updateProfileUI() {
+            document.getElementById('display-name').textContent = profileData.name;
+            document.getElementById('display-name-sub').textContent = profileData.name;
+            document.getElementById('display-stats').textContent = `${profileData.followers} seguidores · ${profileData.posts} publicação`;
+
+            const avatarContainer = document.getElementById('display-avatar-container');
+            const modalAvatarBox = document.getElementById('modal-avatar-box');
+
+            if (profileData.image) {
+                avatarContainer.innerHTML = `<img src="${profileData.image}" class="profile-avatar-large">`;
+                modalAvatarBox.innerHTML = `<img src="${profileData.image}">`;
+            } else {
+                const initial = profileData.name.charAt(0).toUpperCase();
+                avatarContainer.innerHTML = `<div class="profile-avatar-large">${initial}</div>`;
+                modalAvatarBox.innerHTML = `<span id="modal-avatar-text">${initial}</span>`;
+            }
+            renderMessages();
+        }
+
+        function loadAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileData.image = e.target.result;
+                    const modalAvatarBox = document.getElementById('modal-avatar-box');
+                    modalAvatarBox.innerHTML = `<img src="${profileData.image}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         function handleInputChange() {
             if (chatInput.value.trim().length > 0) {
                 micSendBtn.textContent = "➤";
@@ -408,62 +558,29 @@
             }
         }
 
-        // Envia mensagem digitada
         function sendTypedMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
 
             const senderType = document.getElementById('input-sender-type').value;
-
-            messages.push({
-                text: text,
-                type: senderType,
-                isImg: false
-            });
+            messages.push({ text: text, type: senderType, isImg: false });
 
             chatInput.value = "";
             handleInputChange();
             renderMessages();
         }
 
-        // Carrega foto de perfil direto da galeria do celular
-        function loadProfileImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentProfileImage = e.target.result;
-                    document.getElementById('profile-img').src = currentProfileImage;
-                    renderMessages();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Envia imagem direto da galeria como mensagem no chat
-        function sendImageMessage(event) {
+        function sendGalleryImage(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const senderType = document.getElementById('input-sender-type').value;
-                    messages.push({
-                        text: e.target.result,
-                        type: senderType,
-                        isImg: true
-                    });
+                    messages.push({ text: e.target.result, type: senderType, isImg: true });
                     renderMessages();
                 }
                 reader.readAsDataURL(file);
             }
-        }
-
-        function updateProfileInfo() {
-            const name = document.getElementById('input-name').value;
-            const stats = document.getElementById('input-stats').value;
-
-            document.getElementById('top-username').textContent = name;
-            document.getElementById('profile-stats-text').textContent = stats;
         }
 
         function renderMessages() {
@@ -471,9 +588,13 @@
                 let content = m.isImg ? `<img src="${m.text}" style="max-width: 160px; border-radius: 8px; display: block;">` : m.text;
 
                 if (m.type === 'received') {
+                    let avatarHTML = profileData.image 
+                        ? `<img src="${profileData.image}" class="msg-avatar">`
+                        : `<div class="msg-avatar">${profileData.name.charAt(0).toUpperCase()}</div>`;
+
                     return `
                         <div class="message-row received">
-                            <img src="${currentProfileImage}" class="msg-avatar" alt="Avatar">
+                            ${avatarHTML}
                             <div class="message-bubble">${content}</div>
                         </div>
                     `;
@@ -489,12 +610,7 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        function clearChat() {
-            messages = [];
-            renderMessages();
-        }
-
-        renderMessages();
+        updateProfileUI();
     </script>
 </body>
 </html>
