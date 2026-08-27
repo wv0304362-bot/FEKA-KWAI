@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kwai Chat Tela Cheia</title>
+    <title>Kwai Chat Perfeito</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,6 @@
             color: #111111;
         }
 
-        /* Estrutura principal em Flexbox ocupando 100% da tela */
         .phone-frame {
             display: flex;
             flex-direction: column;
@@ -31,9 +30,9 @@
         }
 
         .simulation-banner {
-            background-color: #faf6f2;
-            color: #a86c47;
-            font-size: 0.65rem;
+            background-color: #fcf8f5;
+            color: #b87a54;
+            font-size: 0.62rem;
             text-align: center;
             padding: 4px;
             font-weight: 500;
@@ -43,11 +42,11 @@
 
         .chat-header {
             background-color: #ffffff;
-            padding: 10px 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f2f2f2;
             flex-shrink: 0;
             z-index: 10;
         }
@@ -60,29 +59,25 @@
 
         .back-arrow {
             font-size: 1.4rem;
-            color: #333;
+            color: #111;
             cursor: pointer;
+            font-weight: 300;
         }
 
         .header-title {
             font-size: 1rem;
             font-weight: 600;
             color: #111;
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .header-icons {
-            display: flex;
-            gap: 18px;
-            color: #333;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            color: #111;
             cursor: pointer;
+            letter-spacing: 1px;
         }
 
-        /* Corpo do chat com rolagem flexível */
+        /* Corpo do chat rolável */
         .chat-body {
             flex: 1;
             overflow-y: auto;
@@ -96,56 +91,56 @@
 
         .profile-intro {
             text-align: center;
-            padding: 10px 0;
+            padding: 10px 0 15px 0;
             border-bottom: 1px solid #f5f5f5;
             margin-bottom: 5px;
         }
 
         .profile-avatar-large {
-            width: 75px;
-            height: 75px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 8px auto;
+            margin: 0 auto 10px auto;
             display: block;
-            background-color: #ff8c53;
-            color: white;
-            font-size: 1.8rem;
+            background-color: #e5e5e5;
+            color: #333;
+            font-size: 2rem;
             font-weight: bold;
-            line-height: 75px;
+            line-height: 80px;
             text-align: center;
         }
 
         .profile-name {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #111;
             margin-bottom: 4px;
         }
 
         .profile-stats {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #222;
-            margin-bottom: 5px;
+            color: #111;
+            margin-bottom: 6px;
         }
 
         .profile-subtext {
             font-size: 0.73rem;
             color: #888;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .btn-share-profile {
             background-color: transparent;
             border: 1px solid #ddd;
-            padding: 5px 24px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            color: #222;
+            padding: 6px 28px;
+            border-radius: 18px;
+            font-size: 0.82rem;
+            color: #111;
             cursor: pointer;
             font-weight: 500;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .friends-badge {
@@ -190,32 +185,32 @@
 
         .message-bubble {
             padding: 10px 14px;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 0.9rem;
             line-height: 1.4;
             word-break: break-word;
         }
 
         .message-row.received .message-bubble {
-            background-color: #f1f1f1;
+            background-color: #f1f2f4;
             color: #111;
-            border-top-left-radius: 3px;
+            border-top-left-radius: 4px;
         }
 
         .message-row.sent .message-bubble {
             background-color: #ffeae1;
             color: #111;
-            border-top-right-radius: 3px;
+            border-top-right-radius: 4px;
         }
 
-        /* Rodapé fixado na parte inferior por Flexbox (nunca some) */
+        /* Rodapé com SVGs idênticos à referência */
         .chat-footer {
             background-color: #ffffff;
-            padding: 10px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #f0f0f0;
             flex-shrink: 0;
             width: 100%;
             z-index: 20;
@@ -223,7 +218,7 @@
 
         .chat-footer input {
             flex: 1;
-            background-color: #f4f4f4;
+            background-color: #f2f3f5;
             border: none;
             border-radius: 20px;
             padding: 10px 16px;
@@ -232,19 +227,31 @@
             outline: none;
         }
 
+        .chat-footer input::placeholder {
+            color: #999;
+        }
+
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 14px;
-            color: #444;
-            font-size: 1.25rem;
+            gap: 12px;
         }
 
         .action-icon {
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: #111;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* MODAL DE EDIÇÃO */
+        /* MODAL DE CONFIGURAÇÃO */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -269,12 +276,6 @@
             flex-direction: column;
             gap: 14px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            animation: scaleUp 0.2s ease;
-        }
-
-        @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .modal-header-tag {
@@ -384,8 +385,8 @@
                 <span class="back-arrow">‹</span>
                 <span class="header-title" id="display-name">Lia Martins</span>
             </div>
-            <div class="header-icons">
-                <span onclick="openModal()">⋮</span>
+            <div class="header-icons" onclick="openModal()">
+                <span>···</span>
             </div>
         </div>
 
@@ -405,14 +406,30 @@
             <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
-        <!-- Rodapé do chat garantido embaixo -->
+        <!-- Rodapé exato com ícones vetorizados idênticos à referência -->
         <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Diga algo" oninput="handleInputChange()">
+            <input type="text" id="chat-input" placeholder="Diga algo">
             <div class="footer-actions">
-                <span class="action-icon">☺</span>
-                <span class="action-icon" id="mic-send-btn" onclick="sendTypedMessage()" title="Enviar mensagem">🎙️</span>
-                <span class="action-icon" onclick="document.getElementById('file-chat-img').click()" title="Enviar foto">🖼️</span>
-                <span class="action-icon">👍</span>
+                <!-- 1. Emoji / Carinha -->
+                <svg class="action-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
+                </svg>
+                <!-- 2. Ícone circular exato -->
+                <svg class="action-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" fill="none"></circle>
+                    <circle cx="12" cy="12" r="3.5" fill="#111"></circle>
+                </svg>
+                <!-- 3. Galeria de fotos -->
+                <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <!-- 4. Joinha (Curtida) -->
+                <svg class="action-icon" viewBox="0 0 24 24">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                </svg>
             </div>
         </div>
 
@@ -480,7 +497,6 @@
         ];
 
         const chatInput = document.getElementById('chat-input');
-        const micSendBtn = document.getElementById('mic-send-btn');
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
@@ -538,25 +554,18 @@
             }
         }
 
-        function handleInputChange() {
-            if (chatInput.value.trim().length > 0) {
-                micSendBtn.textContent = "➤";
-            } else {
-                micSendBtn.textContent = "🎙️";
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                const senderType = document.getElementById('input-sender-type').value;
+                messages.push({ text: text, type: senderType, isImg: false });
+
+                chatInput.value = "";
+                renderMessages();
             }
-        }
-
-        function sendTypedMessage() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-
-            const senderType = document.getElementById('input-sender-type').value;
-            messages.push({ text: text, type: senderType, isImg: false });
-
-            chatInput.value = "";
-            handleInputChange();
-            renderMessages();
-        }
+        });
 
         function sendGalleryImage(event) {
             const file = event.target.files[0];
