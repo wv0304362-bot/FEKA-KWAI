@@ -3,19 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwai Chat Simulator Pro</title>
+    <title>Kwai Chat Real</title>
     <style>
-        :root {
-            --kwai-orange: #ff5722;
-            --kwai-bg: #ffffff;
-            --kwai-card: #f7f7f7;
-            --kwai-border: #e5e5e5;
-            --text-main: #111111;
-            --text-muted: #888888;
-            --bubble-received: #f1f1f1;
-            --bubble-sent: #ffe0d6;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,126 +13,147 @@
         }
 
         body {
-            background-color: #1a1a1a;
-            color: var(--text-main);
+            background-color: #121212;
+            color: #111111;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 1rem;
+            padding: 10px;
         }
 
-        .app-container {
-            display: flex;
-            gap: 2rem;
-            max-width: 1000px;
+        .main-wrapper {
+            max-width: 420px;
             width: 100%;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* Simulador do Celular (Fundo Branco igual ao print) */
+        /* Simulador do Celular */
         .phone-frame {
-            width: 380px;
-            height: 760px;
+            width: 100%;
+            height: 700px;
             background-color: #ffffff;
-            border: 12px solid #222222;
-            border-radius: 40px;
+            border: 8px solid #222222;
+            border-radius: 36px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             position: relative;
         }
 
-        /* Barra superior do chat */
+        /* Barra Superior */
         .chat-header {
             background-color: #ffffff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--kwai-border);
+            border-bottom: 1px solid #f0f0f0;
             z-index: 10;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .back-arrow {
-            font-size: 1.4rem;
-            cursor: pointer;
+            font-size: 1.3rem;
             color: #333;
+            cursor: pointer;
         }
 
         .header-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            color: #222;
-            white-space: nowrap;
+            color: #111;
+            max-width: 180px;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 160px;
+            white-space: nowrap;
         }
 
         .header-icons {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             color: #333;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         /* Corpo do Chat */
         .chat-body {
             flex: 1;
-            padding: 16px;
+            padding: 14px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             background: #ffffff;
         }
 
-        /* Perfil no topo do chat (conforme a print) */
+        /* Seção de Perfil no Topo (Idêntica à Print) */
         .profile-intro {
             text-align: center;
-            padding: 20px 0 10px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 10px;
+            padding: 10px 0 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+            margin-bottom: 5px;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 6px auto;
+            cursor: pointer;
         }
 
         .profile-avatar-large {
-            width: 76px;
-            height: 76px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 8px auto;
-            display: block;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
+        }
+
+        .edit-overlay-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #ff5722;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
         }
 
         .profile-stats {
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             color: #222;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .profile-status-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+            font-size: 0.72rem;
+            color: #888;
+            margin-bottom: 8px;
         }
 
         .btn-share-profile {
             background-color: transparent;
-            border: 1px solid var(--kwai-border);
-            padding: 6px 20px;
-            border-radius: 16px;
-            font-size: 0.8rem;
+            border: 1px solid #ddd;
+            padding: 4px 16px;
+            border-radius: 14px;
+            font-size: 0.75rem;
             color: #333;
             cursor: pointer;
             font-weight: 500;
@@ -151,19 +161,18 @@
 
         .friends-badge {
             text-align: center;
-            font-size: 0.7rem;
-            color: #999;
-            margin: 10px 0;
+            font-size: 0.68rem;
+            color: #aaa;
+            margin: 6px 0;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Estilo das Mensagens */
+        /* Mensagens */
         .message-row {
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            max-width: 85%;
+            max-width: 88%;
         }
 
         .message-row.received {
@@ -176,138 +185,131 @@
         }
 
         .msg-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
             flex-shrink: 0;
         }
 
         .message-bubble {
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.88rem;
-            line-height: 1.4;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.35;
             word-break: break-word;
         }
 
         .message-row.received .message-bubble {
-            background-color: var(--bubble-received);
+            background-color: #f1f1f1;
             color: #111;
-            border-top-left-radius: 4px;
+            border-top-left-radius: 3px;
         }
 
         .message-row.sent .message-bubble {
-            background-color: #ffede6; /* Tom clarinho de laranja para enviadas */
+            background-color: #fcece9;
             color: #111;
-            border-top-right-radius: 4px;
+            border-top-right-radius: 3px;
         }
 
-        /* Rodapé de Digitação (Idêntico ao print) */
+        /* Rodapé igualzinho ao Kwai */
         .chat-footer {
             background-color: #ffffff;
-            padding: 10px 12px;
+            padding: 8px 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-top: 1px solid var(--kwai-border);
+            gap: 8px;
+            border-top: 1px solid #eee;
         }
 
         .chat-footer input {
             flex: 1;
             background-color: #f4f4f4;
             border: none;
-            border-radius: 20px;
-            padding: 10px 14px;
+            border-radius: 18px;
+            padding: 8px 12px;
             color: #111;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             outline: none;
         }
 
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             color: #555;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
         }
 
         .action-icon {
             cursor: pointer;
-            transition: color 0.2s;
         }
 
-        .action-icon:hover {
-            color: var(--kwai-orange);
-        }
-
-        /* Painel de Controle (Editor) */
-        .control-panel {
-            background-color: #242424;
+        /* Painel de Configuração Compacto Abaixo */
+        .config-panel {
+            background-color: #1e1e1e;
             border: 1px solid #333;
             border-radius: 16px;
-            padding: 20px;
-            width: 360px;
+            padding: 14px;
+            color: white;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            color: white;
-            max-height: 760px;
-            overflow-y: auto;
+            gap: 10px;
         }
 
-        .control-panel h2 {
-            font-size: 1.1rem;
-            color: var(--kwai-orange);
+        .config-panel h3 {
+            font-size: 0.95rem;
+            color: #ff5722;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 8px;
         }
 
         .form-group {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
         }
 
         .form-group label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #aaa;
         }
 
         .form-group input, .form-group select {
-            background: #1a1a1a;
+            background: #2a2a2a;
             border: 1px solid #444;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border-radius: 6px;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             outline: none;
         }
 
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--kwai-orange);
-        }
-
-        .btn-action {
-            background-color: var(--kwai-orange);
+        .btn-main {
+            background-color: #ff5722;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             font-weight: 600;
+            font-size: 0.85rem;
             cursor: pointer;
+            text-align: center;
         }
 
-        .btn-action:hover {
-            opacity: 0.9;
-        }
-
-        .btn-secondary {
-            background-color: #444;
+        /* Inputs ocultos de arquivos da galeria */
+        input[type="file"] {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="main-wrapper">
         <!-- SIMULADOR DO CELULAR -->
         <div class="phone-frame">
             <!-- Header -->
@@ -324,9 +326,12 @@
 
             <!-- Corpo -->
             <div class="chat-body" id="chat-body">
-                <!-- Perfil Inserido Dinamicamente -->
+                <!-- Perfil no Topo -->
                 <div class="profile-intro">
-                    <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="profile-avatar-large" alt="Avatar">
+                    <div class="profile-avatar-container" onclick="document.getElementById('file-profile').click()">
+                        <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="profile-avatar-large" alt="Avatar">
+                        <div class="edit-overlay-icon">📷</div>
+                    </div>
                     <div class="profile-stats" id="profile-stats-text">1409 Seguidores • 7 Publicações</div>
                     <div class="profile-status-text">Vocês são amigos agora</div>
                     <button class="btn-share-profile">Compartilhar</button>
@@ -334,58 +339,52 @@
 
                 <div class="friends-badge">Vocês são amigos agora</div>
                 
-                <div id="messages-container"></div>
+                <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
             </div>
 
-            <!-- Rodapé com comportamento dinâmico do microfone -->
+            <!-- Rodapé (Comportamento exato do microfone/enviar) -->
             <div class="chat-footer">
                 <input type="text" id="chat-input" placeholder="Diga algo" oninput="handleInputChange()">
                 <div class="footer-actions">
-                    <span class="action-icon">😊</span>
                     <span class="action-icon" id="mic-send-btn" onclick="sendTypedMessage()">🎙️</span>
-                    <span class="action-icon">🖼️</span>
+                    <span class="action-icon" onclick="document.getElementById('file-gallery').click()">🖼️</span>
                     <span class="action-icon">👍</span>
                 </div>
             </div>
         </div>
 
-        <!-- PAINEL DE CONTROLE -->
-        <div class="control-panel">
-            <h2>⚙️ Painel de Configuração</h2>
+        <!-- PAINEL DE CONTROLE ABAIXO -->
+        <div class="config-panel">
+            <h3>⚙️ Configurar Chat</h3>
             
-            <div class="form-group">
-                <label>Nome do Contato (Topo)</label>
-                <input type="text" id="input-name" value="🕊️ban(🇧🇷)𝕵e ø ♡" oninput="updateProfileInfo()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome do Perfil</label>
+                    <input type="text" id="input-name" value="🕊️ban(🇧🇷)𝕵e ø ♡" oninput="updateProfileInfo()">
+                </div>
+                <div class="form-group">
+                    <label>Seguidores & Pubs</label>
+                    <input type="text" id="input-stats" value="1409 Seguidores • 7 Publicações" oninput="updateProfileInfo()">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Link da Foto de Perfil</label>
-                <input type="text" id="input-avatar" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" oninput="updateProfileInfo()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Enviar próxima mensagem como:</label>
+                    <select id="input-sender-type">
+                        <option value="received">Outro lado (Com foto)</option>
+                        <option value="sent">Meu lado (Enviada)</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Seguidores e Publicações</label>
-                <input type="text" id="input-stats" value="1409 Seguidores • 7 Publicações" oninput="updateProfileInfo()">
-            </div>
-
-            <hr style="border-color: #333;">
-
-            <div class="form-group">
-                <label>Quem vai mandar a próxima mensagem?</label>
-                <select id="input-sender-type">
-                    <option value="received">Ele/Ela (Aparece do outro lado com foto)</option>
-                    <option value="sent">Eu (Aparece do meu lado)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Texto da Mensagem Manual</label>
-                <input type="text" id="input-custom-msg" placeholder="Digite uma mensagem para injetar...">
-            </div>
-            <button class="btn-action" onclick="addManualMessage()">Adicionar Mensagem Manual</button>
-            <button class="btn-action btn-secondary" onclick="clearChat()">Limpar Conversa</button>
+            <button class="btn-main" onclick="clearChat()">Limpar Conversa</button>
         </div>
     </div>
+
+    <!-- Inputs ocultos para carregar direto da galeria -->
+    <input type="file" id="file-profile" accept="image/*" onchange="loadProfileImage(event)">
+    <input type="file" id="file-gallery" accept="image/*" onchange="sendImageMessage(event)">
 
     <script>
         const chatInput = document.getElementById('chat-input');
@@ -394,11 +393,13 @@
         const chatBody = document.getElementById('chat-body');
 
         let messages = [
-            { text: "Olá, sou 🕊️ban(🇧🇷)𝕵e ø ♡, vamos começar o bate-papo.", type: "received" },
-            { text: "O vídeo não está disponível porque foi ocultada", type: "received" }
+            { text: "Olá, sou 🕊️ban(🇧🇷)𝕵e ø ♡, vamos começar o bate-papo.", type: "received", isImg: false },
+            { text: "O vídeo não está disponível porque foi ocultada", type: "received", isImg: false }
         ];
 
-        // Alterna dinamicamente o microfone 🎙️ para o botão de enviar (➤) quando há texto
+        let currentProfileImage = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150";
+
+        // Troca o microfone para seta quando digita
         function handleInputChange() {
             if (chatInput.value.trim().length > 0) {
                 micSendBtn.textContent = "➤";
@@ -407,16 +408,17 @@
             }
         }
 
-        // Função ao clicar no ícone da barra (seja microfone ou enviar)
+        // Envia mensagem digitada
         function sendTypedMessage() {
             const text = chatInput.value.trim();
-            if (!text) return; // Se estiver vazio e clicar no microfone, não faz nada ou simula voz
+            if (!text) return;
 
             const senderType = document.getElementById('input-sender-type').value;
 
             messages.push({
                 text: text,
-                type: senderType // 'received' (outro lado) ou 'sent' (meu lado)
+                type: senderType,
+                isImg: false
             });
 
             chatInput.value = "";
@@ -424,47 +426,61 @@
             renderMessages();
         }
 
-        // Adicionar mensagem rápida pelo painel lateral
-        function addManualMessage() {
-            const customInput = document.getElementById('input-custom-msg');
-            const senderType = document.getElementById('input-sender-type').value;
+        // Carrega foto de perfil direto da galeria do celular
+        function loadProfileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentProfileImage = e.target.result;
+                    document.getElementById('profile-img').src = currentProfileImage;
+                    renderMessages();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
 
-            if (!customInput.value.trim()) return;
-
-            messages.push({
-                text: customInput.value,
-                type: senderType
-            });
-
-            customInput.value = "";
-            renderMessages();
+        // Envia imagem direto da galeria como mensagem no chat
+        function sendImageMessage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const senderType = document.getElementById('input-sender-type').value;
+                    messages.push({
+                        text: e.target.result,
+                        type: senderType,
+                        isImg: true
+                    });
+                    renderMessages();
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         function updateProfileInfo() {
             const name = document.getElementById('input-name').value;
-            const avatarUrl = document.getElementById('input-avatar').value;
             const stats = document.getElementById('input-stats').value;
 
             document.getElementById('top-username').textContent = name;
-            document.getElementById('profile-img').src = avatarUrl;
             document.getElementById('profile-stats-text').textContent = stats;
         }
 
         function renderMessages() {
-            const currentAvatar = document.getElementById('input-avatar').value;
-
             messagesContainer.innerHTML = messages.map(m => {
+                let content = m.isImg ? `<img src="${m.text}" style="max-width: 160px; border-radius: 8px; display: block;">` : m.text;
+
                 if (m.type === 'received') {
                     return `
                         <div class="message-row received">
-                            <img src="${currentAvatar}" class="msg-avatar" alt="Avatar">
-                            <div class="message-bubble">${m.text}</div>
+                            <img src="${currentProfileImage}" class="msg-avatar" alt="Avatar">
+                            <div class="message-bubble">${content}</div>
                         </div>
                     `;
                 } else {
                     return `
                         <div class="message-row sent">
-                            <div class="message-bubble">${m.text}</div>
+                            <div class="message-bubble">${content}</div>
                         </div>
                     `;
                 }
@@ -478,7 +494,6 @@
             renderMessages();
         }
 
-        // Renderização inicial
         renderMessages();
     </script>
 </body>
