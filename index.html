@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwai Chat Simulator Pro</title>
+    <title>Kwai Chat Tela Cheia</title>
     <style>
         * {
             margin: 0;
@@ -12,27 +12,26 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
+        /* Ocupa 100% da tela sem sobras */
         body {
-            background-color: #121212;
+            background-color: #ffffff;
             color: #111111;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 10px;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
-        /* Simulador do Celular */
+        /* Moldura ajustada para tela inteira */
         .phone-frame {
-            width: 380px;
-            height: 740px;
+            width: 100%;
+            height: 100%;
             background-color: #ffffff;
-            border: 10px solid #222222;
-            border-radius: 36px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             position: relative;
         }
 
@@ -50,7 +49,7 @@
         /* Barra Superior */
         .chat-header {
             background-color: #ffffff;
-            padding: 10px 14px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -61,20 +60,20 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .back-arrow {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #333;
             cursor: pointer;
         }
 
         .header-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #111;
-            max-width: 180px;
+            max-width: 220px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -82,16 +81,16 @@
 
         .header-icons {
             display: flex;
-            gap: 16px;
+            gap: 18px;
             color: #333;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
         }
 
         /* Corpo do Chat */
         .chat-body {
             flex: 1;
-            padding: 14px;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -102,42 +101,42 @@
         /* Seção de Perfil no Topo */
         .profile-intro {
             text-align: center;
-            padding: 10px 0 10px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #f5f5f5;
             margin-bottom: 5px;
         }
 
         .profile-avatar-large {
-            width: 76px;
-            height: 76px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
             margin: 0 auto 8px auto;
             display: block;
             background-color: #ff8c53;
             color: white;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
-            line-height: 76px;
+            line-height: 80px;
             text-align: center;
         }
 
         .profile-name {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #111;
             margin-bottom: 4px;
         }
 
         .profile-stats {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #222;
             margin-bottom: 6px;
         }
 
         .profile-subtext {
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             color: #888;
             margin-bottom: 3px;
         }
@@ -145,9 +144,9 @@
         .btn-share-profile {
             background-color: transparent;
             border: 1px solid #ddd;
-            padding: 6px 24px;
+            padding: 6px 28px;
             border-radius: 16px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: #222;
             cursor: pointer;
             font-weight: 500;
@@ -156,9 +155,9 @@
 
         .friends-badge {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: #999;
-            margin: 6px 0;
+            margin: 8px 0;
         }
 
         /* Mensagens */
@@ -166,7 +165,7 @@
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            max-width: 88%;
+            max-width: 85%;
         }
 
         .message-row.received {
@@ -179,27 +178,27 @@
         }
 
         .msg-avatar {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             object-fit: cover;
             background-color: #ff8c53;
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             text-align: center;
-            line-height: 28px;
+            line-height: 30px;
         }
 
         .message-bubble {
             padding: 10px 14px;
             border-radius: 14px;
-            font-size: 0.88rem;
-            line-height: 1.35;
+            font-size: 0.9rem;
+            line-height: 1.4;
             word-break: break-word;
         }
 
@@ -215,13 +214,13 @@
             border-top-right-radius: 3px;
         }
 
-        /* Rodapé com os ícones exatos da sua foto */
+        /* Rodapé */
         .chat-footer {
             background-color: #ffffff;
-            padding: 10px 12px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             border-top: 1px solid #eee;
         }
 
@@ -229,49 +228,50 @@
             flex: 1;
             background-color: #f4f4f4;
             border: none;
-            border-radius: 18px;
-            padding: 9px 14px;
+            border-radius: 20px;
+            padding: 10px 16px;
             color: #111;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             outline: none;
         }
 
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             color: #444;
-            font-size: 1.15rem;
+            font-size: 1.25rem;
         }
 
         .action-icon {
             cursor: pointer;
         }
 
-        /* MODAL DE EDIÇÃO (Aparece ao clicar nos 3 pontinhos) */
+        /* MODAL DE EDIÇÃO */
         .modal-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: rgba(0, 0, 0, 0.45);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            display: none; /* Oculto por padrão */
+            display: none;
         }
 
         .modal-card {
             background-color: #ffffff;
-            width: 88%;
+            width: 90%;
+            max-width: 380px;
             border-radius: 20px;
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 14px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             animation: scaleUp 0.2s ease;
         }
 
@@ -331,9 +331,9 @@
         .modal-input-group input, .modal-input-group select {
             background-color: #f7f7f7;
             border: 1px solid #e5e5e5;
-            padding: 9px 12px;
+            padding: 10px 12px;
             border-radius: 10px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #111;
             outline: none;
         }
@@ -398,9 +398,7 @@
         <div class="chat-body" id="chat-body">
             <!-- Perfil no Topo -->
             <div class="profile-intro">
-                <div id="display-avatar-container">
-                    <!-- Será preenchido via JS (Letra ou Imagem) -->
-                </div>
+                <div id="display-avatar-container"></div>
                 <div class="profile-name" id="display-name-sub">Lia Martins</div>
                 <div class="profile-stats" id="display-stats">1091 seguidores · 1 publicação</div>
                 <div class="profile-subtext">Você está seguindo @liamartins e mais 10 pessoas</div>
@@ -414,7 +412,7 @@
             <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
-        <!-- Rodapé fiel ao seu print -->
+        <!-- Rodapé -->
         <div class="chat-footer">
             <input type="text" id="chat-input" placeholder="Diga algo" oninput="handleInputChange()">
             <div class="footer-actions">
@@ -425,13 +423,12 @@
             </div>
         </div>
 
-        <!-- MODAL DE CONFIGURAÇÃO (Aparece ao clicar nos 3 pontinhos) -->
+        <!-- MODAL DE CONFIGURAÇÃO -->
         <div class="modal-overlay" id="config-modal">
             <div class="modal-card">
                 <div class="modal-header-tag">Personagem Fictício</div>
                 <div class="modal-title">Editar personagem</div>
 
-                <!-- Foto de Perfil clicável -->
                 <div class="modal-avatar-preview" id="modal-avatar-box" onclick="document.getElementById('file-avatar').click()" title="Escolher foto de perfil">
                     <span id="modal-avatar-text">L</span>
                 </div>
@@ -474,7 +471,7 @@
         </div>
     </div>
 
-    <!-- Inputs Ocultos para Galeria -->
+    <!-- Inputs Ocultos -->
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
@@ -484,7 +481,7 @@
             subtext: "Personagem fictício",
             followers: 1091,
             posts: 1,
-            image: null // Se for null, mostra a primeira letra do nome
+            image: null
         };
 
         let messages = [
@@ -585,7 +582,7 @@
 
         function renderMessages() {
             messagesContainer.innerHTML = messages.map(m => {
-                let content = m.isImg ? `<img src="${m.text}" style="max-width: 160px; border-radius: 8px; display: block;">` : m.text;
+                let content = m.isImg ? `<img src="${m.text}" style="max-width: 180px; border-radius: 8px; display: block;">` : m.text;
 
                 if (m.type === 'received') {
                     let avatarHTML = profileData.image 
