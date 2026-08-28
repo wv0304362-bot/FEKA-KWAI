@@ -106,10 +106,10 @@
         .home-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .theme-toggle-btn {
+        .theme-toggle-btn, .snippets-toggle-btn {
             background: none;
             border: 1px solid var(--border-color);
             border-radius: 50%;
@@ -235,7 +235,7 @@
             right: 24px;
             width: 56px;
             height: 56px;
-            background-color: #722f37; /* Vinho / Burgundy */
+            background-color: #722f37;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -253,7 +253,6 @@
             transform: scale(0.92);
         }
 
-        /* Rodapé de Crédito Inicial */
         .home-footer-credit {
             position: absolute;
             bottom: 8px;
@@ -554,7 +553,7 @@
             color: var(--muted-color);
         }
 
-        .modal-input-group input, .modal-input-group select {
+        .modal-input-group input, .modal-input-group select, .modal-input-group textarea {
             background-color: var(--secondary-bg);
             border: 1px solid var(--border-color);
             padding: 10px 12px;
@@ -598,6 +597,57 @@
             cursor: pointer;
         }
 
+        /* Estilos da Mini Lista de Textos (Snippets) */
+        .snippets-list-container {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .snippet-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--secondary-bg);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            gap: 8px;
+        }
+
+        .snippet-text {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            word-break: break-word;
+            flex: 1;
+        }
+
+        .snippet-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-snippet-copy {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .btn-snippet-del {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
         input[type="file"] {
             display: none;
         }
@@ -614,6 +664,9 @@
                 <div class="home-top-row">
                     <span class="home-app-title">Mensagens Kwai</span>
                     <div class="home-actions">
+                        <!-- Botão da Mini Lista de Textos -->
+                        <button class="snippets-toggle-btn" id="snippets-btn" onclick="openSnippetsModal()" title="Mini lista de textos">📋</button>
+                        <!-- Botão de Tema -->
                         <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
                     </div>
                 </div>
@@ -627,7 +680,6 @@
                 <!-- Preenchido via JS -->
             </div>
 
-            <!-- Botão Flutuante Vinho para criar novo chat (máx 15) -->
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
 
             <div class="home-footer-credit">Developed by WINCHESTER</div>
@@ -661,27 +713,22 @@
                 <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
             </div>
 
-            <!-- Rodapé fixo do chat -->
             <div class="chat-footer">
                 <input type="text" id="chat-input" placeholder="Diga algo">
                 <div class="footer-actions">
-                    <!-- 1. Emoji / Carinha -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="9"></circle>
                         <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
                     </svg>
-                    <!-- 2. Ícone circular -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="9" fill="none"></circle>
                         <circle cx="12" cy="12" r="3.5" fill="currentColor"></circle>
                     </svg>
-                    <!-- 3. Galeria de fotos -->
                     <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
                         <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
-                    <!-- 4. Curtida -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
                     </svg>
@@ -735,6 +782,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODAL DA MINI LISTA DE TEXTOS (SNIPPETS) -->
+        <div class="modal-overlay" id="snippets-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag">Anotações Rápidas</div>
+                <div class="modal-title">Mini Lista de Textos</div>
+
+                <div class="modal-input-group">
+                    <label>Adicionar novo texto:</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="new-snippet-input" placeholder="Digite um texto rápido..." style="flex: 1;">
+                        <button class="btn-modal-save" onclick="addSnippet()" style="flex: none; padding: 0 16px;">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="modal-input-group">
+                    <label>Textos salvos (Toque em copiar):</label>
+                    <div class="snippets-list-container" id="snippets-list-container">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="btn-modal-save" onclick="closeSnippetsModal()" style="width: 100%;">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Inputs file ocultos -->
@@ -742,8 +816,8 @@
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
-        // Lista com até 15 chats (inicialmente 1 padrão)
-        let chatsList = [
+        // Carregar dados salvos do localStorage ou usar padrão
+        let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
             {
                 id: 1,
                 name: "Lia Martins",
@@ -757,15 +831,33 @@
             }
         ];
 
+        let textSnippets = JSON.parse(localStorage.getItem('kwai_textSnippets')) || [
+            "Oi, tudo bem?",
+            "Adorei sua publicação!",
+            "Me segue de volta?"
+        ];
+
+        let currentTheme = localStorage.getItem('kwai_theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-btn').textContent = '☀️';
+        }
+
         let currentChatId = null;
         let isEditing = false;
         let tempAvatarBase64 = null;
-        let currentTheme = 'light';
 
         const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
+
+        // Função para salvar dados no LocalStorage
+        function saveData() {
+            localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
+            localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
+            localStorage.setItem('kwai_theme', currentTheme);
+        }
 
         // Alternar Tema (Claro / Escuro)
         function toggleTheme() {
@@ -778,6 +870,7 @@
                 document.documentElement.removeAttribute('data-theme');
                 document.getElementById('theme-btn').textContent = '🌙';
             }
+            saveData();
         }
 
         // Renderizar Lista de Conversas na Tela Inicial
@@ -890,6 +983,7 @@
 
                 chatInput.value = "";
                 renderMessages(chat);
+                saveData();
             }
         });
 
@@ -904,6 +998,7 @@
                         const senderType = document.getElementById('input-sender-type').value;
                         chat.messages.push({ text: e.target.result, type: senderType, isImg: true });
                         renderMessages(chat);
+                        saveData();
                     }
                 }
                 reader.readAsDataURL(file);
@@ -912,10 +1007,11 @@
 
         // Deletar chat da lista
         function deleteChat(event, id) {
-            event.stopPropagation(); // Evita abrir o chat ao clicar na lixeira
+            event.stopPropagation();
             if (confirm("Deseja realmente apagar este chat da lista?")) {
                 chatsList = chatsList.filter(c => c.id !== id);
                 renderChatsList(document.getElementById('search-input').value);
+                saveData();
             }
         }
 
@@ -929,7 +1025,7 @@
             tempAvatarBase64 = null;
             document.getElementById('modal-tag').textContent = "Novo Chat Fictício";
             document.getElementById('modal-main-title').textContent = "Criar perfil";
-            document.getElementById('sender-group').style.display = 'none'; // Na criação não precisa
+            document.getElementById('sender-group').style.display = 'none';
 
             document.getElementById('input-name').value = "";
             document.getElementById('input-subtext').value = "Personagem fictício";
@@ -994,7 +1090,6 @@
             }
 
             if (!isEditing) {
-                // Criar novo chat
                 const newId = chatsList.length > 0 ? Math.max(...chatsList.map(c => c.id)) + 1 : 1;
                 chatsList.push({
                     id: newId,
@@ -1008,7 +1103,6 @@
                     ]
                 });
             } else {
-                // Editar chat atual
                 const chat = chatsList.find(c => c.id === currentChatId);
                 if (chat) {
                     chat.name = name;
@@ -1021,7 +1115,61 @@
             }
 
             closeProfileModal();
-            renderChatsList(document.getElementById('search-input-search') ? document.getElementById('search-input-search').value : "");
+            renderChatsList(document.getElementById('search-input').value);
+            saveData();
+        }
+
+        // Funções da Mini Lista de Textos (Snippets)
+        function openSnippetsModal() {
+            renderSnippetsList();
+            document.getElementById('snippets-modal').style.display = 'flex';
+        }
+
+        function closeSnippetsModal() {
+            document.getElementById('snippets-modal').style.display = 'none';
+        }
+
+        function renderSnippetsList() {
+            const container = document.getElementById('snippets-list-container');
+            if (textSnippets.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--muted-color); font-size: 0.8rem; padding: 10px;">Nenhum texto salvo.</div>`;
+                return;
+            }
+
+            container.innerHTML = textSnippets.map((text, index) => `
+                <div class="snippet-item">
+                    <span class="snippet-text">${text}</span>
+                    <div class="snippet-actions">
+                        <button class="btn-snippet-copy" onclick="copySnippetText('${text.replace(/'/g, "\\'")}')">Copiar</button>
+                        <button class="btn-snippet-del" onclick="deleteSnippet(${index})" title="Excluir">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addSnippet() {
+            const input = document.getElementById('new-snippet-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            textSnippets.push(text);
+            input.value = "";
+            renderSnippetsList();
+            saveData();
+        }
+
+        function deleteSnippet(index) {
+            textSnippets.splice(index, 1);
+            renderSnippetsList();
+            saveData();
+        }
+
+        function copySnippetText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Texto copiado para a área de transferência!");
+            }).catch(err => {
+                console.error("Erro ao copiar: ", err);
+            });
         }
 
         // Inicializar renderização da lista
@@ -1029,3 +1177,4 @@
     </script>
 </body>
 </html>
+
