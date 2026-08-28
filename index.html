@@ -11,7 +11,8 @@
             --secondary-bg: #f2f3f5;
             --border-color: #f2f2f2;
             --received-bg: #f1f2f4;
-            --sent-bg: #ffeae1;
+            --sent-bg: #1982fc; /* Ajustado para o azul do chat */
+            --sent-text: #ffffff;
             --muted-color: #888888;
             --card-bg: #ffffff;
             --modal-bg: #ffffff;
@@ -23,7 +24,8 @@
             --secondary-bg: #1e1e1e;
             --border-color: #2c2c2c;
             --received-bg: #222222;
-            --sent-bg: #3d2218;
+            --sent-bg: #1982fc;
+            --sent-text: #ffffff;
             --muted-color: #aaaaaa;
             --card-bg: #181818;
             --modal-bg: #1e1e1e;
@@ -388,7 +390,7 @@
 
         .message-row.sent {
             align-self: flex-end;
-            flex-direction: row-reverse;
+            flex-direction: row; /* Mantém o avatar à direita do balão azul */
         }
 
         .msg-avatar {
@@ -410,7 +412,7 @@
 
         .message-bubble {
             padding: 10px 14px;
-            border-radius: 16px;
+            border-radius: 18px;
             font-size: 0.9rem;
             line-height: 1.4;
             word-break: break-word;
@@ -424,7 +426,7 @@
 
         .message-row.sent .message-bubble {
             background-color: var(--sent-bg);
-            color: var(--text-color);
+            color: var(--sent-text);
             border-top-right-radius: 4px;
         }
 
@@ -460,7 +462,7 @@
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .action-icon {
@@ -716,19 +718,23 @@
             <div class="chat-footer">
                 <input type="text" id="chat-input" placeholder="Diga algo">
                 <div class="footer-actions">
+                    <!-- 1. Emoji -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="9"></circle>
                         <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
                     </svg>
+                    <!-- 2. Microfone -->
                     <svg class="action-icon" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9" fill="none"></circle>
-                        <circle cx="12" cy="12" r="3.5" fill="currentColor"></circle>
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18.5V23M8 23h8"></path>
                     </svg>
+                    <!-- 3. Imagem / Galeria -->
                     <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
                         <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
+                    <!-- 4. Curtida / Positivo -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
                     </svg>
@@ -816,7 +822,6 @@
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
-        // Carregar dados salvos do localStorage ou usar padrão
         let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
             {
                 id: 1,
@@ -852,14 +857,12 @@
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        // Função para salvar dados no LocalStorage
         function saveData() {
             localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
             localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
             localStorage.setItem('kwai_theme', currentTheme);
         }
 
-        // Alternar Tema (Claro / Escuro)
         function toggleTheme() {
             if (currentTheme === 'light') {
                 currentTheme = 'dark';
@@ -873,7 +876,6 @@
             saveData();
         }
 
-        // Renderizar Lista de Conversas na Tela Inicial
         function renderChatsList(filterText = "") {
             const filtered = chatsList.filter(c => c.name.toLowerCase().includes(filterText.toLowerCase()));
 
@@ -909,7 +911,6 @@
             renderChatsList(query);
         }
 
-        // Abrir Conversa Específica
         function openChat(id) {
             currentChatId = id;
             const chat = chatsList.find(c => c.id === id);
@@ -958,9 +959,11 @@
                         </div>
                     `;
                 } else {
+                    // Mensagem enviada por mim (com avatar padrão/usuário à direita)
                     return `
                         <div class="message-row sent">
                             <div class="message-bubble">${content}</div>
+                            <div class="msg-avatar" style="background-color: #333; color: #fff;">Eu</div>
                         </div>
                     `;
                 }
@@ -969,7 +972,6 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        // Enviar mensagem no chat aberto
         chatInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 const text = chatInput.value.trim();
@@ -987,7 +989,6 @@
             }
         });
 
-        // Enviar imagem pela galeria no chat
         function sendGalleryImage(event) {
             const file = event.target.files[0];
             if (file && currentChatId !== null) {
@@ -1005,7 +1006,6 @@
             }
         }
 
-        // Deletar chat da lista
         function deleteChat(event, id) {
             event.stopPropagation();
             if (confirm("Deseja realmente apagar este chat da lista?")) {
@@ -1015,7 +1015,6 @@
             }
         }
 
-        // Gerenciar Modal de Criar / Editar
         function openNewProfileModal() {
             if (chatsList.length >= 15) {
                 alert("Você atingiu o limite máximo de 15 chats criados.");
@@ -1119,7 +1118,6 @@
             saveData();
         }
 
-        // Funções da Mini Lista de Textos (Snippets)
         function openSnippetsModal() {
             renderSnippetsList();
             document.getElementById('snippets-modal').style.display = 'flex';
@@ -1172,7 +1170,6 @@
             });
         }
 
-        // Inicializar renderização da lista
         renderChatsList();
     </script>
 </body>
