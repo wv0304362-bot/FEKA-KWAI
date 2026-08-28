@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kwai Chat Oficial</title>
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --secondary-bg: #f2f3f5;
+            --border-color: #f2f2f2;
+            --received-bg: #f1f2f4;
+            --sent-bg: #ffeae1;
+            --muted-color: #888888;
+            --card-bg: #ffffff;
+            --modal-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --secondary-bg: #1e1e1e;
+            --border-color: #2c2c2c;
+            --received-bg: #222222;
+            --sent-bg: #3d2218;
+            --muted-color: #aaaaaa;
+            --card-bg: #181818;
+            --modal-bg: #1e1e1e;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,9 +39,10 @@
         html, body {
             height: 100%;
             width: 100%;
-            background-color: #ffffff;
-            color: #111111;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .phone-frame {
@@ -25,7 +50,7 @@
             flex-direction: column;
             height: 100%;
             width: 100%;
-            background-color: #ffffff;
+            background-color: var(--bg-color);
             position: fixed;
             top: 0;
             left: 0;
@@ -42,13 +67,213 @@
             flex-shrink: 0;
         }
 
-        .chat-header {
-            background-color: #ffffff;
+        /* Telas */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* --- TELA INICIAL (LISTA DE CONVERSAS) --- */
+        .home-header {
+            background-color: var(--bg-color);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .home-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .home-app-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .home-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            border-radius: 18px;
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .search-box input::placeholder {
+            color: var(--muted-color);
+        }
+
+        .chats-list-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0 90px 0;
+            background: var(--bg-color);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .chat-item:active {
+            background-color: var(--secondary-bg);
+        }
+
+        .chat-item-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .chat-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-item-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-preview {
+            font-size: 0.83rem;
+            color: var(--muted-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-delete {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px;
+            opacity: 0.7;
+        }
+
+        .chat-item-delete:hover {
+            opacity: 1;
+        }
+
+        .empty-list-notice {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted-color);
+            font-size: 0.9rem;
+        }
+
+        /* Botão Flutuante Vinho */
+        .fab-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background-color: #722f37; /* Vinho / Burgundy */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(114, 47, 55, 0.4);
+            cursor: pointer;
+            border: none;
+            z-index: 40;
+            transition: transform 0.2s;
+        }
+
+        .fab-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* Rodapé de Crédito Inicial */
+        .home-footer-credit {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--muted-color);
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        /* --- TELA DE CHAT --- */
+        .chat-header-bar {
+            background-color: var(--bg-color);
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #f2f2f2;
+            border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
         }
 
@@ -59,26 +284,26 @@
         }
 
         .back-arrow {
-            font-size: 1.4rem;
-            color: #111;
+            font-size: 1.5rem;
+            color: var(--text-color);
             cursor: pointer;
             font-weight: 300;
+            line-height: 1;
         }
 
         .header-title {
             font-size: 1rem;
             font-weight: 600;
-            color: #111;
+            color: var(--text-color);
         }
 
         .header-icons {
             font-size: 1.3rem;
-            color: #111;
+            color: var(--text-color);
             cursor: pointer;
             letter-spacing: 1px;
         }
 
-        /* Corpo do chat rolável */
         .chat-body {
             flex: 1;
             overflow-y: auto;
@@ -86,14 +311,14 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            background: #ffffff;
+            background: var(--bg-color);
             -webkit-overflow-scrolling: touch;
         }
 
         .profile-intro {
             text-align: center;
             padding: 10px 0 15px 0;
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 5px;
         }
 
@@ -104,8 +329,8 @@
             object-fit: cover;
             margin: 0 auto 10px auto;
             display: block;
-            background-color: #e5e5e5;
-            color: #333;
+            background-color: #ff8c53;
+            color: white;
             font-size: 2rem;
             font-weight: bold;
             line-height: 80px;
@@ -115,30 +340,30 @@
         .profile-name {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #111;
+            color: var(--text-color);
             margin-bottom: 4px;
         }
 
         .profile-stats {
             font-size: 0.85rem;
             font-weight: 600;
-            color: #111;
+            color: var(--text-color);
             margin-bottom: 6px;
         }
 
         .profile-subtext {
             font-size: 0.73rem;
-            color: #888;
+            color: var(--muted-color);
             margin-bottom: 3px;
         }
 
         .btn-share-profile {
             background-color: transparent;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             padding: 6px 28px;
             border-radius: 18px;
             font-size: 0.82rem;
-            color: #111;
+            color: var(--text-color);
             cursor: pointer;
             font-weight: 500;
             margin-top: 8px;
@@ -147,7 +372,7 @@
         .friends-badge {
             text-align: center;
             font-size: 0.72rem;
-            color: #999;
+            color: var(--muted-color);
             margin: 6px 0;
         }
 
@@ -193,45 +418,44 @@
         }
 
         .message-row.received .message-bubble {
-            background-color: #f1f2f4;
-            color: #111;
+            background-color: var(--received-bg);
+            color: var(--text-color);
             border-top-left-radius: 4px;
         }
 
         .message-row.sent .message-bubble {
-            background-color: #ffeae1;
-            color: #111;
+            background-color: var(--sent-bg);
+            color: var(--text-color);
             border-top-right-radius: 4px;
         }
 
-        /* Rodapé fixo na parte inferior garantido */
         .chat-footer {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #ffffff;
+            background-color: var(--bg-color);
             padding: 10px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--border-color);
             z-index: 50;
         }
 
         .chat-footer input {
             flex: 1;
-            background-color: #f2f3f5;
+            background-color: var(--secondary-bg);
             border: none;
             border-radius: 20px;
             padding: 10px 16px;
-            color: #111;
+            color: var(--text-color);
             font-size: 0.9rem;
             outline: none;
         }
 
         .chat-footer input::placeholder {
-            color: #999;
+            color: var(--muted-color);
         }
 
         .footer-actions {
@@ -248,20 +472,20 @@
             width: 24px;
             height: 24px;
             fill: none;
-            stroke: #111;
+            stroke: var(--text-color);
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        /* MODAL DE CONFIGURAÇÃO */
+        /* MODAIS */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.45);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -270,7 +494,7 @@
         }
 
         .modal-card {
-            background-color: #ffffff;
+            background-color: var(--modal-bg);
             width: 90%;
             max-width: 380px;
             border-radius: 20px;
@@ -278,7 +502,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .modal-header-tag {
@@ -292,7 +516,7 @@
         .modal-title {
             font-size: 1.15rem;
             font-weight: 700;
-            color: #111;
+            color: var(--text-color);
             margin-top: -6px;
         }
 
@@ -309,7 +533,8 @@
             justify-content: center;
             cursor: pointer;
             overflow: hidden;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
+            margin: 0 auto;
         }
 
         .modal-avatar-preview img {
@@ -326,16 +551,16 @@
 
         .modal-input-group label {
             font-size: 0.75rem;
-            color: #777;
+            color: var(--muted-color);
         }
 
         .modal-input-group input, .modal-input-group select {
-            background-color: #f7f7f7;
-            border: 1px solid #e5e5e5;
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
             padding: 10px 12px;
             border-radius: 10px;
             font-size: 0.9rem;
-            color: #111;
+            color: var(--text-color);
             outline: none;
         }
 
@@ -354,7 +579,7 @@
             flex: 1;
             background-color: transparent;
             border: none;
-            color: #333;
+            color: var(--text-color);
             font-weight: 600;
             font-size: 0.9rem;
             padding: 10px;
@@ -383,76 +608,105 @@
     <div class="phone-frame">
         <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-        <div class="chat-header">
-            <div class="header-left">
-                <span class="back-arrow">‹</span>
-                <span class="header-title" id="display-name">Lia Martins</span>
+        <!-- TELA 1: LISTA DE CONVERSAS (HOME) -->
+        <div id="screen-home" class="screen active">
+            <div class="home-header">
+                <div class="home-top-row">
+                    <span class="home-app-title">Mensagens Kwai</span>
+                    <div class="home-actions">
+                        <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Pesquisar conversa..." oninput="filterChats()">
+                </div>
             </div>
-            <div class="header-icons" onclick="openModal()">
-                <span>···</span>
+
+            <div class="chats-list-body" id="chats-list-container">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <!-- Botão Flutuante Vinho para criar novo chat (máx 15) -->
+            <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
+
+            <div class="home-footer-credit">Developed by WINCHESTER</div>
+        </div>
+
+        <!-- TELA 2: TELA DE CHAT INDIVIDUAL -->
+        <div id="screen-chat" class="screen">
+            <div class="chat-header-bar">
+                <div class="header-left">
+                    <span class="back-arrow" onclick="goBackHome()">‹</span>
+                    <span class="header-title" id="display-name">Nome</span>
+                </div>
+                <div class="header-icons" onclick="openEditModal()">
+                    <span>···</span>
+                </div>
+            </div>
+
+            <div class="chat-body" id="chat-body">
+                <div class="profile-intro">
+                    <div id="display-avatar-container"></div>
+                    <div class="profile-name" id="display-name-sub">Nome</div>
+                    <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
+                    <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
+                    <div class="profile-subtext">Vocês são amigos agora</div>
+                    <div class="profile-subtext">Compartilhe este personagem fictício</div>
+                    <button class="btn-share-profile">Compartilhar</button>
+                </div>
+
+                <div class="friends-badge">Vocês são amigos agora</div>
+                
+                <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            </div>
+
+            <!-- Rodapé fixo do chat -->
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Diga algo">
+                <div class="footer-actions">
+                    <!-- 1. Emoji / Carinha -->
+                    <svg class="action-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
+                    </svg>
+                    <!-- 2. Ícone circular -->
+                    <svg class="action-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" fill="none"></circle>
+                        <circle cx="12" cy="12" r="3.5" fill="currentColor"></circle>
+                    </svg>
+                    <!-- 3. Galeria de fotos -->
+                    <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <!-- 4. Curtida -->
+                    <svg class="action-icon" viewBox="0 0 24 24">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                </div>
             </div>
         </div>
 
-        <div class="chat-body" id="chat-body">
-            <div class="profile-intro">
-                <div id="display-avatar-container"></div>
-                <div class="profile-name" id="display-name-sub">Lia Martins</div>
-                <div class="profile-stats" id="display-stats">1091 seguidores · 1 publicação</div>
-                <div class="profile-subtext">Você está seguindo @liamartins e mais 10 pessoas</div>
-                <div class="profile-subtext">Vocês são amigos agora</div>
-                <div class="profile-subtext">Compartilhe este personagem fictício</div>
-                <button class="btn-share-profile">Compartilhar</button>
-            </div>
-
-            <div class="friends-badge">Vocês são amigos agora</div>
-            
-            <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
-        </div>
-
-        <!-- Rodapé fixo na parte inferior -->
-        <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Diga algo">
-            <div class="footer-actions">
-                <!-- 1. Emoji / Carinha -->
-                <svg class="action-icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
-                </svg>
-                <!-- 2. Ícone circular -->
-                <svg class="action-icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9" fill="none"></circle>
-                    <circle cx="12" cy="12" r="3.5" fill="#111"></circle>
-                </svg>
-                <!-- 3. Galeria de fotos -->
-                <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-                <!-- 4. Curtida -->
-                <svg class="action-icon" viewBox="0 0 24 24">
-                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-                </svg>
-            </div>
-        </div>
-
-        <div class="modal-overlay" id="config-modal">
+        <!-- MODAL DE CRIAR / EDITAR PERFIL -->
+        <div class="modal-overlay" id="profile-modal">
             <div class="modal-card">
-                <div class="modal-header-tag">Personagem Fictício</div>
-                <div class="modal-title">Editar personagem</div>
+                <div class="modal-header-tag" id="modal-tag">Novo Chat Fictício</div>
+                <div class="modal-title" id="modal-main-title">Criar perfil</div>
 
-                <div class="modal-avatar-preview" id="modal-avatar-box" onclick="document.getElementById('file-avatar').click()" title="Escolher foto de perfil">
+                <div class="modal-avatar-preview" id="modal-avatar-box" onclick="document.getElementById('file-avatar').click()" title="Escolher foto">
                     <span id="modal-avatar-text">L</span>
                 </div>
-                <div style="font-size: 0.72rem; color: #666; margin-top: -8px;">Escolher foto de perfil</div>
+                <div style="font-size: 0.72rem; color: var(--muted-color); text-align: center; margin-top: -6px;">Toque para escolher foto</div>
 
                 <div class="modal-input-group">
                     <label>Nome do Personagem</label>
-                    <input type="text" id="input-name" value="Lia Martins">
+                    <input type="text" id="input-name" placeholder="Ex: Lia Martins">
                 </div>
 
                 <div class="modal-input-group">
-                    <label>Tipo de Conta</label>
+                    <label>Tipo de Conta / Subtítulo</label>
                     <input type="text" id="input-subtext" value="Personagem fictício">
                 </div>
 
@@ -467,7 +721,7 @@
                     </div>
                 </div>
 
-                <div class="modal-input-group">
+                <div class="modal-input-group" id="sender-group">
                     <label>Enviar próxima mensagem como:</label>
                     <select id="input-sender-type">
                         <option value="received">Outro lado (Personagem)</option>
@@ -476,121 +730,133 @@
                 </div>
 
                 <div class="modal-buttons">
-                    <button class="btn-modal-cancel" onclick="closeModal()">Cancelar</button>
-                    <button class="btn-modal-save" onclick="saveModal()">Salvar</button>
+                    <button class="btn-modal-cancel" onclick="closeProfileModal()">Cancelar</button>
+                    <button class="btn-modal-save" onclick="saveProfileModal()">Salvar</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Inputs file ocultos -->
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
-        let profileData = {
-            name: "Lia Martins",
-            subtext: "Personagem fictício",
-            followers: 1091,
-            posts: 1,
-            image: null
-        };
-
-        let messages = [
-            { text: "Olá, sou Lia. vamos começar o bate-papo.", type: "received", isImg: false }
+        // Lista com até 15 chats (inicialmente 1 padrão)
+        let chatsList = [
+            {
+                id: 1,
+                name: "Lia Martins",
+                subtext: "Personagem fictício",
+                followers: 1091,
+                posts: 1,
+                image: null,
+                messages: [
+                    { text: "Olá, sou Lia. Vamos começar o bate-papo.", type: "received", isImg: false }
+                ]
+            }
         ];
 
+        let currentChatId = null;
+        let isEditing = false;
+        let tempAvatarBase64 = null;
+        let currentTheme = 'light';
+
+        const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        function openModal() {
-            document.getElementById('config-modal').style.display = 'flex';
-            document.getElementById('input-name').value = profileData.name;
-            document.getElementById('input-subtext').value = profileData.subtext;
-            document.getElementById('input-followers').value = profileData.followers;
-            document.getElementById('input-posts').value = profileData.posts;
+        // Alternar Tema (Claro / Escuro)
+        function toggleTheme() {
+            if (currentTheme === 'light') {
+                currentTheme = 'dark';
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-btn').textContent = '☀️';
+            } else {
+                currentTheme = 'light';
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('theme-btn').textContent = '🌙';
+            }
         }
 
-        function closeModal() {
-            document.getElementById('config-modal').style.display = 'none';
+        // Renderizar Lista de Conversas na Tela Inicial
+        function renderChatsList(filterText = "") {
+            const filtered = chatsList.filter(c => c.name.toLowerCase().includes(filterText.toLowerCase()));
+
+            if (filtered.length === 0) {
+                chatsListContainer.innerHTML = `<div class="empty-list-notice">Nenhum chat encontrado.<br>Toque no botão vinho (+) para criar.</div>`;
+                return;
+            }
+
+            chatsListContainer.innerHTML = filtered.map(chat => {
+                const lastMsg = chat.messages.length > 0 
+                    ? (chat.messages[chat.messages.length - 1].isImg ? "[Imagem]" : chat.messages[chat.messages.length - 1].text)
+                    : "Nenhuma mensagem ainda";
+                
+                const avatarHTML = chat.image 
+                    ? `<img src="${chat.image}" class="chat-item-avatar">`
+                    : `<div class="chat-item-avatar">${chat.name.charAt(0).toUpperCase()}</div>`;
+
+                return `
+                    <div class="chat-item" onclick="openChat(${chat.id})">
+                        ${avatarHTML}
+                        <div class="chat-item-info">
+                            <div class="chat-item-name">${chat.name}</div>
+                            <div class="chat-item-preview">${lastMsg}</div>
+                        </div>
+                        <button class="chat-item-delete" onclick="deleteChat(event, ${chat.id})" title="Apagar chat">🗑️</button>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function saveModal() {
-            profileData.name = document.getElementById('input-name').value;
-            profileData.subtext = document.getElementById('input-subtext').value;
-            profileData.followers = document.getElementById('input-followers').value;
-            profileData.posts = document.getElementById('input-posts').value;
-
-            updateProfileUI();
-            closeModal();
+        function filterChats() {
+            const query = document.getElementById('search-input').value;
+            renderChatsList(query);
         }
 
-        function updateProfileUI() {
-            document.getElementById('display-name').textContent = profileData.name;
-            document.getElementById('display-name-sub').textContent = profileData.name;
-            document.getElementById('display-stats').textContent = `${profileData.followers} seguidores · ${profileData.posts} publicação`;
+        // Abrir Conversa Específica
+        function openChat(id) {
+            currentChatId = id;
+            const chat = chatsList.find(c => c.id === id);
+            if (!chat) return;
+
+            document.getElementById('screen-home').classList.remove('active');
+            document.getElementById('screen-chat').classList.add('active');
+
+            updateChatUI(chat);
+        }
+
+        function goBackHome() {
+            document.getElementById('screen-chat').classList.remove('active');
+            document.getElementById('screen-home').classList.add('active');
+            renderChatsList(document.getElementById('search-input').value);
+        }
+
+        function updateChatUI(chat) {
+            document.getElementById('display-name').textContent = chat.name;
+            document.getElementById('display-name-sub').textContent = chat.name;
+            document.getElementById('display-stats').textContent = `${chat.followers} seguidores · ${chat.posts} publicação`;
 
             const avatarContainer = document.getElementById('display-avatar-container');
-            const modalAvatarBox = document.getElementById('modal-avatar-box');
-
-            if (profileData.image) {
-                avatarContainer.innerHTML = `<img src="${profileData.image}" class="profile-avatar-large">`;
-                modalAvatarBox.innerHTML = `<img src="${profileData.image}">`;
+            if (chat.image) {
+                avatarContainer.innerHTML = `<img src="${chat.image}" class="profile-avatar-large">`;
             } else {
-                const initial = profileData.name.charAt(0).toUpperCase();
-                avatarContainer.innerHTML = `<div class="profile-avatar-large">${initial}</div>`;
-                modalAvatarBox.innerHTML = `<span id="modal-avatar-text">${initial}</span>`;
+                avatarContainer.innerHTML = `<div class="profile-avatar-large">${chat.name.charAt(0).toUpperCase()}</div>`;
             }
-            renderMessages();
+
+            renderMessages(chat);
         }
 
-        function loadAvatarImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profileData.image = e.target.result;
-                    const modalAvatarBox = document.getElementById('modal-avatar-box');
-                    modalAvatarBox.innerHTML = `<img src="${profileData.image}">`;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const text = chatInput.value.trim();
-                if (!text) return;
-
-                const senderType = document.getElementById('input-sender-type').value;
-                messages.push({ text: text, type: senderType, isImg: false });
-
-                chatInput.value = "";
-                renderMessages();
-            }
-        });
-
-        function sendGalleryImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const senderType = document.getElementById('input-sender-type').value;
-                    messages.push({ text: e.target.result, type: senderType, isImg: true });
-                    renderMessages();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function renderMessages() {
-            messagesContainer.innerHTML = messages.map(m => {
+        function renderMessages(chat) {
+            messagesContainer.innerHTML = chat.messages.map(m => {
                 let content = m.isImg ? `<img src="${m.text}" style="max-width: 180px; border-radius: 8px; display: block;">` : m.text;
 
                 if (m.type === 'received') {
-                    let avatarHTML = profileData.image 
-                        ? `<img src="${profileData.image}" class="msg-avatar">`
-                        : `<div class="msg-avatar">${profileData.name.charAt(0).toUpperCase()}</div>`;
+                    let avatarHTML = chat.image 
+                        ? `<img src="${chat.image}" class="msg-avatar">`
+                        : `<div class="msg-avatar">${chat.name.charAt(0).toUpperCase()}</div>`;
 
                     return `
                         <div class="message-row received">
@@ -610,8 +876,156 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        updateProfileUI();
+        // Enviar mensagem no chat aberto
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const text = chatInput.value.trim();
+                if (!text || currentChatId === null) return;
+
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (!chat) return;
+
+                const senderType = document.getElementById('input-sender-type').value;
+                chat.messages.push({ text: text, type: senderType, isImg: false });
+
+                chatInput.value = "";
+                renderMessages(chat);
+            }
+        });
+
+        // Enviar imagem pela galeria no chat
+        function sendGalleryImage(event) {
+            const file = event.target.files[0];
+            if (file && currentChatId !== null) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const chat = chatsList.find(c => c.id === currentChatId);
+                    if (chat) {
+                        const senderType = document.getElementById('input-sender-type').value;
+                        chat.messages.push({ text: e.target.result, type: senderType, isImg: true });
+                        renderMessages(chat);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Deletar chat da lista
+        function deleteChat(event, id) {
+            event.stopPropagation(); // Evita abrir o chat ao clicar na lixeira
+            if (confirm("Deseja realmente apagar este chat da lista?")) {
+                chatsList = chatsList.filter(c => c.id !== id);
+                renderChatsList(document.getElementById('search-input').value);
+            }
+        }
+
+        // Gerenciar Modal de Criar / Editar
+        function openNewProfileModal() {
+            if (chatsList.length >= 15) {
+                alert("Você atingiu o limite máximo de 15 chats criados.");
+                return;
+            }
+            isEditing = false;
+            tempAvatarBase64 = null;
+            document.getElementById('modal-tag').textContent = "Novo Chat Fictício";
+            document.getElementById('modal-main-title').textContent = "Criar perfil";
+            document.getElementById('sender-group').style.display = 'none'; // Na criação não precisa
+
+            document.getElementById('input-name').value = "";
+            document.getElementById('input-subtext').value = "Personagem fictício";
+            document.getElementById('input-followers').value = 500;
+            document.getElementById('input-posts').value = 1;
+            document.getElementById('modal-avatar-box').innerHTML = `<span id="modal-avatar-text">+</span>`;
+
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function openEditModal() {
+            isEditing = true;
+            const chat = chatsList.find(c => c.id === currentChatId);
+            if (!chat) return;
+
+            tempAvatarBase64 = chat.image;
+            document.getElementById('modal-tag').textContent = "Configurações do Chat";
+            document.getElementById('modal-main-title').textContent = "Editar perfil";
+            document.getElementById('sender-group').style.display = 'flex';
+
+            document.getElementById('input-name').value = chat.name;
+            document.getElementById('input-subtext').value = chat.subtext;
+            document.getElementById('input-followers').value = chat.followers;
+            document.getElementById('input-posts').value = chat.posts;
+
+            const modalAvatarBox = document.getElementById('modal-avatar-box');
+            if (chat.image) {
+                modalAvatarBox.innerHTML = `<img src="${chat.image}">`;
+            } else {
+                modalAvatarBox.innerHTML = `<span id="modal-avatar-text">${chat.name.charAt(0).toUpperCase()}</span>`;
+            }
+
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        function loadAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempAvatarBase64 = e.target.result;
+                    const modalAvatarBox = document.getElementById('modal-avatar-box');
+                    modalAvatarBox.innerHTML = `<img src="${tempAvatarBase64}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfileModal() {
+            const name = document.getElementById('input-name').value.trim();
+            const subtext = document.getElementById('input-subtext').value.trim();
+            const followers = parseInt(document.getElementById('input-followers').value) || 0;
+            const posts = parseInt(document.getElementById('input-posts').value) || 0;
+
+            if (!name) {
+                alert("Por favor, insira o nome do personagem.");
+                return;
+            }
+
+            if (!isEditing) {
+                // Criar novo chat
+                const newId = chatsList.length > 0 ? Math.max(...chatsList.map(c => c.id)) + 1 : 1;
+                chatsList.push({
+                    id: newId,
+                    name: name,
+                    subtext: subtext,
+                    followers: followers,
+                    posts: posts,
+                    image: tempAvatarBase64,
+                    messages: [
+                        { text: `Olá, sou ${name}. Vamos conversar!`, type: "received", isImg: false }
+                    ]
+                });
+            } else {
+                // Editar chat atual
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (chat) {
+                    chat.name = name;
+                    chat.subtext = subtext;
+                    chat.followers = followers;
+                    chat.posts = posts;
+                    chat.image = tempAvatarBase64;
+                    updateChatUI(chat);
+                }
+            }
+
+            closeProfileModal();
+            renderChatsList(document.getElementById('search-input-search') ? document.getElementById('search-input-search').value : "");
+        }
+
+        // Inicializar renderização da lista
+        renderChatsList();
     </script>
 </body>
 </html>
-
