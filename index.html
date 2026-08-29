@@ -488,7 +488,7 @@
             border-top-right-radius: 4px;
         }
 
-        /* Rodapé ajustado para manter input e ações alinhados horizontalmente */
+        /* Rodapé ajustado: Input agora contém o emoji sorrindo internamente */
         .chat-footer {
             position: absolute;
             bottom: 0;
@@ -503,12 +503,19 @@
             z-index: 50;
         }
 
+        .chat-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            border-radius: 20px;
+            padding: 4px 6px 4px 16px;
+        }
+
         .chat-footer input {
             flex: 1;
-            background-color: var(--secondary-bg);
+            background: none;
             border: none;
-            border-radius: 20px;
-            padding: 10px 16px;
             color: var(--text-color);
             font-size: 0.9rem;
             outline: none;
@@ -518,11 +525,33 @@
             color: var(--muted-color);
         }
 
+        .input-inline-emoji {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            stroke: var(--text-color);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .input-inline-emoji:hover {
+            opacity: 1;
+        }
+
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-direction: row; /* Força o alinhamento horizontal em fileira */
+            gap: 16px;
+            flex-direction: row;
             flex-shrink: 0;
         }
 
@@ -789,25 +818,27 @@
             </div>
 
             <div class="chat-footer">
-                <input type="text" id="chat-input" placeholder="Diga algo">
-                <div class="footer-actions">
-                    <!-- 1. Emoji -->
-                    <svg class="action-icon" viewBox="0 0 24 24">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Diga algo">
+                    <!-- Emoji Sorrindo embutido dentro da barra "Diga algo" -->
+                    <svg class="input-inline-emoji" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="9"></circle>
                         <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
                     </svg>
-                    <!-- 2. Microfone -->
+                </div>
+                <div class="footer-actions">
+                    <!-- 1. Microfone -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
                         <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18.5V23M8 23h8"></path>
                     </svg>
-                    <!-- 3. Imagem / Galeria -->
+                    <!-- 2. Imagem / Galeria -->
                     <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
                         <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
-                    <!-- 4. Curtida / Positivo -->
+                    <!-- 3. Curtida / Positivo -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
                     </svg>
