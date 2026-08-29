@@ -11,7 +11,7 @@
             --secondary-bg: #f2f3f5;
             --border-color: #f2f2f2;
             --received-bg: #f1f2f4;
-            --sent-bg: #1982fc; /* Ajustado para o azul do chat */
+            --sent-bg: #1982fc;
             --sent-text: #ffffff;
             --muted-color: #888888;
             --card-bg: #ffffff;
@@ -109,6 +109,43 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        /* Perfil do Usuário na Tela Inicial */
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary-bg);
+            padding: 4px 10px 4px 4px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #333;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .user-profile-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            max-width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .theme-toggle-btn, .snippets-toggle-btn {
@@ -298,11 +335,32 @@
             color: var(--text-color);
         }
 
-        .header-icons {
+        .header-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-action-icon {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-dots {
             font-size: 1.3rem;
             color: var(--text-color);
             cursor: pointer;
             letter-spacing: 1px;
+            line-height: 1;
         }
 
         .chat-body {
@@ -390,7 +448,7 @@
 
         .message-row.sent {
             align-self: flex-end;
-            flex-direction: row; /* Mantém o avatar à direita do balão azul */
+            flex-direction: row;
         }
 
         .msg-avatar {
@@ -398,9 +456,9 @@
             height: 30px;
             border-radius: 50%;
             object-fit: cover;
-            background-color: #ff8c53;
+            background-color: #333;
             color: white;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -666,6 +724,13 @@
                 <div class="home-top-row">
                     <span class="home-app-title">Mensagens Kwai</span>
                     <div class="home-actions">
+                        <!-- Perfil do Usuário na Home -->
+                        <div class="user-profile-badge" onclick="openUserConfigModal()" title="Configurar meu perfil">
+                            <div id="my-home-avatar-box">
+                                <div class="user-profile-avatar" id="my-home-avatar-txt">Eu</div>
+                            </div>
+                            <span class="user-profile-name" id="my-home-name">Meu Perfil</span>
+                        </div>
                         <!-- Botão da Mini Lista de Textos -->
                         <button class="snippets-toggle-btn" id="snippets-btn" onclick="openSnippetsModal()" title="Mini lista de textos">📋</button>
                         <!-- Botão de Tema -->
@@ -694,8 +759,13 @@
                     <span class="back-arrow" onclick="goBackHome()">‹</span>
                     <span class="header-title" id="display-name">Nome</span>
                 </div>
-                <div class="header-icons" onclick="openEditModal()">
-                    <span>···</span>
+                <div class="header-right-actions">
+                    <!-- Ícone de Telefone / Ligação -->
+                    <svg class="header-action-icon" viewBox="0 0 24 24" onclick="alert('Simulação de chamada iniciada')">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <!-- Três pontos (Configurações do Chat) -->
+                    <div class="header-dots" onclick="openEditModal()">···</div>
                 </div>
             </div>
 
@@ -742,7 +812,30 @@
             </div>
         </div>
 
-        <!-- MODAL DE CRIAR / EDITAR PERFIL -->
+        <!-- MODAL DE CONFIGURAR MEU PERFIL (USUÁRIO) -->
+        <div class="modal-overlay" id="user-config-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag">Configuração Pessoal</div>
+                <div class="modal-title">Meu Perfil</div>
+
+                <div class="modal-avatar-preview" id="modal-my-avatar-box" onclick="document.getElementById('file-my-avatar').click()" title="Escolher foto do meu perfil">
+                    <span id="modal-my-avatar-text">Eu</span>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--muted-color); text-align: center; margin-top: -6px;">Toque para escolher sua foto</div>
+
+                <div class="modal-input-group">
+                    <label>Seu Nome / Apelido nas Mensagens</label>
+                    <input type="text" id="input-my-name" placeholder="Ex: Eu">
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="btn-modal-cancel" onclick="closeUserConfigModal()">Cancelar</button>
+                    <button class="btn-modal-save" onclick="saveUserConfigModal()">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE CRIAR / EDITAR PERFIL DO PERSONAGEM -->
         <div class="modal-overlay" id="profile-modal">
             <div class="modal-card">
                 <div class="modal-header-tag" id="modal-tag">Novo Chat Fictício</div>
@@ -818,20 +911,28 @@
     </div>
 
     <!-- Inputs file ocultos -->
+    <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
+        let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
+            name: "Eu",
+            image: null
+        };
+
         let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
             {
                 id: 1,
-                name: "Lia Martins",
+                name: "FAVELADOMAFIA",
                 subtext: "Personagem fictício",
-                followers: 1091,
-                posts: 1,
+                followers: 4320,
+                posts: 12,
                 image: null,
                 messages: [
-                    { text: "Olá, sou Lia. Vamos começar o bate-papo.", type: "received", isImg: false }
+                    { text: "filha", type: "received", isImg: false },
+                    { text: "O vídeo não está disponível porque foi ocultada", type: "received", isImg: false },
+                    { text: "filha é minha pka", type: "sent", isImg: false }
                 ]
             }
         ];
@@ -851,6 +952,7 @@
         let currentChatId = null;
         let isEditing = false;
         let tempAvatarBase64 = null;
+        let tempMyAvatarBase64 = myProfile.image;
 
         const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
@@ -860,7 +962,18 @@
         function saveData() {
             localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
             localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
+            localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
             localStorage.setItem('kwai_theme', currentTheme);
+        }
+
+        function updateMyProfileUI() {
+            document.getElementById('my-home-name').textContent = myProfile.name;
+            const box = document.getElementById('my-home-avatar-box');
+            if (myProfile.image) {
+                box.innerHTML = `<img src="${myProfile.image}" class="user-profile-avatar">`;
+            } else {
+                box.innerHTML = `<div class="user-profile-avatar">${myProfile.name.charAt(0).toUpperCase()}</div>`;
+            }
         }
 
         function toggleTheme() {
@@ -959,11 +1072,14 @@
                         </div>
                     `;
                 } else {
-                    // Mensagem enviada por mim (com avatar padrão/usuário à direita)
+                    let myAvatarHTML = myProfile.image
+                        ? `<img src="${myProfile.image}" class="msg-avatar">`
+                        : `<div class="msg-avatar" style="background-color: #333; color: #fff;">${myProfile.name.charAt(0).toUpperCase()}</div>`;
+
                     return `
                         <div class="message-row sent">
                             <div class="message-bubble">${content}</div>
-                            <div class="msg-avatar" style="background-color: #333; color: #fff;">Eu</div>
+                            ${myAvatarHTML}
                         </div>
                     `;
                 }
@@ -1012,6 +1128,50 @@
                 chatsList = chatsList.filter(c => c.id !== id);
                 renderChatsList(document.getElementById('search-input').value);
                 saveData();
+            }
+        }
+
+        function openUserConfigModal() {
+            tempMyAvatarBase64 = myProfile.image;
+            document.getElementById('input-my-name').value = myProfile.name;
+            const box = document.getElementById('modal-my-avatar-box');
+            if (myProfile.image) {
+                box.innerHTML = `<img src="${myProfile.image}">`;
+            } else {
+                box.innerHTML = `<span id="modal-my-avatar-text">${myProfile.name.charAt(0).toUpperCase()}</span>`;
+            }
+            document.getElementById('user-config-modal').style.display = 'flex';
+        }
+
+        function closeUserConfigModal() {
+            document.getElementById('user-config-modal').style.display = 'none';
+        }
+
+        function loadMyAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempMyAvatarBase64 = e.target.result;
+                    const box = document.getElementById('modal-my-avatar-box');
+                    box.innerHTML = `<img src="${tempMyAvatarBase64}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveUserConfigModal() {
+            const name = document.getElementById('input-my-name').value.trim();
+            if (name) {
+                myProfile.name = name;
+            }
+            myProfile.image = tempMyAvatarBase64;
+            updateMyProfileUI();
+            closeUserConfigModal();
+            saveData();
+            if (currentChatId !== null) {
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (chat) renderMessages(chat);
             }
         }
 
@@ -1170,6 +1330,7 @@
             });
         }
 
+        updateMyProfileUI();
         renderChatsList();
     </script>
 </body>
