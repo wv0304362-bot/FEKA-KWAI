@@ -488,6 +488,7 @@
             border-top-right-radius: 4px;
         }
 
+        /* Rodapé ajustado para manter input e ações alinhados horizontalmente */
         .chat-footer {
             position: absolute;
             bottom: 0;
@@ -520,7 +521,9 @@
         .footer-actions {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            flex-direction: row; /* Força o alinhamento horizontal em fileira */
+            flex-shrink: 0;
         }
 
         .action-icon {
