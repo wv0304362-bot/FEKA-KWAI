@@ -267,20 +267,65 @@
             font-size: 0.9rem;
         }
 
-        /* Botão Flutuante Vinho */
+        /* Barra Inferior com 3 Elementos (Denúncia | Menu/Chats | Email) */
+        .bottom-nav-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 50;
+            padding: 0 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted-color);
+            gap: 2px;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #722f37;
+            font-weight: 600;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Botão flutuante centralizado caso queira manter ou adaptar */
         .fab-btn {
             position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
+            bottom: 80px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
             background-color: #722f37;
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             box-shadow: 0 4px 12px rgba(114, 47, 55, 0.4);
             cursor: pointer;
             border: none;
@@ -292,16 +337,90 @@
             transform: scale(0.92);
         }
 
-        .home-footer-credit {
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-            width: 100%;
+        /* --- TELA DE EMAIL / SUPORTE --- */
+        .email-screen-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: var(--bg-color);
+            padding-bottom: 90px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input, .form-group textarea {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit-email {
+            background-color: #722f37;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
             text-align: center;
-            font-size: 0.7rem;
+            margin-top: 10px;
+        }
+
+        /* --- TELA DE DENÚNCIA --- */
+        .report-screen-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: var(--bg-color);
+            padding-bottom: 90px;
+        }
+
+        .report-card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .report-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .report-desc {
+            font-size: 0.82rem;
             color: var(--muted-color);
-            letter-spacing: 0.5px;
-            pointer-events: none;
+            line-height: 1.4;
         }
 
         /* --- TELA DE CHAT --- */
@@ -488,7 +607,6 @@
             border-top-right-radius: 4px;
         }
 
-        /* Rodapé ajustado: Input agora contém o emoji sorrindo internamente */
         .chat-footer {
             position: absolute;
             bottom: 0;
@@ -541,10 +659,6 @@
             stroke-linejoin: round;
             flex-shrink: 0;
             opacity: 0.8;
-        }
-
-        .input-inline-emoji:hover {
-            opacity: 1;
         }
 
         .footer-actions {
@@ -689,7 +803,6 @@
             cursor: pointer;
         }
 
-        /* Estilos da Mini Lista de Textos (Snippets) */
         .snippets-list-container {
             max-height: 200px;
             overflow-y: auto;
@@ -750,22 +863,19 @@
     <div class="phone-frame">
         <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-        <!-- TELA 1: LISTA DE CONVERSAS (HOME) -->
+        <!-- TELA 1: LISTA DE CONVERSAS (MENU / TELA INICIAL) -->
         <div id="screen-home" class="screen active">
             <div class="home-header">
                 <div class="home-top-row">
                     <span class="home-app-title">Mensagens Kwai</span>
                     <div class="home-actions">
-                        <!-- Perfil do Usuário na Home -->
                         <div class="user-profile-badge" onclick="openUserConfigModal()" title="Configurar meu perfil">
                             <div id="my-home-avatar-box">
                                 <div class="user-profile-avatar" id="my-home-avatar-txt">Eu</div>
                             </div>
                             <span class="user-profile-name" id="my-home-name">Meu Perfil</span>
                         </div>
-                        <!-- Botão da Mini Lista de Textos -->
                         <button class="snippets-toggle-btn" id="snippets-btn" onclick="openSnippetsModal()" title="Mini lista de textos">📋</button>
-                        <!-- Botão de Tema -->
                         <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
                     </div>
                 </div>
@@ -780,11 +890,64 @@
             </div>
 
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
-
-            <div class="home-footer-credit">Developed by WINCHESTER</div>
         </div>
 
-        <!-- TELA 2: TELA DE CHAT INDIVIDUAL -->
+        <!-- TELA DE E-MAIL (LADO ESQUERDO) -->
+        <div id="screen-email" class="screen">
+            <div class="home-header">
+                <div class="home-top-row">
+                    <span class="home-app-title">Enviar E-mail</span>
+                </div>
+            </div>
+            <div class="email-screen-body">
+                <div class="form-group">
+                    <label>Para:</label>
+                    <input type="email" id="email-to" placeholder="exemplo@dominio.com">
+                </div>
+                <div class="form-group">
+                    <label>Assunto:</label>
+                    <input type="text" id="email-subject" placeholder="Assunto da mensagem">
+                </div>
+                <div class="form-group">
+                    <label>Mensagem:</label>
+                    <textarea id="email-message" placeholder="Escreva sua mensagem aqui..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Foto +</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="btn-modal-save" style="flex: none; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color);" onclick="document.getElementById('file-email-img').click()">Selecionar Foto</button>
+                        <span id="email-file-name" style="font-size: 0.8rem; color: var(--muted-color);">Nenhum arquivo escolhido</span>
+                    </div>
+                </div>
+                <button class="btn-submit-email" onclick="submitEmailForm()">Enviar</button>
+            </div>
+        </div>
+
+        <!-- TELA DE DENÚNCIA (LADO DIREITO) -->
+        <div id="screen-report" class="screen">
+            <div class="home-header">
+                <div class="home-top-row">
+                    <span class="home-app-title">Central de Denúncias</span>
+                </div>
+            </div>
+            <div class="report-screen-body">
+                <div class="report-card">
+                    <div class="report-title">Adicionar texto de denúncia</div>
+                    <div class="report-desc">Insira abaixo os detalhes e descrições para formalizar ou salvar textos de denúncias de violações de diretrizes.</div>
+                </div>
+                <div class="form-group">
+                    <label>Título / Motivo da Denúncia:</label>
+                    <input type="text" id="report-title-input" placeholder="Ex: Conteúdo impróprio / Assédio">
+                </div>
+                <div class="form-group">
+                    <label>Texto descritivo da denúncia:</label>
+                    <textarea id="report-text-input" placeholder="Descreva detalhadamente ocorrido para registro..."></textarea>
+                </div>
+                <button class="btn-submit-email" onclick="saveReportText()">Salvar Denúncia</button>
+            </div>
+        </div>
+
+        <!-- TELA DE CHAT INDIVIDUAL -->
         <div id="screen-chat" class="screen">
             <div class="chat-header-bar">
                 <div class="header-left">
@@ -792,11 +955,9 @@
                     <span class="header-title" id="display-name">Nome</span>
                 </div>
                 <div class="header-right-actions">
-                    <!-- Ícone de Telefone / Ligação -->
                     <svg class="header-action-icon" viewBox="0 0 24 24" onclick="alert('Simulação de chamada iniciada')">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
-                    <!-- Três pontos (Configurações do Chat) -->
                     <div class="header-dots" onclick="openEditModal()">···</div>
                 </div>
             </div>
@@ -820,25 +981,21 @@
             <div class="chat-footer">
                 <div class="chat-input-wrapper">
                     <input type="text" id="chat-input" placeholder="Diga algo">
-                    <!-- Emoji Sorrindo embutido dentro da barra "Diga algo" -->
                     <svg class="input-inline-emoji" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="9"></circle>
                         <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
                     </svg>
                 </div>
                 <div class="footer-actions">
-                    <!-- 1. Microfone -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
                         <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18.5V23M8 23h8"></path>
                     </svg>
-                    <!-- 2. Imagem / Galeria -->
                     <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
                         <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
-                    <!-- 3. Curtida / Positivo -->
                     <svg class="action-icon" viewBox="0 0 24 24">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
                     </svg>
@@ -846,7 +1003,23 @@
             </div>
         </div>
 
-        <!-- MODAL DE CONFIGURAR MEU PERFIL (USUÁRIO) -->
+        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+        <div class="bottom-nav-bar" id="main-bottom-nav">
+            <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span>E-mail</span>
+            </button>
+            <button class="nav-item active" id="nav-btn-home" onclick="switchMainTab('home')">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Início</span>
+            </button>
+            <button class="nav-item" id="nav-btn-report" onclick="switchMainTab('report')">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>Denúncia</span>
+            </button>
+        </div>
+
+        <!-- MODAIS -->
         <div class="modal-overlay" id="user-config-modal">
             <div class="modal-card">
                 <div class="modal-header-tag">Configuração Pessoal</div>
@@ -869,7 +1042,6 @@
             </div>
         </div>
 
-        <!-- MODAL DE CRIAR / EDITAR PERFIL DO PERSONAGEM -->
         <div class="modal-overlay" id="profile-modal">
             <div class="modal-card">
                 <div class="modal-header-tag" id="modal-tag">Novo Chat Fictício</div>
@@ -916,7 +1088,6 @@
             </div>
         </div>
 
-        <!-- MODAL DA MINI LISTA DE TEXTOS (SNIPPETS) -->
         <div class="modal-overlay" id="snippets-modal">
             <div class="modal-card">
                 <div class="modal-header-tag">Anotações Rápidas</div>
@@ -932,9 +1103,7 @@
 
                 <div class="modal-input-group">
                     <label>Textos salvos (Toque em copiar):</label>
-                    <div class="snippets-list-container" id="snippets-list-container">
-                        <!-- Preenchido via JS -->
-                    </div>
+                    <div class="snippets-list-container" id="snippets-list-container"></div>
                 </div>
 
                 <div class="modal-buttons">
@@ -948,6 +1117,7 @@
     <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
+    <input type="file" id="file-email-img" accept="image/*" onchange="loadEmailImage(event)">
 
     <script>
         let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
@@ -987,6 +1157,7 @@
         let isEditing = false;
         let tempAvatarBase64 = null;
         let tempMyAvatarBase64 = myProfile.image;
+        let emailAttachmentBase64 = null;
 
         const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
@@ -998,6 +1169,31 @@
             localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
             localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
             localStorage.setItem('kwai_theme', currentTheme);
+        }
+
+        function switchMainTab(tab) {
+            document.getElementById('screen-home').classList.remove('active');
+            document.getElementById('screen-email').classList.remove('active');
+            document.getElementById('screen-report').classList.remove('active');
+            document.getElementById('screen-chat').classList.remove('active');
+
+            document.getElementById('nav-btn-email').classList.remove('active');
+            document.getElementById('nav-btn-home').classList.remove('active');
+            document.getElementById('nav-btn-report').classList.remove('active');
+
+            document.getElementById('main-bottom-nav').style.display = 'flex';
+
+            if (tab === 'home') {
+                document.getElementById('screen-home').classList.add('active');
+                document.getElementById('nav-btn-home').classList.add('active');
+                renderChatsList(document.getElementById('search-input').value);
+            } else if (tab === 'email') {
+                document.getElementById('screen-email').classList.add('active');
+                document.getElementById('nav-btn-email').classList.add('active');
+            } else if (tab === 'report') {
+                document.getElementById('screen-report').classList.add('active');
+                document.getElementById('nav-btn-report').classList.add('active');
+            }
         }
 
         function updateMyProfileUI() {
@@ -1064,15 +1260,19 @@
             if (!chat) return;
 
             document.getElementById('screen-home').classList.remove('active');
+            document.getElementById('screen-email').classList.remove('active');
+            document.getElementById('screen-report').classList.remove('active');
             document.getElementById('screen-chat').classList.add('active');
+            
+            // Oculta a barra inferior na tela de chat interna para focar na conversa
+            document.getElementById('main-bottom-nav').style.display = 'none';
 
             updateChatUI(chat);
         }
 
         function goBackHome() {
             document.getElementById('screen-chat').classList.remove('active');
-            document.getElementById('screen-home').classList.add('active');
-            renderChatsList(document.getElementById('search-input').value);
+            switchMainTab('home');
         }
 
         function updateChatUI(chat) {
@@ -1154,6 +1354,54 @@
                 }
                 reader.readAsDataURL(file);
             }
+        }
+
+        function loadEmailImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('email-file-name').textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    emailAttachmentBase64 = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitEmailForm() {
+            const to = document.getElementById('email-to').value.trim();
+            const subject = document.getElementById('email-subject').value.trim();
+            const message = document.getElementById('email-message').value.trim();
+
+            if (!to || !subject || !message) {
+                alert("Preencha todos os campos do e-mail (Para, Assunto e Mensagem).");
+                return;
+            }
+
+            alert("E-mail simulado enviado com sucesso!");
+            document.getElementById('email-to').value = "";
+            document.getElementById('email-subject').value = "";
+            document.getElementById('email-message').value = "";
+            document.getElementById('email-file-name').textContent = "Nenhum arquivo escolhido";
+            emailAttachmentBase64 = null;
+        }
+
+        function saveReportText() {
+            const title = document.getElementById('report-title-input').value.trim();
+            const desc = document.getElementById('report-text-input').value.trim();
+
+            if (!title || !desc) {
+                alert("Preencha o título e a descrição da denúncia.");
+                return;
+            }
+
+            // Adicionando automaticamente aos snippets ou salvando localmente
+            textSnippets.push(`[Denúncia - ${title}]: ${desc}`);
+            saveData();
+
+            alert("Texto de denúncia salvo com sucesso! Você pode acessá-lo na sua mini lista de textos (📋).");
+            document.getElementById('report-title-input').value = "";
+            document.getElementById('report-text-input').value = "";
         }
 
         function deleteChat(event, id) {
