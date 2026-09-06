@@ -16,6 +16,7 @@
             --muted-color: #888888;
             --card-bg: #ffffff;
             --modal-bg: #ffffff;
+            --btn-color: #722f37;
         }
 
         [data-theme="dark"] {
@@ -53,13 +54,15 @@
             height: 100%;
             width: 100%;
             background-color: var(--bg-color);
+            background-size: cover;
+            background-position: center;
             position: fixed;
             top: 0;
             left: 0;
         }
 
         .simulation-banner {
-            background-color: #fcf8f5;
+            background-color: rgba(252, 248, 245, 0.9);
             color: #b87a54;
             font-size: 0.62rem;
             text-align: center;
@@ -67,6 +70,7 @@
             font-weight: 500;
             letter-spacing: 0.3px;
             flex-shrink: 0;
+            z-index: 60;
         }
 
         /* Telas */
@@ -76,6 +80,7 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            background: transparent;
         }
 
         .screen.active {
@@ -91,6 +96,7 @@
             gap: 10px;
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
+            opacity: 0.95;
         }
 
         .home-top-row {
@@ -111,7 +117,6 @@
             gap: 8px;
         }
 
-        /* Perfil do Usuário na Tela Inicial */
         .user-profile-badge {
             display: flex;
             align-items: center;
@@ -148,7 +153,7 @@
             text-overflow: ellipsis;
         }
 
-        .theme-toggle-btn, .snippets-toggle-btn {
+        .theme-toggle-btn, .snippets-toggle-btn, .menu-toggle-btn {
             background: none;
             border: 1px solid var(--border-color);
             border-radius: 50%;
@@ -188,7 +193,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px 0 90px 0;
-            background: var(--bg-color);
+            background: transparent;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -200,6 +205,8 @@
             cursor: pointer;
             border-bottom: 1px solid var(--border-color);
             position: relative;
+            background-color: var(--bg-color);
+            opacity: 0.92;
             transition: background 0.2s;
         }
 
@@ -263,8 +270,12 @@
         .empty-list-notice {
             text-align: center;
             padding: 40px 20px;
-            color: var(--muted-color);
+            color: var(--text-color);
             font-size: 0.9rem;
+            background: var(--bg-color);
+            margin: 20px;
+            border-radius: 12px;
+            opacity: 0.9;
         }
 
         /* Barra Inferior com 3 Elementos */
@@ -281,6 +292,7 @@
             justify-content: space-around;
             z-index: 50;
             padding: 0 10px;
+            opacity: 0.95;
         }
 
         .nav-item {
@@ -298,7 +310,7 @@
         }
 
         .nav-item.active {
-            color: #722f37;
+            color: var(--btn-color);
             font-weight: 600;
         }
 
@@ -318,14 +330,14 @@
             right: 20px;
             width: 48px;
             height: 48px;
-            background-color: #722f37;
+            background-color: var(--btn-color);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 4px 12px rgba(114, 47, 55, 0.4);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             cursor: pointer;
             border: none;
             z-index: 40;
@@ -344,7 +356,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            background: var(--bg-color);
+            background: transparent;
             padding-bottom: 90px;
         }
 
@@ -352,6 +364,10 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: 12px;
+            opacity: 0.95;
         }
 
         .form-group label {
@@ -376,7 +392,7 @@
         }
 
         .btn-submit-email {
-            background-color: #722f37;
+            background-color: var(--btn-color);
             color: white;
             border: none;
             padding: 12px;
@@ -388,65 +404,19 @@
             margin-top: 10px;
         }
 
-        /* 4 Fotos Pequenas Lado a Lado (1x4) */
-        .email-photos-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-top: 4px;
-        }
-
-        .email-photo-slot {
-            aspect-ratio: 1 / 1;
-            background-color: var(--secondary-bg);
-            border: 1.5px dashed var(--border-color);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-            transition: border-color 0.2s;
-        }
-
-        .email-photo-slot:hover {
-            border-color: #722f37;
-        }
-
-        .email-photo-slot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .email-photo-placeholder {
-            font-size: 1.1rem;
-            color: var(--muted-color);
-            font-weight: 300;
-            line-height: 1;
-        }
-
-        .email-photo-label {
-            font-size: 0.55rem;
-            color: var(--muted-color);
-            margin-top: 2px;
-        }
-
-        /* --- TELA DE DENÚNCIA / ARMAZENAMENTO DE TEXTO --- */
+        /* --- TELA DE ARMAZENAMENTO DE TEXTO --- */
         .report-screen-body {
             flex: 1;
             display: flex;
             overflow: hidden;
-            background: var(--bg-color);
+            background: transparent;
             padding-bottom: 70px;
             position: relative;
         }
 
         .storage-sidebar {
             width: 240px;
-            background-color: var(--secondary-bg);
+            background-color: var(--bg-color);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
@@ -458,6 +428,7 @@
             bottom: 0;
             z-index: 20;
             transform: translateX(-100%);
+            opacity: 0.97;
         }
 
         .storage-sidebar.open {
@@ -484,7 +455,7 @@
         }
 
         .storage-item-btn {
-            background: var(--bg-color);
+            background: var(--secondary-bg);
             border: 1px solid var(--border-color);
             padding: 10px 12px;
             border-radius: 8px;
@@ -500,7 +471,7 @@
         }
 
         .storage-item-btn:hover {
-            border-color: #722f37;
+            border-color: var(--btn-color);
         }
 
         .storage-main-content {
@@ -517,6 +488,10 @@
             align-items: center;
             gap: 12px;
             margin-bottom: -4px;
+            background: var(--bg-color);
+            padding: 8px 12px;
+            border-radius: 10px;
+            opacity: 0.95;
         }
 
         .toggle-sidebar-btn {
@@ -543,14 +518,19 @@
             border-radius: 1px;
         }
 
-        /* --- TELA DE CHAT --- */
+        /* --- TELA DE CHAT (SEMPRE COM FUNDO BRANCO PADRÃO) --- */
+        #screen-chat {
+            background-color: #ffffff !important;
+        }
+
         .chat-header-bar {
-            background-color: var(--bg-color);
+            background-color: #ffffff;
+            color: #111111;
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #f2f2f2;
             flex-shrink: 0;
         }
 
@@ -562,7 +542,7 @@
 
         .back-arrow {
             font-size: 1.5rem;
-            color: var(--text-color);
+            color: #111111;
             cursor: pointer;
             font-weight: 300;
             line-height: 1;
@@ -571,7 +551,7 @@
         .header-title {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--text-color);
+            color: #111111;
         }
 
         .header-right-actions {
@@ -588,7 +568,7 @@
             width: 22px;
             height: 22px;
             fill: none;
-            stroke: var(--text-color);
+            stroke: #111111;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -596,7 +576,7 @@
 
         .header-dots {
             font-size: 1.3rem;
-            color: var(--text-color);
+            color: #111111;
             cursor: pointer;
             letter-spacing: 1px;
             line-height: 1;
@@ -609,14 +589,14 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            background: var(--bg-color);
+            background: #ffffff;
             -webkit-overflow-scrolling: touch;
         }
 
         .profile-intro {
             text-align: center;
             padding: 10px 0 15px 0;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #f2f2f2;
             margin-bottom: 5px;
         }
 
@@ -638,30 +618,30 @@
         .profile-name {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--text-color);
+            color: #111111;
             margin-bottom: 4px;
         }
 
         .profile-stats {
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-color);
+            color: #111111;
             margin-bottom: 6px;
         }
 
         .profile-subtext {
             font-size: 0.73rem;
-            color: var(--muted-color);
+            color: #888888;
             margin-bottom: 3px;
         }
 
         .btn-share-profile {
             background-color: transparent;
-            border: 1px solid var(--border-color);
+            border: 1px solid #f2f2f2;
             padding: 6px 28px;
             border-radius: 18px;
             font-size: 0.82rem;
-            color: var(--text-color);
+            color: #111111;
             cursor: pointer;
             font-weight: 500;
             margin-top: 8px;
@@ -670,7 +650,7 @@
         .friends-badge {
             text-align: center;
             font-size: 0.72rem;
-            color: var(--muted-color);
+            color: #888888;
             margin: 6px 0;
         }
 
@@ -716,14 +696,14 @@
         }
 
         .message-row.received .message-bubble {
-            background-color: var(--received-bg);
-            color: var(--text-color);
+            background-color: #f1f2f4;
+            color: #111111;
             border-top-left-radius: 4px;
         }
 
         .message-row.sent .message-bubble {
-            background-color: var(--sent-bg);
-            color: var(--sent-text);
+            background-color: #1982fc;
+            color: #ffffff;
             border-top-right-radius: 4px;
         }
 
@@ -732,12 +712,12 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: var(--bg-color);
+            background-color: #ffffff;
             padding: 10px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid #f2f2f2;
             z-index: 50;
         }
 
@@ -745,7 +725,7 @@
             flex: 1;
             display: flex;
             align-items: center;
-            background-color: var(--secondary-bg);
+            background-color: #f2f3f5;
             border-radius: 20px;
             padding: 4px 6px 4px 16px;
         }
@@ -754,13 +734,13 @@
             flex: 1;
             background: none;
             border: none;
-            color: var(--text-color);
+            color: #111111;
             font-size: 0.9rem;
             outline: none;
         }
 
         .chat-footer input::placeholder {
-            color: var(--muted-color);
+            color: #888888;
         }
 
         .input-inline-emoji {
@@ -772,7 +752,7 @@
             justify-content: center;
             width: 30px;
             height: 30px;
-            stroke: var(--text-color);
+            stroke: #111111;
             fill: none;
             stroke-width: 2;
             stroke-linecap: round;
@@ -797,13 +777,13 @@
             width: 24px;
             height: 24px;
             fill: none;
-            stroke: var(--text-color);
+            stroke: #111111;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        /* MODAIS */
+        /* MODAIS GERAIS */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -828,6 +808,7 @@
             flex-direction: column;
             gap: 14px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            color: var(--text-color);
         }
 
         .modal-header-tag {
@@ -913,7 +894,7 @@
 
         .btn-modal-save {
             flex: 1;
-            background-color: #ff5722;
+            background-color: var(--btn-color);
             border: none;
             color: white;
             font-weight: 600;
@@ -921,6 +902,72 @@
             padding: 10px;
             border-radius: 12px;
             cursor: pointer;
+        }
+
+        /* MENU LATERAL DAS 3 BARRINHAS */
+        .side-menu-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background-color: var(--modal-bg);
+            z-index: 200;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .side-menu-drawer.open {
+            transform: translateX(0);
+        }
+
+        .side-menu-header {
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .side-menu-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .menu-section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted-color);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .menu-link-item {
+            display: block;
+            background-color: var(--secondary-bg);
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.2s;
+        }
+
+        .menu-link-item:hover {
+            border-color: var(--btn-color);
         }
 
         .snippets-list-container {
@@ -956,7 +1003,7 @@
         }
 
         .btn-snippet-copy {
-            background-color: #ff5722;
+            background-color: var(--btn-color);
             color: white;
             border: none;
             padding: 4px 8px;
@@ -980,14 +1027,16 @@
 </head>
 <body>
 
-    <div class="phone-frame">
+    <div class="phone-frame" id="phone-frame-bg">
         <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-        <!-- TELA 1: LISTA DE CONVERSAS (MENU / TELA INICIAL) -->
         <div id="screen-home" class="screen active">
             <div class="home-header">
                 <div class="home-top-row">
-                    <span class="home-app-title">Mensagens Kwai</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="menu-toggle-btn" onclick="toggleSideMenu()" title="Menu">☰</button>
+                        <span class="home-app-title">Mensagens Kwai</span>
+                    </div>
                     <div class="home-actions">
                         <div class="user-profile-badge" onclick="openUserConfigModal()" title="Configurar meu perfil">
                             <div id="my-home-avatar-box">
@@ -1006,17 +1055,18 @@
             </div>
 
             <div class="chats-list-body" id="chats-list-container">
-                <!-- Preenchido via JS -->
-            </div>
+                </div>
 
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
         </div>
 
-        <!-- TELA DE E-MAIL -->
         <div id="screen-email" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
-                    <span class="home-app-title">Enviar E-mail</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="menu-toggle-btn" onclick="toggleSideMenu()" title="Menu">☰</button>
+                        <span class="home-app-title">Enviar E-mail</span>
+                    </div>
                 </div>
             </div>
             <div class="email-screen-body">
@@ -1030,38 +1080,19 @@
                 </div>
                 <div class="form-group">
                     <label>Mensagem:</label>
-                    <textarea id="email-message" placeholder="Escreva sua mensagem aqui..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Fotos (4 quadradinhos um do lado do outro):</label>
-                    <div class="email-photos-grid">
-                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(0)" id="email-slot-0">
-                            <span class="email-photo-placeholder">+</span>
-                            <span class="email-photo-label">Foto 1</span>
-                        </div>
-                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(1)" id="email-slot-1">
-                            <span class="email-photo-placeholder">+</span>
-                            <span class="email-photo-label">Foto 2</span>
-                        </div>
-                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(2)" id="email-slot-2">
-                            <span class="email-photo-placeholder">+</span>
-                            <span class="email-photo-label">Foto 3</span>
-                        </div>
-                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(3)" id="email-slot-3">
-                            <span class="email-photo-placeholder">+</span>
-                            <span class="email-photo-label">Foto 4</span>
-                        </div>
-                    </div>
+                    <textarea id="email-message" placeholder="Escreva sua mensagem aqui... Você pode colar imagens ou anexar diretamente pelo seu e-mail."></textarea>
                 </div>
                 <button class="btn-submit-email" onclick="submitEmailForm()">Enviar E-mail</button>
             </div>
         </div>
 
-        <!-- TELA DE ARMAZENAMENTO DE TEXTO (COM SIDEBAR) -->
         <div id="screen-report" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
-                    <span class="home-app-title">Armazenamento de Texto</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="menu-toggle-btn" onclick="toggleSideMenu()" title="Menu">☰</button>
+                        <span class="home-app-title">Armazenamento de Texto</span>
+                    </div>
                 </div>
             </div>
             <div class="report-screen-body">
@@ -1096,7 +1127,6 @@
             </div>
         </div>
 
-        <!-- TELA DE CHAT INDIVIDUAL -->
         <div id="screen-chat" class="screen">
             <div class="chat-header-bar">
                 <div class="header-left">
@@ -1152,7 +1182,6 @@
             </div>
         </div>
 
-        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
         <div class="bottom-nav-bar" id="main-bottom-nav">
             <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -1168,7 +1197,38 @@
             </button>
         </div>
 
-        <!-- MODAIS -->
+        <div class="side-menu-drawer" id="side-menu-drawer">
+            <div class="side-menu-header">
+                <span>Configurações & Links</span>
+                <span style="cursor: pointer; font-size: 1.2rem;" onclick="toggleSideMenu()">×</span>
+            </div>
+            <div class="side-menu-body">
+                <div>
+                    <div class="menu-section-title">Personalização</div>
+                    <button class="menu-link-item" onclick="document.getElementById('file-bg-media').click()" style="width: 100%; text-align: left; cursor: pointer;">🖼️ Trocar Fundo (Foto / GIF / Vídeo)</button>
+                    <button class="menu-link-item" onclick="resetBackground()" style="width: 100%; text-align: left; cursor: pointer; color: #ff4d4d;">❌ Remover Fundo Customizado</button>
+                    
+                    <div style="margin-top: 10px;" class="modal-input-group">
+                        <label>Cor dos Botões:</label>
+                        <input type="color" id="input-btn-color" value="#722f37" onchange="changeButtonColor(this.value)" style="width: 100%; height: 35px; cursor: pointer;">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="menu-section-title">Canais</div>
+                    <a href="https://whatsapp.com/channel/0029ValKVsrBFLgb53LmY22v" target="_blank" class="menu-link-item">💬 WhatsApp Channel</a>
+                    <a href="https://t.me/TROPADAVX5" target="_blank" class="menu-link-item">📢 Telegram Tropa da VX5</a>
+                    <a href="https://www.youtube.com/@ARCANJO_OFC7" target="_blank" class="menu-link-item">📺 YouTube Arcanjo OFC</a>
+                </div>
+
+                <div>
+                    <div class="menu-section-title">Suporte</div>
+                    <a href="https://t.me/AKIRAZR" target="_blank" class="menu-link-item">🤖 Telegram Suporte (Akira)</a>
+                    <a href="https://discord.gg/GV4qdsH5" target="_blank" class="menu-link-item">🎮 Discord Comunidade</a>
+                </div>
+            </div>
+        </div>
+
         <div class="modal-overlay" id="user-config-modal">
             <div class="modal-card">
                 <div class="modal-header-tag">Configuração Pessoal</div>
@@ -1262,11 +1322,10 @@
         </div>
     </div>
 
-    <!-- Inputs file ocultos -->
     <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
-    <input type="file" id="file-email-img" accept="image/*" onchange="loadEmailImageSlot(event)">
+    <input type="file" id="file-bg-media" accept="image/*,video/*,.gif" onchange="loadCustomBackground(event)">
 
     <script>
         let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
@@ -1301,18 +1360,20 @@
         ];
 
         let currentTheme = localStorage.getItem('kwai_theme') || 'light';
+        let customBg = localStorage.getItem('kwai_customBg') || '';
+        let customBtnColor = localStorage.getItem('kwai_btnColor') || '#722f37';
+
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
             document.getElementById('theme-btn').textContent = '☀️';
         }
 
+        applyCustomStyles();
+
         let currentChatId = null;
         let isEditing = false;
         let tempAvatarBase64 = null;
         let tempMyAvatarBase64 = myProfile.image;
-        
-        let emailPhotos = [null, null, null, null];
-        let activeEmailPhotoIndex = 0;
 
         const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
@@ -1325,6 +1386,52 @@
             localStorage.setItem('kwai_storedTexts', JSON.stringify(storedTexts));
             localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
             localStorage.setItem('kwai_theme', currentTheme);
+            localStorage.setItem('kwai_customBg', customBg);
+            localStorage.setItem('kwai_btnColor', customBtnColor);
+        }
+
+        function applyCustomStyles() {
+            document.documentElement.style.setProperty('--btn-color', customBtnColor);
+            document.getElementById('input-btn-color').value = customBtnColor;
+            
+            const frame = document.getElementById('phone-frame-bg');
+            if (customBg) {
+                frame.style.backgroundImage = `url('${customBg}')`;
+            } else {
+                frame.style.backgroundImage = 'none';
+            }
+        }
+
+        function changeButtonColor(color) {
+            customBtnColor = color;
+            applyCustomStyles();
+            saveData();
+        }
+
+        function loadCustomBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customBg = e.target.result;
+                    applyCustomStyles();
+                    saveData();
+                    toggleSideMenu();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function resetBackground() {
+            customBg = '';
+            applyCustomStyles();
+            saveData();
+            toggleSideMenu();
+        }
+
+        function toggleSideMenu() {
+            const drawer = document.getElementById('side-menu-drawer');
+            drawer.classList.toggle('open');
         }
 
         function switchMainTab(tab) {
@@ -1380,7 +1487,7 @@
             const filtered = chatsList.filter(c => c.name.toLowerCase().includes(filterText.toLowerCase()));
 
             if (filtered.length === 0) {
-                chatsListContainer.innerHTML = `<div class="empty-list-notice">Nenhum chat encontrado.<br>Toque no botão vinho (+) para criar.</div>`;
+                chatsListContainer.innerHTML = `<div class="empty-list-notice">Nenhum chat encontrado.<br>Toque no botão (+) para criar.</div>`;
                 return;
             }
 
@@ -1512,54 +1619,16 @@
             }
         }
 
-        function triggerEmailPhotoInput(index) {
-            activeEmailPhotoIndex = index;
-            document.getElementById('file-email-img').click();
-        }
-
-        function loadEmailImageSlot(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    emailPhotos[activeEmailPhotoIndex] = e.target.result;
-                    renderEmailPhotosGrid();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function renderEmailPhotosGrid() {
-            for (let i = 0; i < 4; i++) {
-                const slot = document.getElementById(`email-slot-${i}`);
-                if (emailPhotos[i]) {
-                    slot.innerHTML = `<img src="${emailPhotos[i]}">`;
-                } else {
-                    slot.innerHTML = `
-                        <span class="email-photo-placeholder">+</span>
-                        <span class="email-photo-label">Foto ${i + 1}</span>
-                    `;
-                }
-            }
-        }
-
         function submitEmailForm() {
             const to = document.getElementById('email-to').value.trim();
             const subject = document.getElementById('email-subject').value.trim();
             const message = document.getElementById('email-message').value.trim();
-            const uploadedCount = emailPhotos.filter(p => p !== null).length;
 
             if (!to || !subject || !message) {
                 alert("Preencha todos os campos do e-mail (Para, Assunto e Mensagem).");
                 return;
             }
 
-            if (uploadedCount < 4) {
-                alert(`Você precisa adicionar as 4 fotos (atualmente tem ${uploadedCount}).`);
-                return;
-            }
-
-            // Abre o aplicativo de e-mail padrão do usuário (Gmail, Outlook, etc.)
             const mailtoLink = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
             window.location.href = mailtoLink;
         }
@@ -1818,7 +1887,6 @@
 
         updateMyProfileUI();
         renderChatsList();
-        renderEmailPhotosGrid();
     </script>
 </body>
 </html>
