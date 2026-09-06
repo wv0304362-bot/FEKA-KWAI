@@ -389,38 +389,159 @@
             margin-top: 10px;
         }
 
-        /* --- TELA DE DENÚNCIA --- */
+        /* Grade de 4 Fotos Quadradas para o Email */
+        .email-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .email-photo-slot {
+            aspect-ratio: 1 / 1;
+            background-color: var(--secondary-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .email-photo-slot:hover {
+            border-color: #722f37;
+        }
+
+        .email-photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .email-photo-placeholder {
+            font-size: 1.5rem;
+            color: var(--muted-color);
+            font-weight: 300;
+        }
+
+        .email-photo-label {
+            font-size: 0.65rem;
+            color: var(--muted-color);
+            margin-top: 4px;
+        }
+
+        /* --- TELA DE DENÚNCIA / ARMAZENAMENTO DE TEXTO COM SIDEBAR --- */
         .report-screen-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: var(--bg-color);
+            padding-bottom: 70px;
+            position: relative;
+        }
+
+        /* Sidebar de Textos Salvos (3 Barrinhas) */
+        .storage-sidebar {
+            width: 240px;
+            background-color: var(--secondary-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 20;
+            transform: translateX(-100%);
+        }
+
+        .storage-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .storage-sidebar-header {
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .storage-sidebar-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .storage-item-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background 0.2s;
+        }
+
+        .storage-item-btn:hover {
+            border-color: #722f37;
+        }
+
+        .storage-main-content {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 14px;
-            background: var(--bg-color);
-            padding-bottom: 90px;
         }
 
-        .report-card {
-            background-color: var(--secondary-bg);
+        .storage-top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: -4px;
+        }
+
+        .toggle-sidebar-btn {
+            background: none;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-
-        .report-title {
-            font-size: 0.95rem;
-            font-weight: 700;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
             color: var(--text-color);
+            flex-shrink: 0;
         }
 
-        .report-desc {
-            font-size: 0.82rem;
-            color: var(--muted-color);
-            line-height: 1.4;
+        .toggle-sidebar-btn span {
+            display: block;
+            width: 16px;
+            height: 2px;
+            background-color: currentColor;
+            border-radius: 1px;
         }
 
         /* --- TELA DE CHAT --- */
@@ -892,7 +1013,7 @@
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
         </div>
 
-        <!-- TELA DE E-MAIL (LADO ESQUERDO) -->
+        <!-- TELA DE E-MAIL (COM 4 FOTOS EM QUADRADINHO E ÍCONES EMBAIXO) -->
         <div id="screen-email" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
@@ -913,37 +1034,70 @@
                     <textarea id="email-message" placeholder="Escreva sua mensagem aqui..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Foto +</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <button class="btn-modal-save" style="flex: none; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color);" onclick="document.getElementById('file-email-img').click()">Selecionar Foto</button>
-                        <span id="email-file-name" style="font-size: 0.8rem; color: var(--muted-color);">Nenhum arquivo escolhido</span>
+                    <label>Fotos (Mínimo de 4 fotos em quadradinho):</label>
+                    <div class="email-photos-grid">
+                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(0)" id="email-slot-0">
+                            <span class="email-photo-placeholder">+</span>
+                            <span class="email-photo-label">Foto 1</span>
+                        </div>
+                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(1)" id="email-slot-1">
+                            <span class="email-photo-placeholder">+</span>
+                            <span class="email-photo-label">Foto 2</span>
+                        </div>
+                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(2)" id="email-slot-2">
+                            <span class="email-photo-placeholder">+</span>
+                            <span class="email-photo-label">Foto 3</span>
+                        </div>
+                        <div class="email-photo-slot" onclick="triggerEmailPhotoInput(3)" id="email-slot-3">
+                            <span class="email-photo-placeholder">+</span>
+                            <span class="email-photo-label">Foto 4</span>
+                        </div>
                     </div>
                 </div>
-                <button class="btn-submit-email" onclick="submitEmailForm()">Enviar</button>
+                <button class="btn-submit-email" onclick="submitEmailForm()">Enviar E-mail</button>
             </div>
         </div>
 
-        <!-- TELA DE DENÚNCIA (LADO DIREITO) -->
+        <!-- TELA DE ARMAZENAMENTO DE TEXTO (COM SIDEBAR DE 3 BARRINHAS E ADIÇÃO ILIMITADA) -->
         <div id="screen-report" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
-                    <span class="home-app-title">Central de Denúncias</span>
+                    <span class="home-app-title">Armazenamento de Texto</span>
                 </div>
             </div>
             <div class="report-screen-body">
-                <div class="report-card">
-                    <div class="report-title">Adicionar texto de denúncia</div>
-                    <div class="report-desc">Insira abaixo os detalhes e descrições para formalizar ou salvar textos de denúncias de violações de diretrizes.</div>
+                <!-- Sidebar lateral com as 3 barrinhas -->
+                <aside class="storage-sidebar" id="storage-sidebar">
+                    <div class="storage-sidebar-header">
+                        <span>Textos Salvos</span>
+                        <span style="cursor: pointer; font-size: 1.15rem;" onclick="toggleStorageSidebar()">×</span>
+                    </div>
+                    <div class="storage-sidebar-list" id="storage-sidebar-list">
+                        <!-- Listagem dinâmica dos títulos salvos -->
+                    </div>
+                </aside>
+
+                <!-- Conteúdo principal de adição de textos -->
+                <div class="storage-main-content">
+                    <div class="storage-top-bar">
+                        <button class="toggle-sidebar-btn" onclick="toggleStorageSidebar()" title="Abrir lista de textos">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--muted-color);">Toque nas 3 barrinhas para ver seus textos</span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 6px;">
+                        <label>Nome do Texto:</label>
+                        <input type="text" id="storage-name-input" placeholder="Ex: Modelo de Denúncia 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Conteúdo do Texto:</label>
+                        <textarea id="storage-text-input" placeholder="Escreva ou cole seu texto aqui... Adicione quantos quiser!"></textarea>
+                    </div>
+                    <button class="btn-submit-email" onclick="saveStorageText()">Adicionar Texto</button>
                 </div>
-                <div class="form-group">
-                    <label>Título / Motivo da Denúncia:</label>
-                    <input type="text" id="report-title-input" placeholder="Ex: Conteúdo impróprio / Assédio">
-                </div>
-                <div class="form-group">
-                    <label>Texto descritivo da denúncia:</label>
-                    <textarea id="report-text-input" placeholder="Descreva detalhadamente ocorrido para registro..."></textarea>
-                </div>
-                <button class="btn-submit-email" onclick="saveReportText()">Salvar Denúncia</button>
             </div>
         </div>
 
@@ -1003,7 +1157,7 @@
             </div>
         </div>
 
-        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA (COM OS ÍCONES VISÍVEIS) -->
         <div class="bottom-nav-bar" id="main-bottom-nav">
             <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -1014,8 +1168,8 @@
                 <span>Início</span>
             </button>
             <button class="nav-item" id="nav-btn-report" onclick="switchMainTab('report')">
-                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                <span>Denúncia</span>
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>Textos</span>
             </button>
         </div>
 
@@ -1117,7 +1271,7 @@
     <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
-    <input type="file" id="file-email-img" accept="image/*" onchange="loadEmailImage(event)">
+    <input type="file" id="file-email-img" accept="image/*" onchange="loadEmailImageSlot(event)">
 
     <script>
         let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
@@ -1147,6 +1301,11 @@
             "Me segue de volta?"
         ];
 
+        // Armazenamento de texto estruturado com nome e texto (múltiplos itens)
+        let storedTexts = JSON.parse(localStorage.getItem('kwai_storedTexts')) || [
+            { name: "Exemplo de Texto 1", text: "Este é o conteúdo do primeiro texto armazenado." }
+        ];
+
         let currentTheme = localStorage.getItem('kwai_theme') || 'light';
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1157,7 +1316,10 @@
         let isEditing = false;
         let tempAvatarBase64 = null;
         let tempMyAvatarBase64 = myProfile.image;
-        let emailAttachmentBase64 = null;
+        
+        // Array para armazenar as 4 fotos do email
+        let emailPhotos = [null, null, null, null];
+        let activeEmailPhotoIndex = 0;
 
         const chatsListContainer = document.getElementById('chats-list-container');
         const chatInput = document.getElementById('chat-input');
@@ -1167,6 +1329,7 @@
         function saveData() {
             localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
             localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
+            localStorage.setItem('kwai_storedTexts', JSON.stringify(storedTexts));
             localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
             localStorage.setItem('kwai_theme', currentTheme);
         }
@@ -1193,6 +1356,7 @@
             } else if (tab === 'report') {
                 document.getElementById('screen-report').classList.add('active');
                 document.getElementById('nav-btn-report').classList.add('active');
+                renderStorageSidebar();
             }
         }
 
@@ -1264,7 +1428,6 @@
             document.getElementById('screen-report').classList.remove('active');
             document.getElementById('screen-chat').classList.add('active');
             
-            // Oculta a barra inferior na tela de chat interna para focar na conversa
             document.getElementById('main-bottom-nav').style.display = 'none';
 
             updateChatUI(chat);
@@ -1356,15 +1519,35 @@
             }
         }
 
-        function loadEmailImage(event) {
+        // Funções para gerenciamento das 4 fotos do email em quadradinho
+        function triggerEmailPhotoInput(index) {
+            activeEmailPhotoIndex = index;
+            document.getElementById('file-email-img').click();
+        }
+
+        function loadEmailImageSlot(event) {
             const file = event.target.files[0];
             if (file) {
-                document.getElementById('email-file-name').textContent = file.name;
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    emailAttachmentBase64 = e.target.result;
+                    emailPhotos[activeEmailPhotoIndex] = e.target.result;
+                    renderEmailPhotosGrid();
                 }
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function renderEmailPhotosGrid() {
+            for (let i = 0; i < 4; i++) {
+                const slot = document.getElementById(`email-slot-${i}`);
+                if (emailPhotos[i]) {
+                    slot.innerHTML = `<img src="${emailPhotos[i]}">`;
+                } else {
+                    slot.innerHTML = `
+                        <span class="email-photo-placeholder">+</span>
+                        <span class="email-photo-label">Foto ${i + 1}</span>
+                    `;
+                }
             }
         }
 
@@ -1373,35 +1556,70 @@
             const subject = document.getElementById('email-subject').value.trim();
             const message = document.getElementById('email-message').value.trim();
 
+            const uploadedCount = emailPhotos.filter(p => p !== null).length;
+
             if (!to || !subject || !message) {
                 alert("Preencha todos os campos do e-mail (Para, Assunto e Mensagem).");
                 return;
             }
 
-            alert("E-mail simulado enviado com sucesso!");
-            document.getElementById('email-to').value = "";
-            document.getElementById('email-subject').value = "";
-            document.getElementById('email-message').value = "";
-            document.getElementById('email-file-name').textContent = "Nenhum arquivo escolhido";
-            emailAttachmentBase64 = null;
-        }
-
-        function saveReportText() {
-            const title = document.getElementById('report-title-input').value.trim();
-            const desc = document.getElementById('report-text-input').value.trim();
-
-            if (!title || !desc) {
-                alert("Preencha o título e a descrição da denúncia.");
+            if (uploadedCount < 4) {
+                alert(`Você precisa adicionar no mínimo 4 fotos (atualmente tem ${uploadedCount}). Cada foto deve estar preenchida.`);
                 return;
             }
 
-            // Adicionando automaticamente aos snippets ou salvando localmente
-            textSnippets.push(`[Denúncia - ${title}]: ${desc}`);
-            saveData();
+            alert("E-mail com as 4 fotos simulado e enviado com sucesso!");
+            document.getElementById('email-to').value = "";
+            document.getElementById('email-subject').value = "";
+            document.getElementById('email-message').value = "";
+            emailPhotos = [null, null, null, null];
+            renderEmailPhotosGrid();
+        }
 
-            alert("Texto de denúncia salvo com sucesso! Você pode acessá-lo na sua mini lista de textos (📋).");
-            document.getElementById('report-title-input').value = "";
-            document.getElementById('report-text-input').value = "";
+        // Funções do armazenamento de texto com Sidebar (3 Barrinhas)
+        function toggleStorageSidebar() {
+            const sidebar = document.getElementById('storage-sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function renderStorageSidebar() {
+            const container = document.getElementById('storage-sidebar-list');
+            if (storedTexts.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--muted-color); font-size: 0.8rem; padding: 12px;">Nenhum texto salvo.</div>`;
+                return;
+            }
+
+            container.innerHTML = storedTexts.map((item, index) => `
+                <button class="storage-item-btn" onclick="loadStoredText(${index})" title="${item.name}">${item.name}</button>
+            `).join('');
+        }
+
+        function loadStoredText(index) {
+            const item = storedTexts[index];
+            if (item) {
+                document.getElementById('storage-name-input').value = item.name;
+                document.getElementById('storage-text-input').value = item.text;
+                toggleStorageSidebar(); // Fecha o sidebar ao selecionar
+            }
+        }
+
+        function saveStorageText() {
+            const name = document.getElementById('storage-name-input').value.trim();
+            const text = document.getElementById('storage-text-input').value.trim();
+
+            if (!name || !text) {
+                alert("Preencha o nome e o texto para adicionar ao armazenamento.");
+                return;
+            }
+
+            // Adiciona novo texto (permite quantos quiser)
+            storedTexts.push({ name: name, text: text });
+            saveData();
+            renderStorageSidebar();
+
+            alert(`Texto "${name}" adicionado com sucesso ao armazenamento!`);
+            document.getElementById('storage-name-input').value = "";
+            document.getElementById('storage-text-input').value = "";
         }
 
         function deleteChat(event, id) {
@@ -1614,6 +1832,7 @@
 
         updateMyProfileUI();
         renderChatsList();
+        renderEmailPhotosGrid();
     </script>
 </body>
 </html>
