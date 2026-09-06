@@ -312,7 +312,7 @@
             stroke-linejoin: round;
         }
 
-        /* Botão flutuante centralizado caso queira manter ou adaptar */
+        /* Botão flutuante centralizado */
         .fab-btn {
             position: absolute;
             bottom: 80px;
@@ -444,7 +444,6 @@
             position: relative;
         }
 
-        /* Sidebar de Textos Salvos (3 Barrinhas) */
         .storage-sidebar {
             width: 240px;
             background-color: var(--secondary-bg);
@@ -1013,7 +1012,7 @@
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
         </div>
 
-        <!-- TELA DE E-MAIL (COM 4 FOTOS EM QUADRADINHO E ÍCONES EMBAIXO) -->
+        <!-- TELA DE E-MAIL -->
         <div id="screen-email" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
@@ -1058,7 +1057,7 @@
             </div>
         </div>
 
-        <!-- TELA DE ARMAZENAMENTO DE TEXTO (COM SIDEBAR DE 3 BARRINHAS E ADIÇÃO ILIMITADA) -->
+        <!-- TELA DE ARMAZENAMENTO DE TEXTO (COM SIDEBAR) -->
         <div id="screen-report" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
@@ -1066,18 +1065,14 @@
                 </div>
             </div>
             <div class="report-screen-body">
-                <!-- Sidebar lateral com as 3 barrinhas -->
                 <aside class="storage-sidebar" id="storage-sidebar">
                     <div class="storage-sidebar-header">
                         <span>Textos Salvos</span>
                         <span style="cursor: pointer; font-size: 1.15rem;" onclick="toggleStorageSidebar()">×</span>
                     </div>
-                    <div class="storage-sidebar-list" id="storage-sidebar-list">
-                        <!-- Listagem dinâmica dos títulos salvos -->
-                    </div>
+                    <div class="storage-sidebar-list" id="storage-sidebar-list"></div>
                 </aside>
 
-                <!-- Conteúdo principal de adição de textos -->
                 <div class="storage-main-content">
                     <div class="storage-top-bar">
                         <button class="toggle-sidebar-btn" onclick="toggleStorageSidebar()" title="Abrir lista de textos">
@@ -1157,7 +1152,7 @@
             </div>
         </div>
 
-        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA (COM OS ÍCONES VISÍVEIS) -->
+        <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
         <div class="bottom-nav-bar" id="main-bottom-nav">
             <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -1301,7 +1296,6 @@
             "Me segue de volta?"
         ];
 
-        // Armazenamento de texto estruturado com nome e texto (múltiplos itens)
         let storedTexts = JSON.parse(localStorage.getItem('kwai_storedTexts')) || [
             { name: "Exemplo de Texto 1", text: "Este é o conteúdo do primeiro texto armazenado." }
         ];
@@ -1317,7 +1311,6 @@
         let tempAvatarBase64 = null;
         let tempMyAvatarBase64 = myProfile.image;
         
-        // Array para armazenar as 4 fotos do email
         let emailPhotos = [null, null, null, null];
         let activeEmailPhotoIndex = 0;
 
@@ -1519,7 +1512,6 @@
             }
         }
 
-        // Funções para gerenciamento das 4 fotos do email em quadradinho
         function triggerEmailPhotoInput(index) {
             activeEmailPhotoIndex = index;
             document.getElementById('file-email-img').click();
@@ -1555,7 +1547,6 @@
             const to = document.getElementById('email-to').value.trim();
             const subject = document.getElementById('email-subject').value.trim();
             const message = document.getElementById('email-message').value.trim();
-
             const uploadedCount = emailPhotos.filter(p => p !== null).length;
 
             if (!to || !subject || !message) {
@@ -1576,7 +1567,6 @@
             renderEmailPhotosGrid();
         }
 
-        // Funções do armazenamento de texto com Sidebar (3 Barrinhas)
         function toggleStorageSidebar() {
             const sidebar = document.getElementById('storage-sidebar');
             sidebar.classList.toggle('open');
@@ -1599,7 +1589,7 @@
             if (item) {
                 document.getElementById('storage-name-input').value = item.name;
                 document.getElementById('storage-text-input').value = item.text;
-                toggleStorageSidebar(); // Fecha o sidebar ao selecionar
+                toggleStorageSidebar();
             }
         }
 
@@ -1612,7 +1602,6 @@
                 return;
             }
 
-            // Adiciona novo texto (permite quantos quiser)
             storedTexts.push({ name: name, text: text });
             saveData();
             renderStorageSidebar();
