@@ -14,9 +14,11 @@
             --sent-bg: #1982fc;
             --sent-text: #ffffff;
             --muted-color: #888888;
-            --card-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.85);
             --modal-bg: #ffffff;
             --btn-color: #722f37;
+            --chat-spacing: 12px;
+            --chat-padding: 16px;
         }
 
         [data-theme="dark"] {
@@ -28,8 +30,59 @@
             --sent-bg: #1982fc;
             --sent-text: #ffffff;
             --muted-color: #aaaaaa;
-            --card-bg: #181818;
+            --card-bg: rgba(24, 24, 24, 0.82);
             --modal-bg: #1e1e1e;
+        }
+
+        /* --- PALETAS DE CORES EXTRAS --- */
+        [data-palette="classic-dark"] {
+            --bg-color: #0d0f12;
+            --text-color: #f1f5f9;
+            --secondary-bg: #1e2229;
+            --border-color: #2d333d;
+            --card-bg: rgba(30, 34, 41, 0.85);
+            --modal-bg: #191d24;
+            --muted-color: #94a3b8;
+        }
+
+        [data-palette="crimson-night"] {
+            --bg-color: #090607;
+            --text-color: #fce7e7;
+            --secondary-bg: #1c1012;
+            --border-color: #3d1c20;
+            --card-bg: rgba(28, 16, 18, 0.88);
+            --modal-bg: #140b0c;
+            --muted-color: #b88285;
+        }
+
+        [data-palette="oled-pure"] {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --secondary-bg: #121212;
+            --border-color: #222222;
+            --card-bg: rgba(18, 18, 18, 0.9);
+            --modal-bg: #0d0d0d;
+            --muted-color: #888888;
+        }
+
+        [data-palette="cyberpunk"] {
+            --bg-color: #080514;
+            --text-color: #00ffcc;
+            --secondary-bg: #140d24;
+            --border-color: #2a164a;
+            --card-bg: rgba(20, 13, 36, 0.85);
+            --modal-bg: #0e081c;
+            --muted-color: #9d75ff;
+        }
+
+        [data-palette="emerald-dark"] {
+            --bg-color: #05100c;
+            --text-color: #e2f8ec;
+            --secondary-bg: #0d211a;
+            --border-color: #17382d;
+            --card-bg: rgba(13, 33, 26, 0.85);
+            --modal-bg: #091712;
+            --muted-color: #79a896;
         }
 
         * {
@@ -87,7 +140,7 @@
             display: flex;
         }
 
-        /* --- TELA INICIAL (LISTA DE CONVERSAS) --- */
+        /* --- TELA INICIAL (NOVO DESIGN BASEADO NA SUA REFERÊNCIA) --- */
         .home-header {
             background-color: var(--bg-color);
             padding: 12px 16px;
@@ -192,75 +245,128 @@
         .chats-list-body {
             flex: 1;
             overflow-y: auto;
-            padding: 10px 0 90px 0;
+            padding: var(--chat-spacing) 16px 90px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--chat-spacing);
             background: transparent;
             -webkit-overflow-scrolling: touch;
         }
 
+        /* CARD DE CHAT ESTILO PAINEL TRANSLÚCIDO */
         .chat-item {
             display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            gap: 12px;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: var(--chat-padding);
             cursor: pointer;
-            border-bottom: 1px solid var(--border-color);
             position: relative;
-            background-color: var(--bg-color);
-            opacity: 0.92;
-            transition: background 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .chat-item:active {
-            background-color: var(--secondary-bg);
+            transform: scale(0.98);
+        }
+
+        .chat-item-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
         .chat-item-avatar {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
             background-color: #ff8c53;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             text-align: center;
+            border: 1px solid var(--border-color);
         }
 
-        .chat-item-info {
+        .chat-item-meta {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .chat-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .chat-item-name {
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.98rem;
+            font-weight: 700;
             color: var(--text-color);
-            margin-bottom: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .chat-item-preview {
-            font-size: 0.83rem;
+        .chat-owner-tag {
+            background-color: var(--btn-color);
+            color: white;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .chat-item-tag {
+            font-size: 0.72rem;
             color: var(--muted-color);
-            white-space: nowrap;
+            font-family: monospace;
+        }
+
+        .chat-item-preview {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.35;
+        }
+
+        .chat-item-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            font-size: 0.7rem;
+            color: var(--muted-color);
         }
 
         .chat-item-delete {
             background: none;
             border: none;
             color: #ff4d4d;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            padding: 8px;
-            opacity: 0.7;
+            padding: 4px;
+            opacity: 0.8;
         }
 
         .chat-item-delete:hover {
@@ -272,10 +378,11 @@
             padding: 40px 20px;
             color: var(--text-color);
             font-size: 0.9rem;
-            background: var(--bg-color);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
             margin: 20px;
-            border-radius: 12px;
-            opacity: 0.9;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
         }
 
         /* Barra Inferior com 3 Elementos */
@@ -364,10 +471,11 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            background: var(--bg-color);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
             padding: 12px;
             border-radius: 12px;
-            opacity: 0.95;
+            border: 1px solid var(--border-color);
         }
 
         .form-group label {
@@ -416,7 +524,7 @@
 
         .storage-sidebar {
             width: 240px;
-            background-color: var(--bg-color);
+            background-color: var(--modal-bg);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
@@ -488,10 +596,11 @@
             align-items: center;
             gap: 12px;
             margin-bottom: -4px;
-            background: var(--bg-color);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
             padding: 8px 12px;
             border-radius: 10px;
-            opacity: 0.95;
+            border: 1px solid var(--border-color);
         }
 
         .toggle-sidebar-btn {
@@ -518,7 +627,7 @@
             border-radius: 1px;
         }
 
-        /* --- TELA DE CHAT (SEMPRE COM FUNDO BRANCO PADRÃO) --- */
+        /* --- TELA DE CHAT (INTOCADA CONFORME PEDIDO) --- */
         #screen-chat {
             background-color: #ffffff !important;
         }
@@ -1209,8 +1318,29 @@
                     <button class="menu-link-item" onclick="resetBackground()" style="width: 100%; text-align: left; cursor: pointer; color: #ff4d4d;">❌ Remover Fundo Customizado</button>
                     
                     <div style="margin-top: 10px;" class="modal-input-group">
-                        <label>Cor dos Botões:</label>
+                        <label>Cor dos Botões & Tags:</label>
                         <input type="color" id="input-btn-color" value="#722f37" onchange="changeButtonColor(this.value)" style="width: 100%; height: 35px; cursor: pointer;">
+                    </div>
+
+                    <div style="margin-top: 12px;" class="modal-input-group">
+                        <label>Paleta de Cores & Fundo:</label>
+                        <select id="select-palette" onchange="changePalette(this.value)" style="width: 100%; padding: 8px; border-radius: 8px; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color);">
+                            <option value="default">Padrão Sistema</option>
+                            <option value="classic-dark">Dark Minimalista</option>
+                            <option value="crimson-night">Crimson Night (Vermelho/Escuro)</option>
+                            <option value="oled-pure">OLED Black Puro</option>
+                            <option value="cyberpunk">Cyberpunk Neon</option>
+                            <option value="emerald-dark">Emerald Forest</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 12px;" class="modal-input-group">
+                        <label>Respiro / Espaçamento dos Chats:</label>
+                        <select id="select-spacing" onchange="changeSpacing(this.value)" style="width: 100%; padding: 8px; border-radius: 8px; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color);">
+                            <option value="compact">Mais Perto (Compacto)</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="spacious">Mais Respiro (Espaçoso)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -1267,8 +1397,8 @@
                 </div>
 
                 <div class="modal-input-group">
-                    <label>Tipo de Conta / Subtítulo</label>
-                    <input type="text" id="input-subtext" value="Personagem fictício">
+                    <label>Tipo de Conta / Tag (Ex: OWNER, ADMIN)</label>
+                    <input type="text" id="input-subtext" value="OWNER">
                 </div>
 
                 <div class="modal-row">
@@ -1336,8 +1466,10 @@
         let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
             {
                 id: 1,
-                name: "FAVELADOMAFIA",
-                subtext: "Personagem fictício",
+                name: "WINCHESTER",
+                subtext: "OWNER",
+                tag: "@ZRX",
+                createdAt: "Criado em: 07/09/2026 às 02:43",
                 followers: 4320,
                 posts: 12,
                 image: null,
@@ -1360,6 +1492,8 @@
         ];
 
         let currentTheme = localStorage.getItem('kwai_theme') || 'light';
+        let currentPalette = localStorage.getItem('kwai_palette') || 'default';
+        let currentSpacing = localStorage.getItem('kwai_spacing') || 'normal';
         let customBg = localStorage.getItem('kwai_customBg') || '';
         let customBtnColor = localStorage.getItem('kwai_btnColor') || '#722f37';
 
@@ -1368,6 +1502,12 @@
             document.getElementById('theme-btn').textContent = '☀️';
         }
 
+        if (currentPalette !== 'default') {
+            document.documentElement.setAttribute('data-palette', currentPalette);
+            document.getElementById('select-palette').value = currentPalette;
+        }
+
+        applySpacingConfig(currentSpacing);
         applyCustomStyles();
 
         let currentChatId = null;
@@ -1386,6 +1526,8 @@
             localStorage.setItem('kwai_storedTexts', JSON.stringify(storedTexts));
             localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
             localStorage.setItem('kwai_theme', currentTheme);
+            localStorage.setItem('kwai_palette', currentPalette);
+            localStorage.setItem('kwai_spacing', currentSpacing);
             localStorage.setItem('kwai_customBg', customBg);
             localStorage.setItem('kwai_btnColor', customBtnColor);
         }
@@ -1406,6 +1548,37 @@
             customBtnColor = color;
             applyCustomStyles();
             saveData();
+        }
+
+        function changePalette(palette) {
+            currentPalette = palette;
+            if (palette === 'default') {
+                document.documentElement.removeAttribute('data-palette');
+            } else {
+                document.documentElement.setAttribute('data-palette', palette);
+            }
+            saveData();
+        }
+
+        function changeSpacing(spacing) {
+            currentSpacing = spacing;
+            applySpacingConfig(spacing);
+            saveData();
+        }
+
+        function applySpacingConfig(spacing) {
+            document.getElementById('select-spacing').value = spacing;
+            const root = document.documentElement;
+            if (spacing === 'compact') {
+                root.style.setProperty('--chat-spacing', '6px');
+                root.style.setProperty('--chat-padding', '10px');
+            } else if (spacing === 'spacious') {
+                root.style.setProperty('--chat-spacing', '18px');
+                root.style.setProperty('--chat-padding', '20px');
+            } else {
+                root.style.setProperty('--chat-spacing', '12px');
+                root.style.setProperty('--chat-padding', '16px');
+            }
         }
 
         function loadCustomBackground(event) {
@@ -1500,14 +1673,27 @@
                     ? `<img src="${chat.image}" class="chat-item-avatar">`
                     : `<div class="chat-item-avatar">${chat.name.charAt(0).toUpperCase()}</div>`;
 
+                const subtext = chat.subtext || "OWNER";
+                const tag = chat.tag || "@Dapzy";
+                const createdAt = chat.createdAt || "Criado em: 07/09/2026 às 02:43";
+
                 return `
                     <div class="chat-item" onclick="openChat(${chat.id})">
-                        ${avatarHTML}
-                        <div class="chat-item-info">
-                            <div class="chat-item-name">${chat.name}</div>
-                            <div class="chat-item-preview">${lastMsg}</div>
+                        <div class="chat-item-header">
+                            ${avatarHTML}
+                            <div class="chat-item-meta">
+                                <div class="chat-name-row">
+                                    <span class="chat-item-name">${chat.name}</span>
+                                    <span class="chat-owner-tag">${subtext}</span>
+                                </div>
+                                <span class="chat-item-tag">${tag}</span>
+                            </div>
+                            <button class="chat-item-delete" onclick="deleteChat(event, ${chat.id})" title="Apagar chat">🗑️</button>
                         </div>
-                        <button class="chat-item-delete" onclick="deleteChat(event, ${chat.id})" title="Apagar chat">🗑️</button>
+                        <div class="chat-item-preview">${lastMsg}</div>
+                        <div class="chat-item-footer">
+                            <span>${createdAt}</span>
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -1742,7 +1928,7 @@
             document.getElementById('sender-group').style.display = 'none';
 
             document.getElementById('input-name').value = "";
-            document.getElementById('input-subtext').value = "Personagem fictício";
+            document.getElementById('input-subtext').value = "OWNER";
             document.getElementById('input-followers').value = 500;
             document.getElementById('input-posts').value = 1;
             document.getElementById('modal-avatar-box').innerHTML = `<span id="modal-avatar-text">+</span>`;
@@ -1761,7 +1947,7 @@
             document.getElementById('sender-group').style.display = 'flex';
 
             document.getElementById('input-name').value = chat.name;
-            document.getElementById('input-subtext').value = chat.subtext;
+            document.getElementById('input-subtext').value = chat.subtext || "OWNER";
             document.getElementById('input-followers').value = chat.followers;
             document.getElementById('input-posts').value = chat.posts;
 
@@ -1794,7 +1980,7 @@
 
         function saveProfileModal() {
             const name = document.getElementById('input-name').value.trim();
-            const subtext = document.getElementById('input-subtext').value.trim();
+            const subtext = document.getElementById('input-subtext').value.trim() || "OWNER";
             const followers = parseInt(document.getElementById('input-followers').value) || 0;
             const posts = parseInt(document.getElementById('input-posts').value) || 0;
 
@@ -1803,12 +1989,19 @@
                 return;
             }
 
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR');
+            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const formattedDate = `Criado em: ${dateStr} às ${timeStr}`;
+
             if (!isEditing) {
                 const newId = chatsList.length > 0 ? Math.max(...chatsList.map(c => c.id)) + 1 : 1;
                 chatsList.push({
                     id: newId,
                     name: name,
                     subtext: subtext,
+                    tag: "@" + name.toLowerCase().replace(/\s+/g, '_'),
+                    createdAt: formattedDate,
                     followers: followers,
                     posts: posts,
                     image: tempAvatarBase64,
@@ -1821,6 +2014,7 @@
                 if (chat) {
                     chat.name = name;
                     chat.subtext = subtext;
+                    chat.tag = "@" + name.toLowerCase().replace(/\s+/g, '_');
                     chat.followers = followers;
                     chat.posts = posts;
                     chat.image = tempAvatarBase64;
