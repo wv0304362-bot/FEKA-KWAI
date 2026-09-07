@@ -34,7 +34,7 @@
             --modal-bg: #1e1e1e;
         }
 
-        /* --- PALETAS DE CORES EXTRAS --- */
+        /* --- PALETAS DE CORES EXPANDIDAS --- */
         [data-palette="classic-dark"] {
             --bg-color: #0d0f12;
             --text-color: #f1f5f9;
@@ -85,6 +85,62 @@
             --muted-color: #79a896;
         }
 
+        /* Novas Paletas Solicitadas */
+        [data-palette="royal-purple"] {
+            --bg-color: #120c1f;
+            --text-color: #f3e8ff;
+            --secondary-bg: #1e1533;
+            --border-color: #3b2a59;
+            --card-bg: rgba(30, 21, 51, 0.85);
+            --modal-bg: #160f29;
+            --muted-color: #b19ac9;
+            --btn-color: #7c3aed;
+        }
+
+        [data-palette="luxury-gold"] {
+            --bg-color: #0f0f0f;
+            --text-color: #fef08a;
+            --secondary-bg: #1c1a14;
+            --border-color: #42381e;
+            --card-bg: rgba(28, 26, 20, 0.88);
+            --modal-bg: #14120e;
+            --muted-color: #d4af37;
+            --btn-color: #ca8a04;
+        }
+
+        [data-palette="neon-violet"] {
+            --bg-color: #05020a;
+            --text-color: #e8deff;
+            --secondary-bg: #120724;
+            --border-color: #2e1254;
+            --card-bg: rgba(18, 7, 36, 0.9);
+            --modal-bg: #0a0314;
+            --muted-color: #a855f7;
+            --btn-color: #9333ea;
+        }
+
+        [data-palette="sunset-orange"] {
+            --bg-color: #1a0c08;
+            --text-color: #ffedd5;
+            --secondary-bg: #2d1610;
+            --border-color: #4a261a;
+            --card-bg: rgba(45, 22, 16, 0.88);
+            --modal-bg: #21100b;
+            --muted-color: #fb923c;
+            --btn-color: #ea580c;
+        }
+
+        [data-palette="ocean-blue"] {
+            --bg-color: #06101e;
+            --text-color: #e0f2fe;
+            --secondary-bg: #0f1d32;
+            --border-color: #1e3a5f;
+            --card-bg: rgba(15, 29, 50, 0.88);
+            --modal-bg: #0a1324;
+            --muted-color: #38bdf8;
+            --btn-color: #0284c7;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -126,7 +182,6 @@
             z-index: 60;
         }
 
-        /* Telas */
         .screen {
             display: none;
             flex-direction: column;
@@ -140,7 +195,6 @@
             display: flex;
         }
 
-        /* --- TELA INICIAL (NOVO DESIGN BASEADO NA SUA REFERÊNCIA) --- */
         .home-header {
             background-color: var(--bg-color);
             padding: 12px 16px;
@@ -253,7 +307,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* CARD DE CHAT ESTILO PAINEL TRANSLÚCIDO */
         .chat-item {
             display: flex;
             flex-direction: column;
@@ -385,7 +438,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* Barra Inferior com 3 Elementos */
         .bottom-nav-bar {
             position: absolute;
             bottom: 0;
@@ -455,7 +507,6 @@
             transform: scale(0.92);
         }
 
-        /* --- TELA DE EMAIL / SUPORTE --- */
         .email-screen-body {
             flex: 1;
             overflow-y: auto;
@@ -512,7 +563,6 @@
             margin-top: 10px;
         }
 
-        /* --- TELA DE ARMAZENAMENTO DE TEXTO --- */
         .report-screen-body {
             flex: 1;
             display: flex;
@@ -892,7 +942,6 @@
             stroke-linejoin: round;
         }
 
-        /* MODAIS GERAIS */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1013,7 +1062,6 @@
             cursor: pointer;
         }
 
-        /* MENU LATERAL DAS 3 BARRINHAS */
         .side-menu-drawer {
             position: fixed;
             top: 0;
@@ -1163,8 +1211,7 @@
                 </div>
             </div>
 
-            <div class="chats-list-body" id="chats-list-container">
-                </div>
+            <div class="chats-list-body" id="chats-list-container"></div>
 
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
         </div>
@@ -1308,7 +1355,7 @@
 
         <div class="side-menu-drawer" id="side-menu-drawer">
             <div class="side-menu-header">
-                <span>Configurações & Links</span>
+                <span>Configurações & Cores</span>
                 <span style="cursor: pointer; font-size: 1.2rem;" onclick="toggleSideMenu()">×</span>
             </div>
             <div class="side-menu-body">
@@ -1318,14 +1365,19 @@
                     <button class="menu-link-item" onclick="resetBackground()" style="width: 100%; text-align: left; cursor: pointer; color: #ff4d4d;">❌ Remover Fundo Customizado</button>
                     
                     <div style="margin-top: 10px;" class="modal-input-group">
-                        <label>Cor dos Botões & Tags:</label>
+                        <label>Cor Personalizada (Botões & Tags):</label>
                         <input type="color" id="input-btn-color" value="#722f37" onchange="changeButtonColor(this.value)" style="width: 100%; height: 35px; cursor: pointer;">
                     </div>
 
                     <div style="margin-top: 12px;" class="modal-input-group">
-                        <label>Paleta de Cores & Fundo:</label>
+                        <label>Paletas de Cores Prontas:</label>
                         <select id="select-palette" onchange="changePalette(this.value)" style="width: 100%; padding: 8px; border-radius: 8px; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color);">
                             <option value="default">Padrão Sistema</option>
+                            <option value="royal-purple">👑 Roxo Místico (Royal Purple)</option>
+                            <option value="luxury-gold">🪙 Dourado Elegante (Luxury Gold)</option>
+                            <option value="neon-violet">🔮 Roxo Neon Vibrante</option>
+                            <option value="sunset-orange">🌅 Laranja Pôr do Sol</option>
+                            <option value="ocean-blue">🌊 Azul Oceano Profundo</option>
                             <option value="classic-dark">Dark Minimalista</option>
                             <option value="crimson-night">Crimson Night (Vermelho/Escuro)</option>
                             <option value="oled-pure">OLED Black Puro</option>
@@ -1466,9 +1518,9 @@
         let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
             {
                 id: 1,
-                name: "WINCHESTER",
+                name: "FAVELADOMAFIA",
                 subtext: "OWNER",
-                tag: "@ZRX",
+                tag: "@Dapzy",
                 createdAt: "Criado em: 07/09/2026 às 02:43",
                 followers: 4320,
                 posts: 12,
