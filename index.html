@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kwai Chat Oficial - Acesso</title>
+    <title>Kwai Chat Oficial</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -194,59 +194,71 @@
             display: flex;
         }
 
-        /* --- TELA DE LOGIN / BLOQUEIO (EXATAMENTE 6 CAIXAS) --- */
-        #screen-login {
-            display: flex;
-            justify-content: center;
+        /* --- TELA DE AUTENTICAÇÃO (SENHA) --- */
+        #screen-auth {
+            display: none;
             align-items: center;
+            justify-content: center;
             padding: 20px;
+            background: var(--bg-color);
+            z-index: 300;
         }
 
-        .login-card {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 24px;
+        #screen-auth.active {
+            display: flex;
+        }
+
+        .auth-container {
             width: 100%;
             max-width: 360px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 28px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
             text-align: center;
         }
 
-        .login-title {
-            font-size: 1.25rem;
+        .auth-logo {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .auth-title {
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-color);
+            margin-bottom: 6px;
         }
 
-        .login-subtitle {
-            font-size: 0.85rem;
+        .auth-subtitle {
+            font-size: 0.8rem;
             color: var(--muted-color);
+            margin-bottom: 22px;
+            line-height: 1.4;
         }
 
-        .pin-container {
+        .pin-inputs {
             display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
             justify-content: center;
-            gap: 6px;
-            margin: 10px 0;
         }
 
         .pin-box {
-            width: 38px;
-            height: 48px;
-            background-color: var(--secondary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--text-color);
+            width: 42px;
+            height: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
             text-align: center;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 12px;
             outline: none;
             text-transform: uppercase;
         }
@@ -255,44 +267,39 @@
             border-color: var(--btn-color);
         }
 
-        .btn-login {
-            background-color: var(--btn-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
+        .auth-error {
+            color: #ff4d4d;
+            font-size: 0.78rem;
             font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s;
-        }
-
-        .btn-login:active {
-            transform: scale(0.98);
-        }
-
-        #login-error-msg {
-            color: var(--muted-color) !important;
-            font-size: 0.8rem;
-            font-weight: 600;
-            min-height: 20px;
-            display: none;
+            min-height: 36px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1.3;
         }
 
-        .btn-discord-link {
-            display: inline-block;
+        .btn-discord-pv {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
             background-color: #5865F2;
             color: white;
-            text-decoration: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            border: none;
+            padding: 12px;
+            border-radius: 14px;
             font-weight: 600;
-            margin-top: 4px;
-            width: 100%;
-            text-align: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        .btn-discord-pv:hover {
+            opacity: 0.9;
         }
 
         .home-header {
@@ -1288,26 +1295,29 @@
 <body>
 
     <div class="phone-frame" id="phone-frame-bg">
-        <div class="simulation-banner" id="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
+        <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-        <div id="screen-login" class="screen active">
-            <div class="login-card">
-                <div class="login-title">Kwai Chat Oficial</div>
-                <div class="login-subtitle">Insira a senha de acesso</div>
+        <div id="screen-auth" class="screen">
+            <div class="auth-container">
+                <div class="auth-logo">🔒</div>
+                <div class="auth-title">Painel Protegido</div>
+                <div class="auth-subtitle">Insira a senha de 6 caracteres/dígitos para desbloquear o acesso total.</div>
                 
-                <div class="pin-container" id="pin-inputs">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="handleKeyDown(event, 0)">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 1)" onkeydown="handleKeyDown(event, 1)">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 2)" onkeydown="handleKeyDown(event, 2)">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="handleKeyDown(event, 3)">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="handleKeyDown(event, 4)">
-                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="handleKeyDown(event, 5)">
+                <div class="pin-inputs">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-0" oninput="handlePinInput(0, event)" onkeydown="handlePinKeydown(0, event)">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-1" oninput="handlePinInput(1, event)" onkeydown="handlePinKeydown(1, event)">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-2" oninput="handlePinInput(2, event)" onkeydown="handlePinKeydown(2, event)">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-3" oninput="handlePinInput(3, event)" onkeydown="handlePinKeydown(3, event)">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-4" oninput="handlePinInput(4, event)" onkeydown="handlePinKeydown(4, event)">
+                    <input type="text" maxlength="1" class="pin-box" id="pin-5" oninput="handlePinInput(5, event)" onkeydown="handlePinKeydown(5, event)">
                 </div>
 
-                <div id="login-error-msg"></div>
+                <div class="auth-error" id="auth-error-msg"></div>
 
-                <button class="btn-login" onclick="verifyPassword()">Entrar</button>
-                <a href="https://discord.gg/BtASPaCa" target="_blank" class="btn-discord-link" id="discord-btn-link" style="display: none;">Falar com Desenvolvedor no Discord</a>
+                <a href="https://discord.gg/2K296Re9" target="_blank" class="btn-discord-pv">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.011c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    Chamar Dev no Discord (PV)
+                </a>
             </div>
         </div>
 
@@ -1464,7 +1474,7 @@
             </div>
         </div>
 
-        <div class="bottom-nav-bar" id="main-bottom-nav" style="display: none;">
+        <div class="bottom-nav-bar" id="main-bottom-nav">
             <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 <span>E-mail</span>
@@ -1636,6 +1646,8 @@
     <input type="file" id="file-bg-media" accept="image/*,video/*,.gif" onchange="loadCustomBackground(event)">
 
     <script>
+        const CORRECT_PIN = "ZRXARC"; // Equivalente sem espaços para validação dos 6 quadradinhos
+
         let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
             name: "Eu",
             image: null
@@ -1674,7 +1686,7 @@
         let currentSpacing = localStorage.getItem('kwai_spacing') || 'normal';
         let customBg = localStorage.getItem('kwai_customBg') || '';
         let customBtnColor = localStorage.getItem('kwai_btnColor') || '#722f37';
-        let hasUnlockedOnce = localStorage.getItem('kwai_unlocked') === 'true';
+        let isAuthorized = localStorage.getItem('kwai_authorized') === 'true';
 
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1689,6 +1701,15 @@
         applySpacingConfig(currentSpacing);
         applyCustomStyles();
 
+        // Checar inicialização da tela de senha
+        window.addEventListener('DOMContentLoaded', () => {
+            if (isAuthorized) {
+                showHomeScreen();
+            } else {
+                showAuthScreen();
+            }
+        });
+
         let currentChatId = null;
         let isEditing = false;
         let tempAvatarBase64 = null;
@@ -1699,56 +1720,64 @@
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        // --- LÓGICA DA TELA DE LOGIN / PIN (ZRX-ARC: exatas 6 caixas) ---
-        const correctPassword = "ZRX-ARC";
+        function showAuthScreen() {
+            document.getElementById('screen-auth').classList.add('active');
+            document.getElementById('screen-home').classList.remove('active');
+            document.getElementById('screen-email').classList.remove('active');
+            document.getElementById('screen-report').classList.remove('active');
+            document.getElementById('screen-chat').classList.remove('active');
+            document.getElementById('main-bottom-nav').style.display = 'none';
+        }
 
-        if (hasUnlockedOnce) {
-            document.getElementById('screen-login').classList.remove('active');
-            document.getElementById('simulation-banner').style.display = 'none';
+        function showHomeScreen() {
+            document.getElementById('screen-auth').classList.remove('active');
             switchMainTab('home');
         }
 
-        function moveToNext(current, index) {
-            const boxes = document.querySelectorAll('.pin-box');
-            let val = current.value;
-            if (val.length > 0) {
-                current.value = val.charAt(val.length - 1).toUpperCase();
+        // --- LÓGICA DOS 6 QUADRADINHOS DE SENHA ---
+        function handlePinInput(index, event) {
+            const input = event.target;
+            const value = input.value.toUpperCase();
+            input.value = value;
+
+            if (value && index < 5) {
+                document.getElementById(`pin-${index + 1}`).focus();
             }
 
-            if (current.value && index < boxes.length - 1) {
-                boxes[index + 1].focus();
+            checkPinCompletion();
+        }
+
+        function handlePinKeydown(index, event) {
+            if (event.key === 'Backspace') {
+                if (!event.target.value && index > 0) {
+                    const prevInput = document.getElementById(`pin-${index - 1}`);
+                    prevInput.focus();
+                    prevInput.value = '';
+                }
             }
         }
 
-        function handleKeyDown(event, index) {
-            const boxes = document.querySelectorAll('.pin-box');
-            if (event.key === 'Backspace' && !boxes[index].value && index > 0) {
-                boxes[index - 1].focus();
-            } else if (event.key === 'Enter') {
-                verifyPassword();
+        function checkPinCompletion() {
+            let enteredPin = '';
+            for (let i = 0; i < 6; i++) {
+                enteredPin += document.getElementById(`pin-${i}`).value;
             }
-        }
 
-        function verifyPassword() {
-            const boxes = document.querySelectorAll('.pin-box');
-            let enteredPin = "";
-            boxes.forEach(box => {
-                enteredPin += box.value;
-            });
-
-            const errorMsg = document.getElementById('login-error-msg');
-            const discordBtn = document.getElementById('discord-btn-link');
-
-            if (enteredPin === correctPassword) {
-                localStorage.setItem('kwai_unlocked', 'true');
-                hasUnlockedOnce = true;
-                document.getElementById('screen-login').classList.remove('active');
-                document.getElementById('simulation-banner').style.display = 'none';
-                switchMainTab('home');
+            if (enteredPin.length === 6) {
+                if (enteredPin === CORRECT_PIN) {
+                    isAuthorized = true;
+                    localStorage.setItem('kwai_authorized', 'true');
+                    showHomeScreen();
+                } else {
+                    document.getElementById('auth-error-msg').textContent = "Você não pagou o plano de R$ 25 para ter o acesso do painel. Converse com o desenvolvedor para conseguir a senha.";
+                    // Limpar campos
+                    for (let i = 0; i < 6; i++) {
+                        document.getElementById(`pin-${i}`).value = '';
+                    }
+                    document.getElementById('pin-0').focus();
+                }
             } else {
-                errorMsg.style.display = 'block';
-                errorMsg.textContent = "Fale com desenvolvedor para acessar";
-                discordBtn.style.display = 'inline-block';
+                document.getElementById('auth-error-msg').textContent = '';
             }
         }
 
@@ -2264,10 +2293,6 @@
             document.getElementById('snippets-modal').style.display = 'flex';
         }
 
-        function closeSnippetsManager() {
-            closeSnippetsModal();
-        }
-
         function closeSnippetsModal() {
             document.getElementById('snippets-modal').style.display = 'none';
         }
@@ -2316,9 +2341,7 @@
         }
 
         updateMyProfileUI();
-        if (hasUnlockedOnce) {
-            renderChatsList();
-        }
+        renderChatsList();
     </script>
 </body>
 </html>
