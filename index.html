@@ -85,7 +85,6 @@
             --muted-color: #79a896;
         }
 
-        /* Novas Paletas Solicitadas */
         [data-palette="royal-purple"] {
             --bg-color: #120c1f;
             --text-color: #f3e8ff;
@@ -677,7 +676,7 @@
             border-radius: 1px;
         }
 
-        /* --- TELA DE CHAT (INTOCADA CONFORME PEDIDO) --- */
+        /* --- TELA DE CHAT --- */
         #screen-chat {
             background-color: #ffffff !important;
         }
@@ -700,11 +699,14 @@
         }
 
         .back-arrow {
-            font-size: 1.5rem;
-            color: #111111;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            font-weight: 300;
-            line-height: 1;
+            fill: none;
+            stroke: #111111;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .header-title {
@@ -1286,7 +1288,9 @@
         <div id="screen-chat" class="screen">
             <div class="chat-header-bar">
                 <div class="header-left">
-                    <span class="back-arrow" onclick="goBackHome()">‹</span>
+                    <svg class="back-arrow" viewBox="0 0 24 24" onclick="goBackHome()">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                     <span class="header-title" id="display-name">Nome</span>
                 </div>
                 <div class="header-right-actions">
@@ -2058,7 +2062,7 @@
                     posts: posts,
                     image: tempAvatarBase64,
                     messages: [
-                        { text: `Olá, sou ${name}. Vamos conversar!`, type: "received", isImg: false }
+                        { text: `Olá, sou ${name}. vamos começar o bate-papo.`, type: "received", isImg: false }
                     ]
                 });
             } else {
