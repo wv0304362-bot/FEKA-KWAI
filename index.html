@@ -233,21 +233,22 @@
         .pin-container {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             margin: 10px 0;
         }
 
         .pin-box {
-            width: 42px;
+            width: 36px;
             height: 48px;
             background-color: var(--secondary-bg);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--text-color);
             text-align: center;
             outline: none;
+            text-transform: uppercase;
         }
 
         .pin-box:focus {
@@ -1292,7 +1293,7 @@
         <div id="screen-login" class="screen active">
             <div class="login-card">
                 <div class="login-title">Kwai Chat Oficial</div>
-                <div class="login-subtitle">Insira a senha de acesso do aplicativo (6 dígitos)</div>
+                <div class="login-subtitle">Insira a senha de acesso (ZRX-ARC)</div>
                 
                 <div class="pin-container" id="pin-inputs">
                     <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="handleKeyDown(event, 0)">
@@ -1301,6 +1302,7 @@
                     <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="handleKeyDown(event, 3)">
                     <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="handleKeyDown(event, 4)">
                     <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="handleKeyDown(event, 5)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 6)" onkeydown="handleKeyDown(event, 6)">
                 </div>
 
                 <div id="login-error-msg"></div>
@@ -1697,12 +1699,11 @@
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        // --- LÓGICA DA TELA DE LOGIN / PIN ---
+        // --- LÓGICA DA TELA DE LOGIN / PIN (ATUALIZADA PARA ZRX-ARC) ---
         const correctPassword = "ZRX-ARC";
 
         function moveToNext(current, index) {
             const boxes = document.querySelectorAll('.pin-box');
-            // Remove caracteres especiais mantendo maiúsculas se necessário, ou pega o valor direto
             const val = current.value.toUpperCase();
             current.value = val;
 
@@ -1735,7 +1736,7 @@
                 switchMainTab('home');
             } else {
                 errorMsg.style.display = 'block';
-                errorMsg.innerHTML = "Você ainda não pagou o plano de R$ 25 para usar o painel.<br>Por favor, converse com o desenvolvedor";
+                errorMsg.innerHTML = "Senha incorreta ou acesso não autorizado.<br>Por favor, verifique a senha ZRX-ARC";
                 discordBtn.style.display = 'inline-block';
             }
         }
