@@ -904,6 +904,7 @@
             color: #888888;
         }
 
+        /* --- DETALHE FIEL DOS EMOJIS (CONFORME SOLICITADO) --- */
         .input-inline-emoji {
             background: none;
             border: none;
@@ -913,13 +914,11 @@
             justify-content: center;
             width: 30px;
             height: 30px;
-            stroke: #111111;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            font-size: 1.25rem;
             flex-shrink: 0;
-            opacity: 0.8;
+            line-height: 1;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .footer-actions {
@@ -1320,10 +1319,7 @@
             <div class="chat-footer">
                 <div class="chat-input-wrapper">
                     <input type="text" id="chat-input" placeholder="Diga algo">
-                    <svg class="input-inline-emoji" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9"></circle>
-                        <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
-                    </svg>
+                    <span class="input-inline-emoji" title="Emojis">😊</span>
                 </div>
                 <div class="footer-actions">
                     <svg class="action-icon" viewBox="0 0 24 24">
