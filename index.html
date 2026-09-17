@@ -194,7 +194,7 @@
             display: flex;
         }
 
-        /* --- TELA DE LOGIN / BLOQUEIO (NOVA TELA INICIAL) --- */
+        /* --- TELA DE LOGIN / BLOQUEIO (EXATAMENTE 6 CAIXAS) --- */
         #screen-login {
             display: flex;
             justify-content: center;
@@ -238,7 +238,7 @@
         }
 
         .pin-box {
-            width: 36px;
+            width: 38px;
             height: 48px;
             background-color: var(--secondary-bg);
             border: 1px solid var(--border-color);
@@ -248,7 +248,7 @@
             color: var(--text-color);
             text-align: center;
             outline: none;
-            /* Removido text-transform: uppercase para não forçar maiúsculas se o usuário digitar minúsculas, mas mantido o tratamento no JS */
+            text-transform: uppercase;
         }
 
         .pin-box:focus {
@@ -273,7 +273,7 @@
         }
 
         #login-error-msg {
-            color: #ff4d4d !important;
+            color: var(--muted-color) !important;
             font-size: 0.8rem;
             font-weight: 600;
             min-height: 20px;
@@ -1296,13 +1296,12 @@
                 <div class="login-subtitle">Insira a senha de acesso</div>
                 
                 <div class="pin-container" id="pin-inputs">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="handleKeyDown(event, 0)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 1)" onkeydown="handleKeyDown(event, 1)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 2)" onkeydown="handleKeyDown(event, 2)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="handleKeyDown(event, 3)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="handleKeyDown(event, 4)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="handleKeyDown(event, 5)">
-                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 6)" onkeydown="handleKeyDown(event, 6)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="handleKeyDown(event, 0)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 1)" onkeydown="handleKeyDown(event, 1)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 2)" onkeydown="handleKeyDown(event, 2)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="handleKeyDown(event, 3)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="handleKeyDown(event, 4)">
+                    <input type="text" class="pin-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="handleKeyDown(event, 5)">
                 </div>
 
                 <div id="login-error-msg"></div>
@@ -1700,10 +1699,9 @@
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
 
-        // --- LÓGICA DA TELA DE LOGIN / PIN (ATUALIZADA PARA ZRX-ARC) ---
+        // --- LÓGICA DA TELA DE LOGIN / PIN (ZRX-ARC: exatas 6 caixas) ---
         const correctPassword = "ZRX-ARC";
 
-        // Verificação imediata ao carregar a página: se já acessou antes, pula direto para a home e remove o campo de senha
         if (hasUnlockedOnce) {
             document.getElementById('screen-login').classList.remove('active');
             document.getElementById('simulation-banner').style.display = 'none';
@@ -1712,10 +1710,12 @@
 
         function moveToNext(current, index) {
             const boxes = document.querySelectorAll('.pin-box');
-            const val = current.value;
-            current.value = val;
+            let val = current.value;
+            if (val.length > 0) {
+                current.value = val.charAt(val.length - 1).toUpperCase();
+            }
 
-            if (val && index < boxes.length - 1) {
+            if (current.value && index < boxes.length - 1) {
                 boxes[index + 1].focus();
             }
         }
@@ -1747,7 +1747,7 @@
                 switchMainTab('home');
             } else {
                 errorMsg.style.display = 'block';
-                errorMsg.innerHTML = "Senha incorreta ou acesso não autorizado.<br>Por favor, verifique a senha ZRX-ARC";
+                errorMsg.textContent = "Fale com desenvolvedor para acessar";
                 discordBtn.style.display = 'inline-block';
             }
         }
