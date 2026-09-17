@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kwai Chat Oficial</title>
+    <title>Kwai Chat Oficial - Acesso</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -192,6 +192,107 @@
 
         .screen.active {
             display: flex;
+        }
+
+        /* --- TELA DE LOGIN / BLOQUEIO (NOVA TELA INICIAL) --- */
+        #screen-login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .login-subtitle {
+            font-size: 0.85rem;
+            color: var(--muted-color);
+        }
+
+        .pin-container {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .pin-box {
+            width: 36px;
+            height: 48px;
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-color);
+            text-align: center;
+            outline: none;
+            /* Removido text-transform: uppercase para não forçar maiúsculas se o usuário digitar minúsculas, mas mantido o tratamento no JS */
+        }
+
+        .pin-box:focus {
+            border-color: var(--btn-color);
+        }
+
+        .btn-login {
+            background-color: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        #login-error-msg {
+            color: #ff4d4d !important;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-height: 20px;
+            display: none;
+            line-height: 1.3;
+        }
+
+        .btn-discord-link {
+            display: inline-block;
+            background-color: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 4px;
+            width: 100%;
+            text-align: center;
         }
 
         .home-header {
@@ -1187,9 +1288,31 @@
 <body>
 
     <div class="phone-frame" id="phone-frame-bg">
-        <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
+        <div class="simulation-banner" id="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-        <div id="screen-home" class="screen active">
+        <div id="screen-login" class="screen active">
+            <div class="login-card">
+                <div class="login-title">Kwai Chat Oficial</div>
+                <div class="login-subtitle">Insira a senha de acesso</div>
+                
+                <div class="pin-container" id="pin-inputs">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 0)" onkeydown="handleKeyDown(event, 0)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 1)" onkeydown="handleKeyDown(event, 1)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 2)" onkeydown="handleKeyDown(event, 2)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 3)" onkeydown="handleKeyDown(event, 3)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 4)" onkeydown="handleKeyDown(event, 4)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 5)" onkeydown="handleKeyDown(event, 5)">
+                    <input type="password" class="pin-box" maxlength="1" oninput="moveToNext(this, 6)" onkeydown="handleKeyDown(event, 6)">
+                </div>
+
+                <div id="login-error-msg"></div>
+
+                <button class="btn-login" onclick="verifyPassword()">Entrar</button>
+                <a href="https://discord.gg/BtASPaCa" target="_blank" class="btn-discord-link" id="discord-btn-link" style="display: none;">Falar com Desenvolvedor no Discord</a>
+            </div>
+        </div>
+
+        <div id="screen-home" class="screen">
             <div class="home-header">
                 <div class="home-top-row">
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -1342,7 +1465,7 @@
             </div>
         </div>
 
-        <div class="bottom-nav-bar" id="main-bottom-nav">
+        <div class="bottom-nav-bar" id="main-bottom-nav" style="display: none;">
             <button class="nav-item" id="nav-btn-email" onclick="switchMainTab('email')">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 <span>E-mail</span>
@@ -1552,6 +1675,7 @@
         let currentSpacing = localStorage.getItem('kwai_spacing') || 'normal';
         let customBg = localStorage.getItem('kwai_customBg') || '';
         let customBtnColor = localStorage.getItem('kwai_btnColor') || '#722f37';
+        let hasUnlockedOnce = localStorage.getItem('kwai_unlocked') === 'true';
 
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1575,6 +1699,58 @@
         const chatInput = document.getElementById('chat-input');
         const messagesContainer = document.getElementById('messages-container');
         const chatBody = document.getElementById('chat-body');
+
+        // --- LÓGICA DA TELA DE LOGIN / PIN (ATUALIZADA PARA ZRX-ARC) ---
+        const correctPassword = "ZRX-ARC";
+
+        // Verificação imediata ao carregar a página: se já acessou antes, pula direto para a home e remove o campo de senha
+        if (hasUnlockedOnce) {
+            document.getElementById('screen-login').classList.remove('active');
+            document.getElementById('simulation-banner').style.display = 'none';
+            switchMainTab('home');
+        }
+
+        function moveToNext(current, index) {
+            const boxes = document.querySelectorAll('.pin-box');
+            const val = current.value;
+            current.value = val;
+
+            if (val && index < boxes.length - 1) {
+                boxes[index + 1].focus();
+            }
+        }
+
+        function handleKeyDown(event, index) {
+            const boxes = document.querySelectorAll('.pin-box');
+            if (event.key === 'Backspace' && !boxes[index].value && index > 0) {
+                boxes[index - 1].focus();
+            } else if (event.key === 'Enter') {
+                verifyPassword();
+            }
+        }
+
+        function verifyPassword() {
+            const boxes = document.querySelectorAll('.pin-box');
+            let enteredPin = "";
+            boxes.forEach(box => {
+                enteredPin += box.value;
+            });
+
+            const errorMsg = document.getElementById('login-error-msg');
+            const discordBtn = document.getElementById('discord-btn-link');
+
+            if (enteredPin === correctPassword) {
+                localStorage.setItem('kwai_unlocked', 'true');
+                hasUnlockedOnce = true;
+                document.getElementById('screen-login').classList.remove('active');
+                document.getElementById('simulation-banner').style.display = 'none';
+                switchMainTab('home');
+            } else {
+                errorMsg.style.display = 'block';
+                errorMsg.innerHTML = "Senha incorreta ou acesso não autorizado.<br>Por favor, verifique a senha ZRX-ARC";
+                discordBtn.style.display = 'inline-block';
+            }
+        }
 
         function saveData() {
             localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
@@ -2088,6 +2264,10 @@
             document.getElementById('snippets-modal').style.display = 'flex';
         }
 
+        function closeSnippetsManager() {
+            closeSnippetsModal();
+        }
+
         function closeSnippetsModal() {
             document.getElementById('snippets-modal').style.display = 'none';
         }
@@ -2136,7 +2316,9 @@
         }
 
         updateMyProfileUI();
-        renderChatsList();
+        if (hasUnlockedOnce) {
+            renderChatsList();
+        }
     </script>
 </body>
 </html>
