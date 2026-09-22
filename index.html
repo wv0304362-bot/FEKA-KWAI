@@ -862,60 +862,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .profile-intro {
-            text-align: center;
-            padding: 10px 0 15px 0;
-            border-bottom: 1px solid #f2f2f2;
-            margin-bottom: 5px;
-        }
-
-        .profile-avatar-large {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 10px auto;
-            display: block;
-            background-color: #ff8c53;
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            line-height: 80px;
-            text-align: center;
-        }
-
-        .profile-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 4px;
-        }
-
-        .profile-stats {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #111111;
-            margin-bottom: 6px;
-        }
-
-        .profile-subtext {
-            font-size: 0.73rem;
-            color: #888888;
-            margin-bottom: 3px;
-        }
-
-        .btn-share-profile {
-            background-color: transparent;
-            border: 1px solid #f2f2f2;
-            padding: 6px 28px;
-            border-radius: 18px;
-            font-size: 0.82rem;
-            color: #111111;
-            cursor: pointer;
-            font-weight: 500;
-            margin-top: 8px;
-        }
-
         .friends-badge {
             text-align: center;
             font-size: 0.72rem;
@@ -1434,16 +1380,6 @@
             </div>
 
             <div class="chat-body" id="chat-body">
-                <div class="profile-intro">
-                    <div id="display-avatar-container"></div>
-                    <div class="profile-name" id="display-name-sub">Nome</div>
-                    <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
-                    <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
-                    <div class="profile-subtext">Vocês são amigos agora</div>
-                    <div class="profile-subtext">Compartilhe este personagem fictício</div>
-                    <button class="btn-share-profile">Compartilhar</button>
-                </div>
-
                 <div class="friends-badge">Vocês são amigos agora</div>
                 
                 <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
@@ -1589,7 +1525,7 @@
                     <input type="text" id="input-subtext" value="OWNER">
                 </div>
 
-                <div class="modal-row">
+                <div class="modal-row" style="display:none;">
                     <div class="modal-input-group">
                         <label>Seguidores</label>
                         <input type="number" id="input-followers" value="1091">
@@ -1701,7 +1637,6 @@
         applySpacingConfig(currentSpacing);
         applyCustomStyles();
 
-        // Checar inicialização da tela de senha
         window.addEventListener('DOMContentLoaded', () => {
             if (isAuthorized) {
                 showHomeScreen();
@@ -1734,7 +1669,6 @@
             switchMainTab('home');
         }
 
-        // --- LÓGICA DOS 6 QUADRADINHOS DE SENHA ---
         function handlePinInput(index, event) {
             const input = event.target;
             const value = input.value.toUpperCase();
@@ -1770,7 +1704,6 @@
                     showHomeScreen();
                 } else {
                     document.getElementById('auth-error-msg').textContent = "Você não pagou o plano de R$ 25 para ter o acesso do painel. Converse com o desenvolvedor para conseguir a senha.";
-                    // Limpar campos
                     for (let i = 0; i < 6; i++) {
                         document.getElementById(`pin-${i}`).value = '';
                     }
@@ -1987,16 +1920,6 @@
 
         function updateChatUI(chat) {
             document.getElementById('display-name').textContent = chat.name;
-            document.getElementById('display-name-sub').textContent = chat.name;
-            document.getElementById('display-stats').textContent = `${chat.followers} seguidores · ${chat.posts} publicação`;
-
-            const avatarContainer = document.getElementById('display-avatar-container');
-            if (chat.image) {
-                avatarContainer.innerHTML = `<img src="${chat.image}" class="profile-avatar-large">`;
-            } else {
-                avatarContainer.innerHTML = `<div class="profile-avatar-large">${chat.name.charAt(0).toUpperCase()}</div>`;
-            }
-
             renderMessages(chat);
         }
 
@@ -2190,8 +2113,6 @@
 
             document.getElementById('input-name').value = "";
             document.getElementById('input-subtext').value = "OWNER";
-            document.getElementById('input-followers').value = 500;
-            document.getElementById('input-posts').value = 1;
             document.getElementById('modal-avatar-box').innerHTML = `<span id="modal-avatar-text">+</span>`;
 
             document.getElementById('profile-modal').style.display = 'flex';
@@ -2209,8 +2130,6 @@
 
             document.getElementById('input-name').value = chat.name;
             document.getElementById('input-subtext').value = chat.subtext || "OWNER";
-            document.getElementById('input-followers').value = chat.followers;
-            document.getElementById('input-posts').value = chat.posts;
 
             const modalAvatarBox = document.getElementById('modal-avatar-box');
             if (chat.image) {
@@ -2242,8 +2161,6 @@
         function saveProfileModal() {
             const name = document.getElementById('input-name').value.trim();
             const subtext = document.getElementById('input-subtext').value.trim() || "OWNER";
-            const followers = parseInt(document.getElementById('input-followers').value) || 0;
-            const posts = parseInt(document.getElementById('input-posts').value) || 0;
 
             if (!name) {
                 alert("Por favor, insira o nome do personagem.");
@@ -2263,8 +2180,8 @@
                     subtext: subtext,
                     tag: "@" + name.toLowerCase().replace(/\s+/g, '_'),
                     createdAt: formattedDate,
-                    followers: followers,
-                    posts: posts,
+                    followers: 500,
+                    posts: 1,
                     image: tempAvatarBase64,
                     messages: [
                         { text: `Olá, sou ${name}. vamos começar o bate-papo.`, type: "received", isImg: false }
@@ -2276,8 +2193,6 @@
                     chat.name = name;
                     chat.subtext = subtext;
                     chat.tag = "@" + name.toLowerCase().replace(/\s+/g, '_');
-                    chat.followers = followers;
-                    chat.posts = posts;
                     chat.image = tempAvatarBase64;
                     updateChatUI(chat);
                 }
