@@ -884,12 +884,7 @@
             text-align: center;
         }
 
-        .profile-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 4px;
-        }
+        /* Removido o nome que ficava debaixo da foto do perfil (profile-name) */
 
         .profile-stats {
             font-size: 0.85rem;
@@ -1436,7 +1431,6 @@
             <div class="chat-body" id="chat-body">
                 <div class="profile-intro">
                     <div id="display-avatar-container"></div>
-                    <div class="profile-name" id="display-name-sub">Nome</div>
                     <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
                     <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
                     <div class="profile-subtext">Vocês são amigos agora</div>
@@ -1987,7 +1981,6 @@
 
         function updateChatUI(chat) {
             document.getElementById('display-name').textContent = chat.name;
-            document.getElementById('display-name-sub').textContent = chat.name;
             document.getElementById('display-stats').textContent = `${chat.followers} seguidores · ${chat.posts} publicação`;
 
             const avatarContainer = document.getElementById('display-avatar-container');
