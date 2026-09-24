@@ -1652,6 +1652,21 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modal-admin-password" style="z-index: 450;">
+        <div class="modal-card" style="text-align: center;">
+            <div class="modal-header-tag">Segurança</div>
+            <div class="modal-title">Senha de Administrador</div>
+            <p style="font-size: 0.8rem; color: var(--muted-color);">O ID <b>lotux@zrx</b> é exclusivo. Digite a senha de acesso:</p>
+            <div class="modal-input-group">
+                <input type="password" id="input-admin-pass-choice" placeholder="Digite a senha..." style="text-align: center;">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-modal-cancel" onclick="fecharModalAdminPass()">Cancelar</button>
+                <button class="btn-modal-save" onclick="validarSenhaAdmin()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
     <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
     <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
@@ -1686,7 +1701,8 @@
 
     <script>
         const CORRECT_PIN = "ZRXA5C"; 
-        const MEU_ID_ADMIN_SECRETO = "LOTUX@ZRX";
+        const MEU_ID_ADMIN_SECRETO = "lotux@zrx";
+        const SENHA_ADMIN_SECRETA = "ZRX WCT";
 
         let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
             name: "Eu",
@@ -1728,6 +1744,7 @@
         let customBtnColor = localStorage.getItem('kwai_btnColor') || '#722f37';
         
         let isAuthorized = false;
+        let pendingUserId = "";
 
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1745,7 +1762,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             const meuIdSalvo = localStorage.getItem('kwai_meu_id_app');
             if (meuIdSalvo) {
-                // Checar banimento no Firebase ao iniciar
                 setTimeout(() => {
                     if (window.dbRefGlobal) {
                         window.firebaseGet(window.firebaseChild(window.dbRefGlobal, `usuarios/${meuIdSalvo}/status`)).then((snapshot) => {
@@ -1823,7 +1839,6 @@
 
             if (enteredPin.length === 6) {
                 if (enteredPin === CORRECT_PIN) {
-                    // Senha certa: verifica se já tem ID salvo ou pede para digitar
                     const salvo = localStorage.getItem('kwai_meu_id_app');
                     if (salvo) {
                         isAuthorized = true;
@@ -1852,12 +1867,33 @@
                 return;
             }
 
-            if (idEscolhido === MEU_ID_ADMIN_SECRETO.toLowerCase()) {
-                alert("Este ID de Administrador é protegido!");
+            if (idEscolhido === MEU_ID_ADMIN_SECRETO) {
+                pendingUserId = idEscolhido;
+                document.getElementById('modal-ask-id').style.display = 'none';
+                document.getElementById('input-admin-pass-choice').value = "";
+                document.getElementById('modal-admin-password').style.display = 'flex';
                 return;
             }
 
-            // Salva no Firebase
+            salvarIdNoFirebaseEProsseguir(idEscolhido);
+        }
+
+        function fecharModalAdminPass() {
+            document.getElementById('modal-admin-password').style.display = 'none';
+            document.getElementById('modal-ask-id').style.display = 'flex';
+        }
+
+        function validarSenhaAdmin() {
+            const senhaDigitada = document.getElementById('input-admin-pass-choice').value;
+            if (senhaDigitada === SENHA_ADMIN_SECRETA) {
+                document.getElementById('modal-admin-password').style.display = 'none';
+                salvarIdNoFirebaseEProsseguir(pendingUserId);
+            } else {
+                alert("Senha do Administrador incorreta!");
+            }
+        }
+
+        function salvarIdNoFirebaseEProsseguir(idEscolhido) {
             const deviceId = 'device_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
             window.firebaseSet(window.firebaseRef(window.dbInstance, 'usuarios/' + idEscolhido), {
                 deviceId: deviceId,
@@ -1870,7 +1906,6 @@
                 showHomeScreen();
             }).catch((err) => {
                 console.error(err);
-                // Salva local mesmo se offline
                 localStorage.setItem('kwai_meu_id_app', idEscolhido);
                 document.getElementById('modal-ask-id').style.display = 'none';
                 isAuthorized = true;
@@ -1878,7 +1913,6 @@
             });
         }
 
-        // --- SISTEMA DE CLIQUES NA FOTO DE PERFIL PARA ABRIR PAINEL DE ADM ---
         let cliquesFoto = 0;
         document.addEventListener('click', (e) => {
             const avatarBadge = e.target.closest('.user-profile-badge');
@@ -1888,8 +1922,7 @@
                     cliquesFoto = 0;
                     const idAtual = localStorage.getItem('kwai_meu_id_app');
                     
-                    // Se for você com o ID LOTUX@ZRX ou se você cadastrou ele
-                    if (idAtual === MEU_ID_ADMIN_SECRETO || prompt("Painel Secreto - Digite a chave de ADM:") === MEU_ID_ADMIN_SECRETO) {
+                    if (idAtual === MEU_ID_ADMIN_SECRETO || prompt("Painel Secreto - Digite a chave de ADM:") === SENHA_ADMIN_SECRETA) {
                         abrirPainelAdm();
                     } else {
                         alert("Acesso negado. Apenas o Administrador pode abrir.");
