@@ -1913,9 +1913,10 @@
             });
         }
 
+        // --- SISTEMA DE CLIQUES NA FOTO DE PERFIL PARA ABRIR PAINEL DE ADM ---
         let cliquesFoto = 0;
         document.addEventListener('click', (e) => {
-            const avatarBadge = e.target.closest('.user-profile-badge');
+            const avatarBadge = e.target.closest('.user-profile-badge') || e.target.closest('#my-home-avatar-box') || e.target.closest('.user-profile-name');
             if (avatarBadge) {
                 cliquesFoto++;
                 if (cliquesFoto === 5) {
