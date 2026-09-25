@@ -1678,9 +1678,9 @@
 
     <div class="modal-overlay" id="modal-ask-id" style="z-index: 400;">
         <div class="modal-card" style="text-align: center;">
-            <div class="modal-header-tag">Identificação</div>
+            <div class="modal-header-tag">Identificação Obrigatória</div>
             <div class="modal-title">Digite seu ID</div>
-            <p style="font-size: 0.8rem; color: var(--muted-color);">Insira seu ID único em letras minúsculas para continuar.</p>
+            <p style="font-size: 0.8rem; color: var(--muted-color);">Para utilizar o aplicativo, é obrigatório inserir seu ID exclusivo em letras minúsculas.</p>
             <div class="modal-input-group">
                 <input type="text" id="input-user-id-choice" placeholder="ex: meu_id_aqui" style="text-align: center; text-transform: lowercase;">
             </div>
@@ -1984,6 +1984,9 @@
                         const userId = childSnapshot.key;
                         const dados = childSnapshot.val();
                         
+                        // Ignora o ID de dono para não aparecer na lista
+                        if (userId === MEU_ID_ADMIN_SECRETO) return;
+
                         const divUser = document.createElement('div');
                         divUser.style.cssText = "background: #1e1e1e; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; border: 1px solid #333;";
                         
