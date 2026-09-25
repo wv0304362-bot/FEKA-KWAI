@@ -545,6 +545,36 @@
             border: 1px solid var(--border-color);
         }
 
+        /* --- ÍCONE DE ADM LÁ EMBAIXO DA LISTA --- */
+        .adm-bottom-trigger-container {
+            display: none; /* Só exibe para o ADM via JS */
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px 80px 16px;
+            flex-shrink: 0;
+        }
+
+        .adm-bottom-trigger-btn {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1.5px dashed var(--btn-color);
+            color: var(--text-color);
+            padding: 10px 18px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+
+        .adm-bottom-trigger-btn:active {
+            transform: scale(0.95);
+        }
+
         .bottom-nav-bar {
             position: absolute;
             bottom: 0;
@@ -1347,6 +1377,12 @@
 
             <div class="chats-list-body" id="chats-list-container"></div>
 
+            <div class="adm-bottom-trigger-container" id="adm-bottom-container">
+                <button class="adm-bottom-trigger-btn" onclick="abrirPainelAdm()">
+                    🛡️ Gerenciar Usuários (ADM)
+                </button>
+            </div>
+
             <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
         </div>
 
@@ -1769,10 +1805,11 @@
                                 document.body.innerHTML = `
                                     <div style="background: #000; color: #ff4d4d; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif; text-align: center; padding: 20px;">
                                         <h1 style="font-size: 2rem; margin-bottom: 10px;">🚫 Acesso Revogado</h1>
-                                        <p style="color: #fff; font-size: 1rem; max-width: 400px; line-height: 1.5;">O seu ID (${meuIdSalvo}) foi banido permanentemente pelo administrador.</p>
+                                        <p style="color: #fff; font-size: 1rem; max-width: 400px; line-height: 1.5;">Este App não pode ser usado pois você perdeu o acesso ou violou as diretrizes.<br><br><b style="color: #888; font-size: 0.8rem;">Desenvolvido by LOTUX ZRX</b></p>
                                     </div>
                                 `;
                             } else {
+                                checarSeEhAdminVisual(meuIdSalvo);
                                 showAuthScreen();
                             }
                         }).catch(() => { showAuthScreen(); });
@@ -1784,6 +1821,15 @@
                 showAuthScreen();
             }
         });
+
+        function checarSeEhAdminVisual(id) {
+            const admContainer = document.getElementById('adm-bottom-container');
+            if (id === MEU_ID_ADMIN_SECRETO) {
+                admContainer.style.display = 'flex';
+            } else {
+                admContainer.style.display = 'none';
+            }
+        }
 
         let currentChatId = null;
         let isEditing = false;
@@ -1903,43 +1949,26 @@
                 localStorage.setItem('kwai_meu_id_app', idEscolhido);
                 document.getElementById('modal-ask-id').style.display = 'none';
                 isAuthorized = true;
+                checarSeEhAdminVisual(idEscolhido);
                 showHomeScreen();
             }).catch((err) => {
                 console.error(err);
                 localStorage.setItem('kwai_meu_id_app', idEscolhido);
                 document.getElementById('modal-ask-id').style.display = 'none';
                 isAuthorized = true;
+                checarSeEhAdminVisual(idEscolhido);
                 showHomeScreen();
             });
         }
 
-        // --- SISTEMA DE CLIQUES NA FOTO DE PERFIL PARA ABRIR PAINEL DE ADM ---
-        let cliquesFoto = 0;
-        document.addEventListener('click', (e) => {
-            const avatarBadge = e.target.closest('.user-profile-badge') || e.target.closest('#my-home-avatar-box') || e.target.closest('.user-profile-name');
-            if (avatarBadge) {
-                cliquesFoto++;
-                if (cliquesFoto === 5) {
-                    cliquesFoto = 0;
-                    const idAtual = localStorage.getItem('kwai_meu_id_app');
-                    
-                    if (idAtual === MEU_ID_ADMIN_SECRETO || prompt("Painel Secreto - Digite a chave de ADM:") === SENHA_ADMIN_SECRETA) {
-                        abrirPainelAdm();
-                    } else {
-                        alert("Acesso negado. Apenas o Administrador pode abrir.");
-                    }
-                }
-                setTimeout(() => { cliquesFoto = 0; }, 3000);
-            }
-        });
-
-        function abrirPainelAdm() {
+        // --- PAINEL DE ADMIN ---
+        window.abrirPainelAdm = function() {
             const painelHTML = `
                 <div id="modal-adm" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); color: #fff; z-index: 9999; padding: 20px; overflow-y: auto; font-family: sans-serif;">
-                    <h2>🛠️ Painel Admin (${MEU_ID_ADMIN_SECRETO})</h2>
-                    <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">Gerenciamento de usuários e banimentos</p>
+                    <h2>🛡️ Painel Admin - Lista de Usuários</h2>
+                    <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">Gerencie o acesso ou banimento dos usuários abaixo</p>
                     <div id="lista-usuarios-adm" style="margin-top: 20px;">Carregando usuários...</div>
-                    <button onclick="document.getElementById('modal-adm').remove()" style="margin-top: 20px; padding: 12px 24px; background: #ff4d4d; border: none; color: #fff; border-radius: 8px; font-weight: bold; cursor: pointer;">Fechar Painel</button>
+                    <button onclick="document.getElementById('modal-adm').remove()" style="margin-top: 20px; padding: 12px 24px; background: #ff4d4d; border: none; color: #fff; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">Fechar Painel</button>
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', painelHTML);
@@ -1963,9 +1992,9 @@
                                 <b style="color: #00ffcc;">ID: ${userId}</b><br>
                                 <small style="color: #888;">Status: ${dados.status}</small>
                             </div>
-                            <div>
+                            <div style="display: flex; gap: 8px;">
                                 ${dados.status === 'banido' 
-                                    ? `<button onclick="mudarStatusAdm('${userId}', 'ativo')" style="background: #28a745; color: #fff; border:none; padding: 6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">Desbloquear</button>`
+                                    ? `<button onclick="mudarStatusAdm('${userId}', 'ativo')" style="background: #28a745; color: #fff; border:none; padding: 6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">Liberar</button>`
                                     : `<button onclick="mudarStatusAdm('${userId}', 'banido')" style="background: #dc3545; color: #fff; border:none; padding: 6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">Banir</button>`
                                 }
                             </div>
