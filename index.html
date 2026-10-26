@@ -1465,7 +1465,7 @@
             <div class="chat-body" id="chat-body">
                 <div class="profile-intro">
                     <div id="display-avatar-container"></div>
-                    <!-- Nome abaixo da foto removido daqui -->
+                    <!-- Nome abaixo da foto removido -->
                     <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
                     <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
                     <div class="profile-subtext">Vocês são amigos agora</div>
@@ -1977,7 +1977,6 @@
                         const userId = childSnapshot.key;
                         const dados = childSnapshot.val();
                         
-                        // Proteção do ID de dono: Oculta da lista do painel adm
                         if (userId === MEU_ID_ADMIN_SECRETO) return;
 
                         const divUser = document.createElement('div');
