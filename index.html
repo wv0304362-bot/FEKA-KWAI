@@ -1662,7 +1662,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE CADASTRO (NOME E ID LADO A LADO/EMPILHADOS) -->
+    <!-- MODAL DE CADASTRO DE ID E NOME -->
     <div class="modal-overlay" id="modal-ask-id" style="z-index: 400;">
         <div class="modal-card" style="text-align: center;">
             <div class="modal-header-tag">Identificação Obrigatória</div>
@@ -1706,19 +1706,21 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBC_froKnBSyHYpl66yoegFzdnZwaD7lpk",
-            authDomain: "kwaichatsecurity-ff9bf.firebaseapp.com",
-            projectId: "kwaichatsecurity-ff9bf",
-            storageBucket: "kwaichatsecurity-ff9bf.firebasestorage.app",
-            messagingSenderId: "291071436954",
-            appId: "1:291071436954:web:068375f66eb1093ea09723",
-            measurementId: "G-KCTK9J8P7D",
-            databaseURL: "https://kwaichatsecurity-ff9bf-default-rtdb.firebaseio.com"
+            apiKey: "AIzaSyDaDSlqEY23QQS7dJxQUiQWpc-XrvkMOEY",
+            authDomain: "kwaichatsecurity.firebaseapp.com",
+            projectId: "kwaichatsecurity",
+            storageBucket: "kwaichatsecurity.firebasestorage.app",
+            messagingSenderId: "463104523090",
+            appId: "1:463104523090:web:b98f7ca37268079eae188b",
+            measurementId: "G-TB0HRW8N1B",
+            databaseURL: "https://kwaichatsecurity-default-rtdb.firebaseio.com/"
         };
 
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const database = getDatabase(app);
 
         window.dbRefGlobal = ref(database);
@@ -1858,9 +1860,7 @@
 
             if (enteredPin.length === 6) {
                 if (enteredPin === CORRECT_PIN) {
-                    // Limpa o ID salvo para forçar aparecer a tela de cadastro/ID sempre que acertar a senha
                     localStorage.removeItem('kwai_meu_id_app');
-                    
                     document.getElementById('input-user-name-choice').value = "";
                     document.getElementById('input-user-id-choice').value = "";
                     document.getElementById('modal-ask-id').style.display = 'flex';
