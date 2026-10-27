@@ -1860,10 +1860,19 @@
 
             if (enteredPin.length === 6) {
                 if (enteredPin === CORRECT_PIN) {
-                    localStorage.removeItem('kwai_meu_id_app');
-                    document.getElementById('input-user-name-choice').value = "";
-                    document.getElementById('input-user-id-choice').value = "";
-                    document.getElementById('modal-ask-id').style.display = 'flex';
+                    // Verifica se já existe um ID cadastrado anteriormente
+                    const salvoId = localStorage.getItem('kwai_meu_id_app');
+                    if (salvoId) {
+                        // Se já tem cadastro, pula direto para a home/app sem pedir novamente
+                        isAuthorized = true;
+                        checarSeEhAdminVisual(salvoId);
+                        showHomeScreen();
+                    } else {
+                        // Se for a primeira vez, exibe a tela de cadastro
+                        document.getElementById('input-user-name-choice').value = "";
+                        document.getElementById('input-user-id-choice').value = "";
+                        document.getElementById('modal-ask-id').style.display = 'flex';
+                    }
                 } else {
                     document.getElementById('auth-error-msg').textContent = "Você ainda não tem o plano de r$ 25 converse com desenvolvedor";
                     for (let i = 0; i < 6; i++) {
