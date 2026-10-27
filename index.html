@@ -545,9 +545,9 @@
             border: 1px solid var(--border-color);
         }
 
-        /* --- ÍCONE DE ADM LÁ EMBAIXO DA LISTA --- */
+        /* --- ÍCONE DE ADMIN --- */
         .adm-bottom-trigger-container {
-            display: none; /* Só exibe para o ADM via JS */
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 10px 16px 80px 16px;
@@ -895,7 +895,6 @@
         .profile-intro {
             text-align: center;
             padding: 10px 0 10px 0;
-            border-bottom: none; /* Removida a linha/sombra cinza */
             margin-bottom: 5px;
         }
 
@@ -1159,11 +1158,6 @@
             font-size: 0.9rem;
             color: var(--text-color);
             outline: none;
-        }
-
-        .modal-row {
-            display: flex;
-            gap: 10px;
         }
 
         .modal-buttons {
@@ -1465,7 +1459,6 @@
             <div class="chat-body" id="chat-body">
                 <div class="profile-intro">
                     <div id="display-avatar-container"></div>
-                    <!-- Nome abaixo da foto removido -->
                     <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
                     <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
                     <div class="profile-subtext">Vocês são amigos agora</div>
@@ -1669,14 +1662,23 @@
         </div>
     </div>
 
+    <!-- MODAL DE CADASTRO (NOME E ID LADO A LADO/EMPILHADOS) -->
     <div class="modal-overlay" id="modal-ask-id" style="z-index: 400;">
         <div class="modal-card" style="text-align: center;">
             <div class="modal-header-tag">Identificação Obrigatória</div>
-            <div class="modal-title">Digite seu ID</div>
-            <p style="font-size: 0.8rem; color: var(--muted-color);">Para utilizar o aplicativo, é obrigatório inserir seu ID exclusivo em letras minúsculas.</p>
-            <div class="modal-input-group">
-                <input type="text" id="input-user-id-choice" placeholder="ex: meu_id_aqui" style="text-align: center; text-transform: lowercase;">
+            <div class="modal-title">Cadastre seu Perfil</div>
+            <p style="font-size: 0.8rem; color: var(--muted-color);">Insira seu Nome e seu ID exclusivo para continuar.</p>
+            
+            <div class="modal-input-group" style="text-align: left;">
+                <label>Seu Nome:</label>
+                <input type="text" id="input-user-name-choice" placeholder="Ex: João Silva">
             </div>
+
+            <div class="modal-input-group" style="text-align: left;">
+                <label>Seu ID exclusivo:</label>
+                <input type="text" id="input-user-id-choice" placeholder="ex: meu_id_aqui" style="text-transform: lowercase;">
+            </div>
+
             <button class="btn-modal-save" onclick="confirmarIdUsuario()">Entrar no App</button>
         </div>
     </div>
@@ -1774,6 +1776,7 @@
         
         let isAuthorized = false;
         let pendingUserId = "";
+        let pendingUserName = "";
 
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1789,30 +1792,7 @@
         applyCustomStyles();
 
         window.addEventListener('DOMContentLoaded', () => {
-            const meuIdSalvo = localStorage.getItem('kwai_meu_id_app');
-            if (meuIdSalvo) {
-                setTimeout(() => {
-                    if (window.dbRefGlobal) {
-                        window.firebaseGet(window.firebaseChild(window.dbRefGlobal, `usuarios/${meuIdSalvo}/status`)).then((snapshot) => {
-                            if (snapshot.exists() && snapshot.val() === 'banido') {
-                                document.body.innerHTML = `
-                                    <div style="background: #000; color: #ff4d4d; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif; text-align: center; padding: 20px;">
-                                        <h1 style="font-size: 2rem; margin-bottom: 10px;">🚫 Acesso Revogado</h1>
-                                        <p style="color: #fff; font-size: 1rem; max-width: 400px; line-height: 1.5;">Este App não pode ser usado pois você perdeu o acesso ou violou as diretrizes.<br><br><b style="color: #888; font-size: 0.8rem;">Desenvolvido by LOTUX ZRX</b></p>
-                                    </div>
-                                `;
-                            } else {
-                                checarSeEhAdminVisual(meuIdSalvo);
-                                showAuthScreen();
-                            }
-                        }).catch(() => { showAuthScreen(); });
-                    } else {
-                        showAuthScreen();
-                    }
-                }, 500);
-            } else {
-                showAuthScreen();
-            }
+            showAuthScreen();
         });
 
         function checarSeEhAdminVisual(id) {
@@ -1878,13 +1858,12 @@
 
             if (enteredPin.length === 6) {
                 if (enteredPin === CORRECT_PIN) {
-                    const salvo = localStorage.getItem('kwai_meu_id_app');
-                    if (salvo) {
-                        isAuthorized = true;
-                        showHomeScreen();
-                    } else {
-                        document.getElementById('modal-ask-id').style.display = 'flex';
-                    }
+                    // Limpa o ID salvo para forçar aparecer a tela de cadastro/ID sempre que acertar a senha
+                    localStorage.removeItem('kwai_meu_id_app');
+                    
+                    document.getElementById('input-user-name-choice').value = "";
+                    document.getElementById('input-user-id-choice').value = "";
+                    document.getElementById('modal-ask-id').style.display = 'flex';
                 } else {
                     document.getElementById('auth-error-msg').textContent = "Você ainda não tem o plano de r$ 25 converse com desenvolvedor";
                     for (let i = 0; i < 6; i++) {
@@ -1898,23 +1877,26 @@
         }
 
         function confirmarIdUsuario() {
-            const inputVal = document.getElementById('input-user-id-choice').value.trim();
-            const idEscolhido = inputVal.toLowerCase();
+            const nomeInput = document.getElementById('input-user-name-choice').value.trim();
+            const idInput = document.getElementById('input-user-id-choice').value.trim();
+            const idEscolhido = idInput.toLowerCase();
 
-            if (!idEscolhido) {
-                alert("Digite um ID válido em letras minúsculas!");
+            if (!nomeInput || !idEscolhido) {
+                alert("Preencha tanto o seu Nome quanto o seu ID!");
                 return;
             }
 
+            pendingUserName = nomeInput;
+            pendingUserId = idEscolhido;
+
             if (idEscolhido === MEU_ID_ADMIN_SECRETO) {
-                pendingUserId = idEscolhido;
                 document.getElementById('modal-ask-id').style.display = 'none';
                 document.getElementById('input-admin-pass-choice').value = "";
                 document.getElementById('modal-admin-password').style.display = 'flex';
                 return;
             }
 
-            salvarIdNoFirebaseEProsseguir(idEscolhido);
+            salvarIdNoFirebaseEProsseguir(idEscolhido, pendingUserName);
         }
 
         function fecharModalAdminPass() {
@@ -1926,16 +1908,21 @@
             const senhaDigitada = document.getElementById('input-admin-pass-choice').value;
             if (senhaDigitada === SENHA_ADMIN_SECRETA) {
                 document.getElementById('modal-admin-password').style.display = 'none';
-                salvarIdNoFirebaseEProsseguir(pendingUserId);
+                salvarIdNoFirebaseEProsseguir(pendingUserId, pendingUserName);
             } else {
                 alert("Senha do Administrador incorreta!");
             }
         }
 
-        function salvarIdNoFirebaseEProsseguir(idEscolhido) {
+        function salvarIdNoFirebaseEProsseguir(idEscolhido, nomeUsuario) {
             const deviceId = 'device_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+            
+            myProfile.name = nomeUsuario;
+            updateMyProfileUI();
+
             window.firebaseSet(window.firebaseRef(window.dbInstance, 'usuarios/' + idEscolhido), {
                 deviceId: deviceId,
+                name: nomeUsuario,
                 status: "ativo",
                 ultimaEntrada: Date.now()
             }).then(() => {
@@ -1985,7 +1972,7 @@
                         divUser.innerHTML = `
                             <div>
                                 <b style="color: #00ffcc;">ID: ${userId}</b><br>
-                                <small style="color: #888;">Status: ${dados.status}</small>
+                                <small style="color: #888;">Nome: ${dados.name || 'Desconhecido'} | Status: ${dados.status}</small>
                             </div>
                             <div style="display: flex; gap: 8px;">
                                 ${dados.status === 'banido' 
